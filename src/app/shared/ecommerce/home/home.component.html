@@ -1,0 +1,384 @@
+<!-- start hero section -->
+<section class="section nft-hero" id="hero" style="margin-top: 91px">
+    <div class="bg-overlay"></div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-sm-10">
+                <div class="text-center">
+                    <h1 class="display-4 fw-medium mb-4 lh-base text-white">
+                        Pofuu Macrame
+                    </h1>
+                    <p class="lead text-white-50 lh-base mb-4 pb-2">
+                        Can artwork be NFT? NFTs (non-fungible tokens) are one-of-a-kind
+                        digital assets. Given they're digital in nature, can physical works
+                        of art be turned into NFTs?.
+                    </p>
+
+                    <div class="hstack gap-2 justify-content-center">
+                        <a routerLink="/marletplace/create" class="btn btn-primary">Create Own <i
+                                class="ri-arrow-right-line align-middle ms-1"></i></a>
+                        <a routerLink="/marletplace/explore" class="btn btn-danger">Explore Now <i
+                                class="ri-arrow-right-line align-middle ms-1"></i></a>
+                    </div>
+                </div>
+            </div>
+            <!--end col-->
+        </div>
+        <!-- end row -->
+    </div>
+    <!-- end container -->
+</section>
+<!-- end hero section -->
+
+<!-- Product Category Start  -->
+<div class="d-flex justify-content-center mt-2">
+    <div class="col-8">
+        <div class="container-fluid">
+            <div class="col-12">
+                <div class="title-div">
+                    <div class="col-lg-5">
+                        <div class="text-center mt-3 mb-3">
+                            <h1 class="mb-0 font-bold">Ürün Kategorileri</h1>
+                        </div>
+                    </div>
+                    <!-- end col -->
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-6 mb-4">
+                    <div class="card border-0 rounded-0">
+                        <img src="assets/images/macrame/macrame6.jpg" class="card-img card-img-product-category" alt="Fruits & Vegetables" />
+                        <div
+                            class="card-img-overlay d-flex flex-column justify-content-center align-items-center text-center">
+                            <h3 class="card-title fw-bold text-white mb-3">
+                                Fruits &amp; Vegetables
+                            </h3>
+                            <p class="card-text text-white-50 mb-4">
+                                Get Upto <span class="fw-bold">30%</span> Off
+                            </p>
+                            <a href="#!" class="btn btn-outline-light btn-lg">Shop Now</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 mb-4">
+                    <div class="card border-0 rounded-0">
+                        <img src="assets/images/macrame/macrame6.jpg" class="card-img card-img-product-category" alt="Freshly Baked Buns" />
+                        <div
+                            class="card-img-overlay d-flex flex-column justify-content-center align-items-center text-center">
+                            <h3 class="card-title fw-bold text-white mb-3">
+                                Freshly Baked Buns
+                            </h3>
+                            <p class="card-text text-white-50 mb-4">
+                                Get Upto <span class="fw-bold">25%</span> Off
+                            </p>
+                            <a href="#!" class="btn btn-outline-light btn-lg">Shop Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Trend Category End -->
+
+<!-- The Products of the Day Start -->
+<div class="d-flex justify-content-center">
+    <div class="col-8">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="title-div">
+                        <div class="col-lg-5">
+                            <div class="text-center mt-3 mb-3">
+                                <h1 class="mb-0 font-bold">Günün Ürünleri</h1>
+                            </div>
+                        </div>
+                        <!-- end col -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- The Products of the Day End -->
+
+<!-- All Product Start -->
+<div class="d-flex justify-content-center">
+    <div class="col-8">
+        <div class="container-fluid mt-5 mb-3">
+            <div class=row>
+                <div class="col-12">
+                    <div class="title-div">
+                        <div class="col-lg-5">
+                             <div class="text-center mt-3 mb-1">
+                                <h1 class="mb-0 font-bold">Ürünler</h1>
+                            </div>
+                        </div>
+                        <!-- end col -->
+                    </div>
+                </div>
+            </div>
+            <div _ngcontent-fbe-c135="" class="row">
+                <div _ngcontent-fbe-c135="" class="col-xl-3 col-sm-6" *ngFor="let variant of productVariants let i = index">
+                    <div _ngcontent-fbe-c135="" class="card">
+                        <div _ngcontent-fbe-c135="" class="card-body">
+                            <div _ngcontent-fbe-c135="" class="product-img position-relative thumbnail" >
+                                <a _ngcontent-fbe-c135="" href="/product-detail/1">
+                                    <img _ngcontent-fbe-c135="" alt="" class="img-fluid mx-auto d-block picture1"
+                                        src="{{imageFolderUrl+variant.productPaths[0]}}" /></a>
+                                <img _ngcontent-vbt-c135="" alt="" class="img-fluid mx-auto d-block picture2"
+                                    src="{{imageFolderUrl+variant.productPaths[1]}}" />
+
+                                <div class="icon-div">
+                                    <i class="ri-heart-line fs-md text-center heartIcon"></i>
+                                </div>
+                            </div>
+                            <div _ngcontent-fbe-c135="" class="mt-4 text-left">
+                                <h5 _ngcontent-fbe-c135="" class="mb-3 text-truncate">
+                                    <a _ngcontent-fbe-c135="" href="/product-detail/1" class="text-dark">
+                                        {{variant.productName}}
+                                    </a>
+                                </h5>
+                                <p _ngcontent-fbe-c135="" class="text-muted">
+                                    <i _ngcontent-fbe-c135="" class="bx bx-star text-warning"></i><i
+                                        _ngcontent-fbe-c135="" class="bx bx-star text-warning"></i><i
+                                        _ngcontent-fbe-c135="" class="bx bx-star text-warning"></i><i
+                                        _ngcontent-fbe-c135="" class="bx bx-star text-warning"></i><i
+                                        _ngcontent-fbe-c135="" class="bx bx-star text-warning"></i>
+                                </p>
+                                <h5 _ngcontent-fbe-c135="" class="my-0">
+                                    <span _ngcontent-fbe-c135="" class="text-muted me-2"><del _ngcontent-fbe-c135="">TRY
+                                            {{variant.price}}</del></span><b _ngcontent-fbe-c135="">$ {{variant.price}}</b>
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+             </div>
+        </div>
+
+    </div>
+</div>
+<!-- All Product End -->
+
+
+
+<!-- All Category Start -->
+<div class="d-flex justify-content-center">
+    <div class="col-8">
+        <div class="row">
+            <div class="col-12">
+                <div class="justify-content-center title-div">
+                    <div class="col-lg-5">
+                        <div class="text-center mt-5 mb-1">
+                            <h1 class="mb-0 font-bold">Tüm Kategoriler</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div _ngcontent-embryo-seo-pre-c231="" class="container-fluid mb-3">
+                    <div _ngcontent-embryo-seo-pre-c231="" fxlayout="row wrap" class="col-gap flex-wrap-web"
+                        style="box-sizing: border-box; display: flex">
+                        <div _ngcontent-embryo-seo-pre-c231="" class="col-12 col-md-4">
+                            <div _ngcontent-embryo-seo-pre-c231=""
+                                class="main-bg overlay-section-item overlay-section-overlay relative" style="
+                          background-image: url('assets/images/macrame/macrame6.jpg');
+                          background-size: cover;
+                        ">
+                                <div _ngcontent-embryo-seo-pre-c231="" class="end-left col-12 col-md-4">
+                                    <div _ngcontent-embryo-seo-pre-c231="" class="overlay-section-content">
+                                        <h4 _ngcontent-embryo-seo-pre-c231="" class="mb-0 font-bold">
+                                            Latest Collections
+                                        </h4>
+                                        <h4 _ngcontent-embryo-seo-pre-c231="" class="text-xxl font-normal mb-3">
+                                            Save Upto 60%
+                                        </h4>
+                                        <button _ngcontent-embryo-seo-pre-c231="" mat-raised-button=""
+                                            class="mat-focus-indicator mat-raised-button mat-button-base" tabindex="0">
+                                            <span class="mat-button-wrapper">SHOP NOW</span>
+                                            <div matripple="" class="mat-ripple mat-button-ripple"></div>
+                                            <div class="mat-button-focus-overlay"></div>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div _ngcontent-embryo-seo-pre-c231="" >
+                            <div _ngcontent-embryo-seo-pre-c231="" fxlayout="row wrap" class="col-gap"
+                                style="flex-flow: row wrap; box-sizing: border-box; display: flex">
+                                <div _ngcontent-embryo-seo-pre-c231="" class="col-12 col-md-4">
+                                    <div _ngcontent-embryo-seo-pre-c231=""
+                                        class="main-bg-inner overlay-section-item overlay-section-overlay relative"
+                                        style="background-image: url('assets/images/macrame/macrame6.jpg')">
+                                        <div _ngcontent-embryo-seo-pre-c231="" class="end-left">
+                                            <div _ngcontent-embryo-seo-pre-c231="" class="overlay-section-content">
+                                                <h4 _ngcontent-embryo-seo-pre-c231="" class="mb-0 font-bold">
+                                                    Mens Collections
+                                                </h4>
+                                                <h4 _ngcontent-embryo-seo-pre-c231="" class="text-xxl font-normal mb-3">
+                                                    Save Upto 40%
+                                                </h4>
+                                                <button _ngcontent-embryo-seo-pre-c231="" mat-raised-button=""
+                                                    class="mat-focus-indicator mat-raised-button mat-button-base"
+                                                    tabindex="0">
+                                                    <span class="mat-button-wrapper">SHOP NOW</span>
+                                                    <div matripple="" class="mat-ripple mat-button-ripple"></div>
+                                                    <div class="mat-button-focus-overlay"></div>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div _ngcontent-embryo-seo-pre-c231="" class="col-12 col-md-4">
+                                    <div _ngcontent-embryo-seo-pre-c231=""
+                                        class="main-bg-inner overlay-section-item overlay-section-overlay relative"
+                                        style="background-image: url('assets/images/macrame/macrame6.jpg')">
+                                        <div _ngcontent-embryo-seo-pre-c231="" class="end-right">
+                                            <div _ngcontent-embryo-seo-pre-c231="" class="overlay-section-content">
+                                                <h4 _ngcontent-embryo-seo-pre-c231="" class="mb-0 font-bold">
+                                                    Women's Collections
+                                                </h4>
+                                                <h4 _ngcontent-embryo-seo-pre-c231="" class="text-xxl font-normal mb-3">
+                                                    Save Upto 30%
+                                                </h4>
+                                                <button _ngcontent-embryo-seo-pre-c231="" mat-raised-button=""
+                                                    class="mat-focus-indicator mat-raised-button mat-button-base"
+                                                    tabindex="0">
+                                                    <span class="mat-button-wrapper">SHOP NOW</span>
+                                                    <div matripple="" class="mat-ripple mat-button-ripple"></div>
+                                                    <div class="mat-button-focus-overlay"></div>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div _ngcontent-embryo-seo-pre-c231="" class="col-12 col-md-4">
+                                    <div _ngcontent-embryo-seo-pre-c231=""
+                                        class="main-bg-inner overlay-section-item overlay-section-overlay relative"
+                                        style="background-image: url('assets/images/macrame/macrame6.jpg')">
+                                        <div _ngcontent-embryo-seo-pre-c231="" class="end-left">
+                                            <div _ngcontent-embryo-seo-pre-c231="" class="overlay-section-content">
+                                                <h4 _ngcontent-embryo-seo-pre-c231="" class="mb-0 font-bold">
+                                                    Watches Collections
+                                                </h4>
+                                                <h4 _ngcontent-embryo-seo-pre-c231="" class="text-xxl font-normal mb-3">
+                                                    Save Upto 50%
+                                                </h4>
+                                                <button _ngcontent-embryo-seo-pre-c231="" mat-raised-button=""
+                                                    class="mat-focus-indicator mat-raised-button mat-button-base"
+                                                    tabindex="0">
+                                                    <span class="mat-button-wrapper">SHOP NOW</span>
+                                                    <div matripple="" class="mat-ripple mat-button-ripple"></div>
+                                                    <div class="mat-button-focus-overlay"></div>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div _ngcontent-embryo-seo-pre-c231="" class="col-12 col-md-4">
+                                    <div _ngcontent-embryo-seo-pre-c231=""
+                                        class="main-bg-inner overlay-section-item overlay-section-overlay relative"
+                                        style="background-image: url('assets/images/macrame/macrame6.jpg')">
+                                        <div _ngcontent-embryo-seo-pre-c231="" class="end-right">
+                                            <div _ngcontent-embryo-seo-pre-c231="" class="overlay-section-content">
+                                                <h4 _ngcontent-embryo-seo-pre-c231="" class="mb-0 font-bold">
+                                                    Accessories Collections
+                                                </h4>
+                                                <h4 _ngcontent-embryo-seo-pre-c231="" class="text-xxl font-normal mb-3">
+                                                    Save Upto 60%
+                                                </h4>
+                                                <button _ngcontent-embryo-seo-pre-c231="" mat-raised-button=""
+                                                    class="mat-focus-indicator mat-raised-button mat-button-base"
+                                                    tabindex="0">
+                                                    <span class="mat-button-wrapper">SHOP NOW</span>
+                                                    <div matripple="" class="mat-ripple mat-button-ripple"></div>
+                                                    <div class="mat-button-focus-overlay"></div>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- All Category End -->
+
+<!-- Seasonal Category Start
+<div class="d-flex justify-content-center">
+    <div class="col-8">
+        <section id="shopify-section-template--16732373483743__01d6a383-639a-4ce5-9684-af164e50671a"
+            class="shopify-section section-image-with-text">
+            <div class="relative container-fluid container--no-mobile-padding large-row section-template--16732373483743__01d6a383-639a-4ce5-9684-af164e50671a"
+                data-section-id="template--16732373483743__01d6a383-639a-4ce5-9684-af164e50671a"
+                data-section-type="image-with-text">
+                <div class="page-width image-with-text flex global-border-radius">
+                    <div class="one-half small-down--one-whole relative image-with-text__image overflow-hidden">
+                        <div class="image-with-text__image-size image-with-text__image-radius zoom-out-fade-in cc-animate-init cc-animate-in"
+                            data-cc-animate="zoom-out-fade-in">
+                            <a class="block hover-images global-border-radius" href="/collections/catania">
+                                <div class="image-one">
+                                    <div class="rimage-outer-wrapper">
+                                        <div class="rimage-wrapper" style="padding-top: 99.47299077733861%">
+                                            <img class="rimage__image fade-in lazyautosizes lazyloaded global-border-radius"
+                                                data-widths="[180, 220, 300, 360, 460, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                                                data-aspectratio="1.005298013245033" data-sizes="auto" alt=""
+                                                style="object-position: 50% 50%"
+                                                data-srcset="//cdn.shopify.com/s/files/1/0413/7061/5960/files/catania_180x.png?v=1673622345 180w, //cdn.shopify.com/s/files/1/0413/7061/5960/files/catania_220x.png?v=1673622345 220w, //cdn.shopify.com/s/files/1/0413/7061/5960/files/catania_300x.png?v=1673622345 300w, //cdn.shopify.com/s/files/1/0413/7061/5960/files/catania_360x.png?v=1673622345 360w, //cdn.shopify.com/s/files/1/0413/7061/5960/files/catania_460x.png?v=1673622345 460w, //cdn.shopify.com/s/files/1/0413/7061/5960/files/catania_540x.png?v=1673622345 540w, //cdn.shopify.com/s/files/1/0413/7061/5960/files/catania_720x.png?v=1673622345 720w, //cdn.shopify.com/s/files/1/0413/7061/5960/files/catania_900x.png?v=1673622345 900w, //cdn.shopify.com/s/files/1/0413/7061/5960/files/catania_1080x.png?v=1673622345 1080w, //cdn.shopify.com/s/files/1/0413/7061/5960/files/catania_1296x.png?v=1673622345 1296w, //cdn.shopify.com/s/files/1/0413/7061/5960/files/catania_1512x.png?v=1673622345 1512w, //cdn.shopify.com/s/files/1/0413/7061/5960/files/catania_1728x.png?v=1673622345 1728w, //cdn.shopify.com/s/files/1/0413/7061/5960/files/catania_2048x.png?v=1673622345 2048w"
+                                                sizes="770px" srcset="
+                        //cdn.shopify.com/s/files/1/0413/7061/5960/files/catania_180x.png?v=1673622345   180w,
+                        //cdn.shopify.com/s/files/1/0413/7061/5960/files/catania_220x.png?v=1673622345   220w,
+                        //cdn.shopify.com/s/files/1/0413/7061/5960/files/catania_300x.png?v=1673622345   300w,
+                        //cdn.shopify.com/s/files/1/0413/7061/5960/files/catania_360x.png?v=1673622345   360w,
+                        //cdn.shopify.com/s/files/1/0413/7061/5960/files/catania_460x.png?v=1673622345   460w,
+                        //cdn.shopify.com/s/files/1/0413/7061/5960/files/catania_540x.png?v=1673622345   540w,
+                        //cdn.shopify.com/s/files/1/0413/7061/5960/files/catania_720x.png?v=1673622345   720w,
+                        //cdn.shopify.com/s/files/1/0413/7061/5960/files/catania_900x.png?v=1673622345   900w,
+                        //cdn.shopify.com/s/files/1/0413/7061/5960/files/catania_1080x.png?v=1673622345 1080w,
+                        //cdn.shopify.com/s/files/1/0413/7061/5960/files/catania_1296x.png?v=1673622345 1296w,
+                        //cdn.shopify.com/s/files/1/0413/7061/5960/files/catania_1512x.png?v=1673622345 1512w,
+                        //cdn.shopify.com/s/files/1/0413/7061/5960/files/catania_1728x.png?v=1673622345 1728w,
+                        //cdn.shopify.com/s/files/1/0413/7061/5960/files/catania_2048x.png?v=1673622345 2048w
+                      " />
+
+                                            <noscript>
+                                                <img src="//cdn.shopify.com/s/files/1/0413/7061/5960/files/catania_1024x1024.png?v=1673622345"
+                                                    alt="" class="global-border-radius rimage__image" />
+                                            </noscript>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="one-half small-down--one-whole relative image-with-text__content cc-animate-init cc-animate-in"
+                        data-cc-animate="">
+                        <div class="center">
+                            <h2 class="image-with-text__title large-title">
+                                TÜM CATANIA RENKLERİ BURADA!
+                            </h2>
+
+                            <div class="image-with-text__text">
+                                <p>Capcanlı renkleri ile Catania renklerine hemen ulaşın.</p>
+                            </div>
+
+                            <a class="image-with-text__link btn btn--small btn--primary" href="/collections/catania">
+                                Alışverişe Başla
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<!-- Seasonal Category End -->
