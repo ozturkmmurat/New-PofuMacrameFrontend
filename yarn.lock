@@ -1310,6 +1310,13 @@
   dependencies:
     ckeditor5 "39.0.2"
 
+"@ckeditor/ckeditor5-alignment@^39.0.2":
+  version "39.0.2"
+  resolved "https://registry.npmjs.org/@ckeditor/ckeditor5-alignment/-/ckeditor5-alignment-39.0.2.tgz"
+  integrity sha512-TjM+9h3tFn1wgnF4RJg0WaA758kT5VGSaVi0Ti6NECckPGXnccJpIQ7ZMSKAe4zCfaRSmNQsNYc20iq7w7+leg==
+  dependencies:
+    ckeditor5 "39.0.2"
+
 "@ckeditor/ckeditor5-angular@^7.0.0":
   version "7.0.0"
   resolved "https://registry.npmjs.org/@ckeditor/ckeditor5-angular/-/ckeditor5-angular-7.0.0.tgz"
@@ -1397,6 +1404,13 @@
   dependencies:
     ckeditor5 "39.0.2"
 
+"@ckeditor/ckeditor5-code-block@^39.0.2":
+  version "39.0.2"
+  resolved "https://registry.npmjs.org/@ckeditor/ckeditor5-code-block/-/ckeditor5-code-block-39.0.2.tgz"
+  integrity sha512-VlG/+VqxrR/JWQZVsGzemr3caOgQLB5OmSsFKPBEzoMI+05zf2UM232DyBVBUfA6UJ5L/ZMkT9YdUi+XhFnhAQ==
+  dependencies:
+    ckeditor5 "39.0.2"
+
 "@ckeditor/ckeditor5-core@39.0.2":
   version "39.0.2"
   resolved "https://registry.npmjs.org/@ckeditor/ckeditor5-core/-/ckeditor5-core-39.0.2.tgz"
@@ -1445,12 +1459,43 @@
   dependencies:
     ckeditor5 "39.0.2"
 
+"@ckeditor/ckeditor5-find-and-replace@^39.0.2":
+  version "39.0.2"
+  resolved "https://registry.npmjs.org/@ckeditor/ckeditor5-find-and-replace/-/ckeditor5-find-and-replace-39.0.2.tgz"
+  integrity sha512-cRD/ozsclBVjcuCokFiPMGEUV8YqbyjMQnHMUbsuc3qGQ2rV7A6tJZJqOdW7EW78asEPrVQ6M0SrIYgrb5lzCQ==
+  dependencies:
+    "@ckeditor/ckeditor5-ui" "39.0.2"
+    ckeditor5 "39.0.2"
+    lodash-es "4.17.21"
+
+"@ckeditor/ckeditor5-font@^39.0.2":
+  version "39.0.2"
+  resolved "https://registry.npmjs.org/@ckeditor/ckeditor5-font/-/ckeditor5-font-39.0.2.tgz"
+  integrity sha512-6sGgo9X23gAllVjzGH1gOkjIEHkvm2O40IqUKCBwzn0K6Ry6St4R4QtcQeFV5jxAMKn0eD7blPuhItVrjmN0hw==
+  dependencies:
+    ckeditor5 "39.0.2"
+
 "@ckeditor/ckeditor5-heading@39.0.2":
   version "39.0.2"
   resolved "https://registry.npmjs.org/@ckeditor/ckeditor5-heading/-/ckeditor5-heading-39.0.2.tgz"
   integrity sha512-P1ogDMAsTZB/TfuNwifNv1H9KHaMSPRaPfd+clhhLV/GAdt2rGMeH0HKuSke54cZYB6qMQP7Za8Xsfi2ufY0GA==
   dependencies:
     ckeditor5 "39.0.2"
+
+"@ckeditor/ckeditor5-html-embed@^39.0.2":
+  version "39.0.2"
+  resolved "https://registry.npmjs.org/@ckeditor/ckeditor5-html-embed/-/ckeditor5-html-embed-39.0.2.tgz"
+  integrity sha512-51dt9ndDl8Ba1ETmBDwAM0u82/yyF1uY5bXnHrkfrcYwGn+pHojKMTysilmniY35fo9Rn2TaV8eBsp/2h/tYMg==
+  dependencies:
+    ckeditor5 "39.0.2"
+
+"@ckeditor/ckeditor5-html-support@^39.0.2":
+  version "39.0.2"
+  resolved "https://registry.npmjs.org/@ckeditor/ckeditor5-html-support/-/ckeditor5-html-support-39.0.2.tgz"
+  integrity sha512-vA5nbuE4PnCOw7HK+y9dgXi6vKlVRq/fEeG7H5HNuF1CRVqBMUenFUFTNFrIi/ZHp7L2QhVs0uvQLnbYm3gPqQ==
+  dependencies:
+    ckeditor5 "39.0.2"
+    lodash-es "4.17.21"
 
 "@ckeditor/ckeditor5-image@39.0.2":
   version "39.0.2"
@@ -1517,6 +1562,29 @@
     "@ckeditor/ckeditor5-core" "39.0.2"
     "@ckeditor/ckeditor5-ui" "39.0.2"
     "@ckeditor/ckeditor5-utils" "39.0.2"
+
+"@ckeditor/ckeditor5-show-blocks@^39.0.2":
+  version "39.0.2"
+  resolved "https://registry.npmjs.org/@ckeditor/ckeditor5-show-blocks/-/ckeditor5-show-blocks-39.0.2.tgz"
+  integrity sha512-BTz2m6Blvz4fZKHAsNLZX3qXLaXQ03TXYr/OTkyEKfsMVepI0OOtnTD/I8ydLQohDQOSYIQjMu2KHguZcIwH7A==
+  dependencies:
+    "@ckeditor/ckeditor5-ui" "39.0.2"
+    ckeditor5 "39.0.2"
+
+"@ckeditor/ckeditor5-special-characters@^39.0.2":
+  version "39.0.2"
+  resolved "https://registry.npmjs.org/@ckeditor/ckeditor5-special-characters/-/ckeditor5-special-characters-39.0.2.tgz"
+  integrity sha512-0BSRKkywpzI+KJGB9ouFAf59UYWasUBSGiDrBbdd6QGWwA1hlpaMIPD4B8nCGmSNgtmyVEbpp7wBDfol0GgggA==
+  dependencies:
+    ckeditor5 "39.0.2"
+
+"@ckeditor/ckeditor5-style@^39.0.2":
+  version "39.0.2"
+  resolved "https://registry.npmjs.org/@ckeditor/ckeditor5-style/-/ckeditor5-style-39.0.2.tgz"
+  integrity sha512-JfVTUqqAxZrGGoAOoFa73cSxEgjun+sv7maFbz/oUFLwxkMddC4Blf51RWIIBe9r8/tgg7kqBBLVLUU5o8/S7A==
+  dependencies:
+    ckeditor5 "39.0.2"
+    lodash-es "4.17.21"
 
 "@ckeditor/ckeditor5-table@39.0.2":
   version "39.0.2"

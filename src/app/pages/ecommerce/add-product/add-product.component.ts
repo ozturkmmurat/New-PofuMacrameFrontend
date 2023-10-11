@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
 // Ck Editer
-import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import * as Editor from 'ckeditor5/build/ckeditor';
+import { CkEditorConfigService } from 'src/app/services/Html/CKEditor5/ck-editor-config.service';
 
 @Component({
   selector: 'app-add-product',
@@ -16,9 +17,11 @@ export class AddProductComponent implements OnInit {
 
   // bread crumb items
   breadCrumbItems!: Array<{}>;
-  public Editor = ClassicEditor;
+  public Editor = Editor;
 
-  constructor() { }
+  constructor(
+    public ckEditorConfigService : CkEditorConfigService
+  ) { }
 
   ngOnInit(): void {
     /**

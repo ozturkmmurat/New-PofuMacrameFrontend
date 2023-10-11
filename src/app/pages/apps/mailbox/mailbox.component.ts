@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 // Ck Editer
-import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import * as Editor from 'ckeditor5/build/ckeditor';
 
 // Sweet Alert
 import Swal from 'sweetalert2';
@@ -22,7 +22,7 @@ import { Email } from './mailbox.model';
  */
 export class MailboxComponent implements OnInit {
 
-  public Editor = ClassicEditor;
+  public Editor = Editor;
   emailData!: Email[];
   emailIds: number[] = [];
   isShowMenu: boolean = true;
