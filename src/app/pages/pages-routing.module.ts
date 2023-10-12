@@ -19,15 +19,6 @@ const routes: Routes = [
       path: 'ecommerce', loadChildren: () => import('./ecommerce/ecommerce.module').then(m => m.EcommerceModule)
     },
     {
-      path: 'tasks', loadChildren: () => import('./tasks/tasks.module').then(m => m.TasksModule)
-    },
-    {
-      path: 'invoices', loadChildren: () => import('./invoices/invoices.module').then(m => m.InvoicesModule)
-    },
-    {
-      path: 'tickets', loadChildren: () => import('./tickets/tickets.module').then(m => m.TicketsModule)
-    },
-    {
       path: 'pages', loadChildren: () => import('./extrapages/extraspages.module').then(m => m.ExtraspagesModule)
     },
     { path: 'ui', loadChildren: () => import('./ui/ui.module').then(m => m.UiModule) },

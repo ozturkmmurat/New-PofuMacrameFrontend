@@ -25,8 +25,6 @@ import { CountUpModule } from 'ngx-countup';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
-// Routing
-import { JobsModule } from './jobs/jobs.module';
 
 // Emoji Picker
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
@@ -44,27 +42,11 @@ import { NgSelectModule } from '@ng-select/ng-select';
 // Component Pages
 import { AppsRoutingModule } from "./apps-routing.module";
 import { SharedModule } from '../../shared/shared.module';
-import { CalendarComponent } from './calendar/calendar.component';
-import { ChatComponent } from './chat/chat.component';
-import { MailboxComponent } from './mailbox/mailbox.component';
-import { WidgetsComponent } from './widgets/widgets.component';
-import { EmailBasicComponent } from './email/email-basic/email-basic.component';
-import { EmailEcommerceComponent } from './email/email-ecommerce/email-ecommerce.component';
-
-// Sorting page
-import { NgbdApikeySortableHeader } from './apikey/apikey-sortable.directive';
-
 // Load Icon
 import { defineElement } from 'lord-icon-element';
 import lottie from 'lottie-web';
 
 import { DatePipe } from '@angular/common';
-import { FileManagerComponent } from './file-manager/file-manager.component';
-import { TodoComponent } from './todo/todo.component';
-
-import { SortByPipe } from '../apps/sort-by.pipe';
-import { ApikeyComponent } from './apikey/apikey.component';
-
 // Mask
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask, IConfig } from 'ngx-mask';
 
@@ -73,17 +55,6 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
 
 @NgModule({
   declarations: [
-    CalendarComponent,
-    ChatComponent,
-    MailboxComponent,
-    WidgetsComponent,
-    EmailBasicComponent,
-    EmailEcommerceComponent,
-    FileManagerComponent,
-    TodoComponent,
-    SortByPipe,
-    ApikeyComponent,
-    NgbdApikeySortableHeader
   ],
   imports: [
     CommonModule,
@@ -113,7 +84,6 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
     MatTableModule,
     NgSelectModule,
     NgbTypeaheadModule,
-    JobsModule,
     SlickCarouselModule,
     NgxMaskDirective, NgxMaskPipe
   ],
