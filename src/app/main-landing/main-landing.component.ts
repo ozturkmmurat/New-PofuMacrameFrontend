@@ -9,10 +9,11 @@ import { CartModel } from '../layouts/topbar/topbar.model';
 })
 export class MainLandingComponent {
   currentSection = 'home';
-  cart_length: any = 0;
-  total = 0;
   cartData!: CartModel[];
+  total = 0;
+  cart_length: any = 0;
   public isCollapsed = true;
+  
   constructor() { }
 
   ngOnInit(): void {

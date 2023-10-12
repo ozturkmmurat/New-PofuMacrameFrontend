@@ -32,6 +32,7 @@ export class TopbarComponent implements OnInit {
   total = 0;
   cart_length: any = 0;
 
+  
   flagvalue: any;
   valueset: any;
   countryName: any;
