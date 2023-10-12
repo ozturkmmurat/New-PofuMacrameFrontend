@@ -52,6 +52,13 @@ import {NgbdCustomerSortableHeader} from './customers/customers-sortable.directi
 import {NgbdSellersSortableHeader} from './seller-details/seller-details-sortable.directive'
 
 import { DatePipe } from '@angular/common';
+import { AddProductVariantComponent } from './add-product-variant/add-product-variant.component';
+import { AttributeValueComponent } from './attribute-value/attribute-value.component';
+import { AttributesComponent } from './attributes/attributes.component';
+import { CategoriesComponent } from './categories/categories.component';
+import { CategoryAttributeComponent } from './category-attribute/category-attribute.component';
+import { ProductListComponent } from './product-list/product-list.component';
+import { ProductImagesComponent } from './product-images/product-images.component';
 
 const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
   url: 'https://httpbin.org/post',
@@ -74,7 +81,14 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
     NgbdProductsSortableHeader,
     NgbdOrdersSortableHeader,
     NgbdCustomerSortableHeader,
-    NgbdSellersSortableHeader
+    NgbdSellersSortableHeader,
+    AddProductVariantComponent,
+    AttributeValueComponent,
+    AttributesComponent,
+    CategoriesComponent,
+    CategoryAttributeComponent,
+    ProductListComponent,
+    ProductImagesComponent
   ],
   imports: [
     CommonModule,

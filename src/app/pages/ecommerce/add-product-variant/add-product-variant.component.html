@@ -1,0 +1,179 @@
+<ng-container *ngIf="product$ | async as product">
+    <ng-container *ngIf="_productVariantForm">
+        <form [formGroup]="_productVariantForm">
+            <div class="form-check form-switch mb-2">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault"
+                    formControlName="isVariant" (click)="getAllTrueAttrSlicer()">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Varyant eklemek ister
+                    misiniz ?</label>
+            </div>
+
+
+
+            <!-- end card -->
+            <ng-container *ngIf="_productVariantForm.value.isVariant == true && viewCategoryAttributeDto.length > 0 ">
+                <div class="card" *ngFor="let categoryAttribute of viewCategoryAttributeDto">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">{{ categoryAttribute.attributeName }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="hstack gap-3 align-items-start">
+                            <div class="flex-grow-1">
+                                <ng-select [items]="categoryAttribute.attributeValues" [multiple]="true" bindValue="id"
+                                    bindLabel="value"
+                                    (change)="onSelectionChange(categoryAttribute.attributeName, $event)">
+                                </ng-select>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end card body -->
+                </div>
+                <div class="text-start mb-3">
+                    <button type="submit" class="btn btn-success w-sm" (click)="createVariant()">Varyant
+                        Oluştur</button>
+                </div>
+
+                <div class="card" *ngFor="let item of cartesianProduct; let i = index;">
+                    <div class="card-body">
+                        <div class="variant">
+                            <div class='row'>
+                                <div class='col-sm-3' *ngFor="let x of item">
+                                    <div class='mb-3'>
+                                        <label class='form-label' for='product-price-input'>{{x.attribute}}</label>
+                                        <div class='input-group mb-3'> <span class='input-group-text'
+                                                id='product-price-addon'></span>
+                                            <input type='text' class='form-control' id='product-price-input'
+                                                placeholder='Enter price' aria-label='Price'
+                                                aria-describedby='product-price-addon' [value]="x.value" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                                <ng-container formArrayName="productStocks">
+                                    <ng-container formGroupName="{{i}}" style="display:flex;">
+                                        <div class='col-sm-3'>
+                                            <div class='mb-3'> <label class='form-label'
+                                                    for='product-price-input'>Fiyat</label>
+                                                <div class='input-group mb-3'>
+                                                    <span class='input-group-text' id='product-price-addon'>TRY
+                                                    </span>
+                                                    <input type='number' class='form-control' id='product-price-input'
+                                                        placeholder='Enter price' aria-label='Price'
+                                                        aria-describedby='product-price-addon' formControlName="price"
+                                                        [value]="this.productStocksArray.controls[i].get('price')?.value">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class='col-sm-3'>
+                                            <div class='mb-3'> <label class='form-label'
+                                                    for='product-price-input'>Adet</label>
+                                                <div class='input-group mb-3'>
+                                                    <span class='input-group-text' id='product-price-addon'>
+                                                    </span>
+                                                    <input type='number' class='form-control' id='product-price-input'
+                                                        placeholder='Enter price' aria-label='Price'
+                                                        aria-describedby='product-price-addon' formControlName="quantity"
+                                                        [value]="this.productStocksArray.controls[i].get('quantity')?.value">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class='col-sm-3'>
+                                            <div class='mb-3'> <label class='form-label' for='product-stock-input'>Stok
+                                                    Kodu</label>
+                                                <div class='input-group mb-3'>
+                                                    <span class='input-group-text' id='product-stock-addon'></span>
+                                                    <input type='text' class='form-control' id='product-stock-input'
+                                                        placeholder='Enter Stock Code' aria-label='Stock Code'
+                                                        aria-describedby='product-stock-addon' formControlName="stockCode"
+                                                        [value]="this.productStocksArray.controls[i].get('stockCode')?.value">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                </ng-container>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="mb-3">
+                                    <button (click)='removeVariantHtml(i)' _ngcontent-ugs-c384='' type='button'
+                                        class='btn btn-danger btn-icon waves-effect waves-light'>
+                                        <i _ngcontent-ugs-c384='' class='ri-delete-bin-5-line'></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    <div class="text-start mb-3" *ngIf="cartesianProduct.length > 0">
+                        <button type="submit" class="btn btn-success w-sm" (click)="addProductVariant()">Ürünü Oluştur</button>
+                    </div>
+            </ng-container>
+
+
+
+
+            <div class="card" *ngIf="_productVariantForm.value.isVariant == false && cartesianProduct.length <= 0 && product.id == 0 && this.productStocksArray.controls.length == 1">
+                <div class="card-body">
+                    <div class="variant">
+                        <div class='row'>
+                            <ng-container formArrayName="productStocks">
+                                <ng-container formGroupName="{{0}}" style="display:flex;">
+                                    <div class='col-sm-3'>
+                                        <div class='mb-3'> <label class='form-label'
+                                                for='product-price-input'>Fiyat</label>
+                                            <div class='input-group mb-3'>
+                                                <span class='input-group-text' id='product-price-addon'>TRY
+                                                </span>
+                                                <input type='number' class='form-control' id='product-price-input'
+                                                    placeholder='Enter price' aria-label='Price'
+                                                    aria-describedby='product-price-addon' formControlName="price"
+                                                    [value]="this.productStocksArray.controls[0].get('price')?.value">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='col-sm-3'>
+                                        <div class='mb-3'> <label class='form-label'
+                                                for='product-price-input'>Adet</label>
+                                            <div class='input-group mb-3'>
+                                                <span class='input-group-text' id='product-price-addon'>
+                                                </span>
+                                                <input type='number' class='form-control' id='product-price-input'
+                                                    placeholder='Enter price' aria-label='Price'
+                                                    aria-describedby='product-price-addon' formControlName="quantity"
+                                                    [value]="this.productStocksArray.controls[0].get('quantity')?.value">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='col-sm-3'>
+                                        <div class='mb-3'> <label class='form-label' for='product-stock-input'>Stok
+                                                Kodu</label>
+                                            <div class='input-group mb-3'>
+                                                <span class='input-group-text' id='product-stock-addon'></span>
+                                                <input type='text' class='form-control' id='product-stock-input'
+                                                    placeholder='Enter Stock Code' aria-label='Stock Code'
+                                                    aria-describedby='product-stock-addon' formControlName="stockCode"
+                                                    [value]="this.productStocksArray.controls[0].get('stockCode')?.value">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-start mb-3">
+                    <button type="submit" class="btn btn-success w-sm" (click)="addProductVariant()">Ürünü Oluştur</button>
+                </div>
+            </div>
+        </form>
+    </ng-container>
+    <!-- end card-->
+</ng-container>
+
+
+
+
+
+
+
+
+
+

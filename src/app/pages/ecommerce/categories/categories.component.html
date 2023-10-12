@@ -1,0 +1,164 @@
+<ngx-datatable style="width: 100%" #table class="material whitespace-nowrap single-selection pt-2" [rows]="categories"
+    [scrollbarH]="true" [columnMode]="'force'" [headerHeight]="50" [limit]="10" [footerHeight]="50" [rowHeight]="60">
+    <ngx-datatable-column name="Id  " prop="id"> </ngx-datatable-column>
+    <ngx-datatable-column name="Kategori Adı" prop="categoryName">
+    </ngx-datatable-column>
+    <ngx-datatable-column name="İşlemler" [sortable]="false">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+            <ng-container>
+                <div container="body" ngbDropdown placement="bottom-right">
+                    <a href="javascript:void(0);" class="arrow-none" role="button" id="dropdownMenuLink4"
+                        data-bs-toggle="dropdown" aria-expanded="false" ngbDropdownToggle>
+                        <i class="ri-more-2-fill"></i>
+                    </a>
+                    <div ngbDropdownMenu class="dropdown-menu-right dropdown-menu-arrow">
+                        <a class="dropdown-item" href="javascript:void(0)" (click)="openUpdateCategoryModal(row)">Güncelle</a>
+                        <a class="dropdown-item" href="javascript:void(0)" (click)="attributeModal(row)">Kategori Özellikleri</a>
+                        <a class="dropdown-item" href="javascript:void(0)" (click)="delete(row)">Sil</a>
+                    </div>
+                </div>
+            </ng-container>
+        </ng-template>
+    </ngx-datatable-column>
+</ngx-datatable>
+
+<button type="button" class="btn btn-primary mt-3" (click)="openAddCategoryModal()">
+    Yeni Kategori Oluştur
+</button>
+
+<!-- Extra Large modal example -->
+<ng-template #addCategoryModal let-modal>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="myExtraLargeModalLabel">Yeni Kategori</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                (click)="modal.dismiss('Close click')"></button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="_categoryForm">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-4 col-4">
+                                <div class="mb-3">
+                                    <label class="form-label" for="product-price-input">Kategori Adı</label>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" id="product-price-addon"></span>
+                                        <input type="text" class="form-control" id="category-name"
+                                            placeholder="Kategori Adı Girin." aria-label="categoryName"
+                                            aria-describedby="category-name" formControlName="categoryName" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-check form-switch mb-2">
+                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault"
+                                    formControlName="isParent" (click)="checkMainCategoryInput()">
+                            <label class="form-check-label" for="flexSwitchCheckDefault" >Bu Kategori bir alt kategori mi ?</label>
+                        </div>
+                            <div class="mb-3" *ngIf="_categoryForm.value.isParent">
+                                <label class="form-label" for="product-price-input">Alt Kategori</label>
+                                <div class="input-group mb-3">
+                                    <select class="form-control" formControlName="parentId">,
+                                        <option selected  type="number"  value="0">Kategori Seçiniz</option>
+                                        <option  type="number" *ngFor="let category of categories" [ngValue]="category.id">
+                                            {{ category.categoryName }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        <div class="col-lg-4 col-4">
+                            <button type="button" class="btn btn-primary mt-3" (click)="add()">
+                                Oluştur
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a href="javascript:void(0);" class="btn btn-link link-success fw-medium" data-bs-dismiss="modal"
+                (click)="modal.dismiss('Close click')"><i class="ri-close-line me-1 align-middle"></i>Kapat</a>
+        </div>
+    </div>
+    <!-- /.modal-content -->
+</ng-template><!-- /.modal -->
+
+<!-- Extra Large modal example -->
+<ng-template #updateCategoryModal let-modal>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="myExtraLargeModalLabel">Kategori Güncelle</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                (click)="modal.dismiss('Close click')"></button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="_categoryForm">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-4 col-4">
+                                <div class="mb-3">
+                                    <label class="form-label" for="product-price-input">Kategori Adı</label>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" id="product-price-addon"></span>
+                                        <input type="text" class="form-control" id="category-name"
+                                            placeholder="Kategori Adı Girin." aria-label="categoryName"
+                                            aria-describedby="category-name" formControlName="categoryName" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-check form-switch mb-2">
+                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault"
+                                    formControlName="isParent" (click)="checkMainCategoryInput()">
+                            <label class="form-check-label" for="flexSwitchCheckDefault" >Bu Kategori bir alt kategori mi ?</label>
+                        </div>
+                            <div class="mb-3" *ngIf="_categoryForm.value.isParent == true">
+                                <label class="form-label" for="product-price-input">Alt Kategori</label>
+                                <div class="input-group mb-3">
+                                    <select class="form-control" formControlName="parentId">
+                                        <option selected disabled value="0">Kategori Seçiniz</option>
+                                        <option *ngFor="let category of categories" [ngValue]="category.id">
+                                            {{ category.categoryName }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        <div class="col-lg-4 col-4">
+                            <button type="button" class="btn btn-primary mt-3" (click)="update()">
+                                Güncelle
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a href="javascript:void(0);" class="btn btn-link link-success fw-medium" data-bs-dismiss="modal"
+                (click)="modal.dismiss('Close click')"><i class="ri-close-line me-1 align-middle"></i>Kapat</a>
+        </div>
+    </div>
+    <!-- /.modal-content -->
+</ng-template><!-- /.modal -->
+
+
+
+    <!-- Extra Large modal example -->
+    <ng-template #exlargeModalAttribute let-modal>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myExtraLargeModalLabel">Extra large modal</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    (click)="modal.dismiss('Close click')"></button>
+            </div>
+            <div class="modal-body">
+                <h6 class="fs-15">Kategori Özellikleri</h6>
+                <app-category-attribute [category]="category"></app-category-attribute>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0);" class="btn btn-link link-success fw-medium" data-bs-dismiss="modal"
+                    (click)="modal.dismiss('Close click')"><i class="ri-close-line me-1 align-middle"></i> Close</a>
+            </div>
+        </div><!-- /.modal-content -->
+    </ng-template><!-- /.modal -->

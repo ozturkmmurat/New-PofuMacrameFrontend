@@ -1,0 +1,29 @@
+<p>product-list works!</p>
+<ngx-datatable style="width:100%;" #table class="material whitespace-nowrap single-selection pt-2"
+  [rows]="selectProductDto" [scrollbarH]="true" [columnMode]="'force'" [headerHeight]="50" [limit]="10"
+  [footerHeight]="50" [rowHeight]="60">
+  <ngx-datatable-column name="Id  " prop="productId">
+  </ngx-datatable-column>
+  <ngx-datatable-column name="Ürün Adı" prop="productName">
+  </ngx-datatable-column>
+  <ngx-datatable-column name="Kategori Adı" prop="categoryName">
+  </ngx-datatable-column>
+  <ngx-datatable-column name="Ürün Kodu" prop="productCode">
+  </ngx-datatable-column>
+  <ngx-datatable-column name="İşlemler" [sortable]="false">
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      <ng-container>
+        <div container="body" ngbDropdown placement="bottom-right">
+          <a href="javascript:void(0);" class="arrow-none" role="button" id="dropdownMenuLink4"
+            data-bs-toggle="dropdown" aria-expanded="false" ngbDropdownToggle>
+            <i class="ri-more-2-fill"></i>
+          </a>
+          <div ngbDropdownMenu class="dropdown-menu-right dropdown-menu-arrow">
+            <a class="dropdown-item" href="javascript:void(0)"
+              [routerLink]="['/ecommerce/product-detail/'+row.productId]">Detay</a>
+          </div>
+        </div>
+      </ng-container>
+    </ng-template>
+  </ngx-datatable-column>
+</ngx-datatable>

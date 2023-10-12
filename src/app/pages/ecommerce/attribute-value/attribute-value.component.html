@@ -1,0 +1,70 @@
+<form [formGroup]="_attributeValueForm">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-4 col-4">
+                    <div class="mb-3">
+                        <label class="form-label" for="attribute-value">Özellik</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="attribute-value"></span>
+                            <input type="text" class="form-control" id="attribute-value"
+                                placeholder="Özellik Grubu giriniz." aria-label="attributevalue"
+                                aria-describedby="attribute-value" formControlName="value"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-4">
+                <button type="button" class="btn btn-primary mt-3" (click)="add()">Oluştur</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bordered Tables -->
+    <table class="table table-bordered table-nowrap">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Özellik</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody formArrayName="attributeValues">
+            <ng-container *ngIf="attributeValueArray.controls.length > 0">
+                <tr *ngFor="let row of attributeValueArray.controls let i = index">
+                    <ng-container [formGroupName]="i" *ngIf="row">
+                        <th scope="row"> {{ row.get("id")?.value}}</th>
+                        <td>
+                            <div class="col-lg-4 col-4">
+                                <div class="mb-3">
+                                    <label class="form-label" for="attribute-value">Özellik</label>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" id="attribute-value"></span>
+                                        <input type="text" class="form-control" id="attribute-value"
+                                            placeholder="Özellik giriniz." aria-label="attributevalue"
+                                            aria-describedby="attribute-name" formControlName="value" [value]="row.get('value')?.value"/>
+                                    </div>
+                                </div>
+                            </div>
+                          </td>
+                        <td>
+                            <div container="body" ngbDropdown placement="bottom-right">
+                                <a href="javascript:void(0);" class="arrow-none" role="button" id="dropdownMenuLink4"
+                                    data-bs-toggle="dropdown" aria-expanded="false" ngbDropdownToggle>
+                                    <i class="ri-more-2-fill"></i>
+                                </a>
+                                <div ngbDropdownMenu class="dropdown-menu-right dropdown-menu-arrow">
+                                    <a class="dropdown-item" href="javascript:void(0)" (click)="update(row)">Güncelle</a>
+                                    <a class="dropdown-item" href="javascript:void(0)" (click)="delete(row, i)">Sil</a>
+                                </div>
+                            </div>
+                        </td>
+                    </ng-container>
+                </tr>
+            </ng-container>
+
+        </tbody>
+    </table>
+
+</form>
+

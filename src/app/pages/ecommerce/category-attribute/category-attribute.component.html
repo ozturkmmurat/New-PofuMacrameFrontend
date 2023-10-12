@@ -1,0 +1,139 @@
+<form [formGroup]="_categoryAttributeForm">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-4 col-4">
+                    <div class='mb-3'>
+                        <label class='form-label' for='product-price-input'>Kategori Özellikleri</label>
+                        <div class='input-group mb-3'> <span class='input-group-text' id='product-price-addon'></span>
+                            <select class="form-select" name="choices-category-input" formControlName="attributeId"
+                                data-choices data-choices-search-false>
+                                <option value="0">
+                                    Özellik Seçiniz.
+                                </option>
+                                <option *ngFor="let attribute of attributes" [ngValue]="attribute.id">
+                                    {{attribute.name}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-4">
+                    <div class='mb-3'>
+                        <label class='form-label' for='product-price-input'>Varyant Durumu</label>
+                        <div class='input-group mb-3'>
+                            <div class="form-check form-switch mb-2">
+                                <input class="form-check-input" type="checkbox" role="switch"
+                                    id="flexSwitchCheckDefault1" formControlName="slicer" (change)="checkboxChanged('slicer')">
+                                <label class="form-check-label" for="flexSwitchCheckDefault1">Bu özellik bir varyant
+                                    oluşturucu mu ?</label>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-4">
+                    <div class='mb-3'>
+                        <label class='form-label' for='product-price-input'>Özellim Durumu</label>
+                        <div class='input-group mb-3'>
+                            <div class="form-check form-switch mb-2">
+                                <input class="form-check-input" type="checkbox" role="switch"
+                                    id="flexSwitchCheckDefault2" formControlName="attribute" (change)="checkboxChanged('attribute')">
+                                <label class="form-check-label" for="flexSwitchCheckDefault2">Bu özellik bir ana özellik
+                                    mi ?</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-4">
+                    <div class='mb-3'>
+                        <label class='form-label' for='product-price-input'>Zorunlu Alan Durumu</label>
+                        <div class='input-group mb-3'>
+                            <div class="form-check form-switch mb-2">
+                                <input class="form-check-input" type="checkbox" role="switch"
+                                    id="flexSwitchCheckDefault" formControlName="required">
+                                <label class="form-check-label" for="flexSwitchCheckDefault3">Bu özellik ürün
+                                    oluştururken boş geçilebilir mi ?</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-4">
+                <button type="button" class="btn btn-primary mt-3" (click)="add()">Oluştur</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bordered Tables -->
+    <table class="table table-bordered table-nowrap">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Özellik</th>
+                <th scope="col">Varyant Durumu</th>
+                <th scope="col">Özellik Durumu</th>
+                <th scope="col">Zorunluluk Durumu</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody formArrayName="categoryAttributes">
+            <tr *ngFor="let row of categoryAttributeArray.controls let i = index">
+                <ng-container [formGroupName]="i" *ngIf="row">
+                    <th scope="row"> {{ row.get("categoryAttributeId")?.value}}</th>
+                    <td>
+                        <select class="form-select" name="choices-category-input" formControlName="attributeId"
+                        data-choices data-choices-search-false>
+                        <option value="0">
+                            Özellik Seçiniz.
+                        </option>
+                        <option *ngFor="let attribute of attributes" [ngValue]="attribute.id">
+                            {{attribute.name}}
+                        </option>
+                    </select>
+                    </td>
+                    <td>
+                        <div class="form-check form-switch mb-2">
+                          <input class="form-check-input custom-checkbox" type="checkbox" role="switch"
+                                 [id]="'flexSwitchCheckDefaultSlicer' + i" formControlName="slicer"
+                                 (change)="checkboxChangedArray(row, i, 'slicer')">
+                          <label class="form-check-label" [for]="'flexSwitchCheckDefaultSlicer' + i">Bu özellik bir varyant
+                            oluşturucu mu ?</label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="form-check form-switch mb-2">
+                          <input class="form-check-input" type="checkbox" role="switch"
+                                 [id]="'flexSwitchCheckDefaultAttribute' + i" formControlName="attribute"
+                                 (change)="checkboxChangedArray(row, i, 'attribute')">
+                          <label class="form-check-label" [for]="'flexSwitchCheckDefaultAttribute' + i">Bu özellik bir ana özellik
+                            mi ?</label>
+                        </div>
+                      </td>
+                    <td>
+                        <div class="form-check form-switch mb-2">
+                            <input class="form-check-input" type="checkbox" role="switch"
+                            [id]="'flexSwitchCheckDefaultRequired' + i" formControlName="required">
+                            <label class="form-check-label" for="{{'flexSwitchCheckDefaultRequired'  + i}}">Zorunlu Alan Durumu</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div container="body" ngbDropdown placement="bottom-right">
+                            <a href="javascript:void(0);" class="arrow-none" role="button" id="dropdownMenuLink4"
+                                data-bs-toggle="dropdown" aria-expanded="false" ngbDropdownToggle>
+                                <i class="ri-more-2-fill"></i>
+                            </a>
+                            <div ngbDropdownMenu class="dropdown-menu-right dropdown-menu-arrow">
+                                <a class="dropdown-item" href="javascript:void(0)" (click)="update(row)">Güncelle</a>
+                                <a class="dropdown-item" href="javascript:void(0)" (click)="delete(row, i)">Sil</a>
+                            </div>
+                        </div>
+                    </td>
+                </ng-container>
+            </tr>
+        </tbody>
+    </table>
+
+
+</form>

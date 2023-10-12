@@ -125,6 +125,9 @@ File: Main Css File
 
 @import "./angular-custom.scss";
 
+//Main Css
+@import "../../main/ckEditor/ckEditor.scss";
+
 // RTL Set
 // @import "../../rtl/components-rtl";
 // @import "../../rtl/layouts-rtl";

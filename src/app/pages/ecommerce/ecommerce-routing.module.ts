@@ -12,6 +12,9 @@ import { CartComponent } from "./cart/cart.component";
 import { CheckoutComponent } from "./checkout/checkout.component";
 import { SellersComponent } from "./sellers/sellers.component";
 import { SellerDetailsComponent } from "./seller-details/seller-details.component";
+import { ProductListComponent } from './product-list/product-list.component';
+import { CategoriesComponent } from './categories/categories.component';
+import { AttributesComponent } from './attributes/attributes.component';
 
 const routes: Routes = [
   {
@@ -19,12 +22,24 @@ const routes: Routes = [
     component: ProductsComponent
   },
   {
-    path: "product-detail/:any",
+    path:"productList",
+    component: ProductListComponent
+  },
+  {
+    path: "product-detail/:productId",
     component: ProductDetailComponent
   },
   {
     path: "add-product",
     component: AddProductComponent
+  },
+  {
+    path:"categories",
+    component: CategoriesComponent
+  },
+  {
+    path:"attributes",
+    component: AttributesComponent
   },
   {
     path: "orders",
