@@ -12,47 +12,11 @@ export const MENU: MenuItem[] = [
     icon: 'ri-dashboard-2-line',
     subItems: [
       {
-        id: 3,
-        label: 'MENUITEMS.DASHBOARD.LIST.ANALYTICS',
-        link: '/analytics',
-        parentId: 2
-      },
-      {
-        id: 4,
-        label: 'MENUITEMS.DASHBOARD.LIST.CRM',
-        link: '/crm',
-        parentId: 2
-      },
-      {
         id: 5,
         label: 'MENUITEMS.DASHBOARD.LIST.ECOMMERCE',
         link: '',
         parentId: 2
       },
-      {
-        id: 6,
-        label: 'MENUITEMS.DASHBOARD.LIST.CRYPTO',
-        link: '/crypto',
-        parentId: 2
-      },
-      {
-        id: 7,
-        label: 'MENUITEMS.DASHBOARD.LIST.PROJECTS',
-        link: '/projects',
-        parentId: 2
-      },
-      {
-        id: 7,
-        label: 'MENUITEMS.DASHBOARD.LIST.NFT',
-        link: '/nft',
-        parentId: 2,
-      },
-      {
-        id: 8,
-        label: 'MENUITEMS.DASHBOARD.LIST.JOB',
-        link: '/job',
-        parentId: 2,
-      }
     ]
   },
   {
@@ -112,7 +76,7 @@ export const MENU: MenuItem[] = [
           {
             id: 13,
             label: 'MENUITEMS.APPS.LIST.PRODUCTS',
-            link: '/ecommerce/products',
+            link: '/ecommerce/productList',
             parentId: 12
           },
           {
@@ -168,56 +132,12 @@ export const MENU: MenuItem[] = [
             label: 'MENUITEMS.APPS.LIST.SELLERDETAILS',
             link: '/ecommerce/seller-details',
             parentId: 12
-          }
-        ]
-      },
-      {
-        id: 23,
-        label: 'MENUITEMS.APPS.LIST.PROJECTS',
-        parentId: 8,
-        subItems: [
-          {
-            id: 24,
-            label: 'MENUITEMS.APPS.LIST.LIST',
-            link: '/projects/list',
-            parentId: 23
           },
           {
-            id: 25,
-            label: 'MENUITEMS.APPS.LIST.OVERVIEW',
-            link: '/projects/overview',
-            parentId: 23
-          },
-          {
-            id: 26,
-            label: 'MENUITEMS.APPS.LIST.CREATEPROJECT',
-            link: '/projects/create',
-            parentId: 23
-          }
-        ]
-      },
-      {
-        id: 27,
-        label: 'MENUITEMS.APPS.LIST.TASK',
-        parentId: 8,
-        subItems: [
-          {
-            id: 28,
-            label: 'MENUITEMS.APPS.LIST.KANBANBOARD',
-            link: '/tasks/kanban',
-            parentId: 27
-          },
-          {
-            id: 29,
-            label: 'MENUITEMS.APPS.LIST.LISTVIEW',
-            link: '/tasks/list-view',
-            parentId: 27
-          },
-          {
-            id: 30,
-            label: 'MENUITEMS.APPS.LIST.TASKDETAILS',
-            link: '/tasks/details',
-            parentId: 27
+            id: 23,
+            label: 'MENUITEMS.APPS.LIST.CATEGORIES',
+            link: '/ecommerce/categories',
+            parentId: 12
           }
         ]
       },
@@ -249,49 +169,6 @@ export const MENU: MenuItem[] = [
             label: 'MENUITEMS.APPS.LIST.LEADS',
             link: '/crm/leads',
             parentId: 31
-          }
-        ]
-      },
-      {
-        id: 36,
-        label: 'MENUITEMS.APPS.LIST.CRYPTO',
-        parentId: 8,
-        subItems: [
-          {
-            id: 37,
-            label: 'MENUITEMS.APPS.LIST.TRANSACTIONS',
-            link: '/crypto/transactions',
-            parentId: 36
-          },
-          {
-            id: 38,
-            label: 'MENUITEMS.APPS.LIST.BUY&SELL',
-            link: '/crypto/buy-sell',
-            parentId: 36
-          },
-          {
-            id: 38,
-            label: 'MENUITEMS.APPS.LIST.ORDERS',
-            link: '/crypto/orders',
-            parentId: 36
-          },
-          {
-            id: 39,
-            label: 'MENUITEMS.APPS.LIST.MYWALLET',
-            link: '/crypto/wallet',
-            parentId: 36
-          },
-          {
-            id: 40,
-            label: 'MENUITEMS.APPS.LIST.ICOLIST',
-            link: '/crypto/ico',
-            parentId: 36
-          },
-          {
-            id: 41,
-            label: 'MENUITEMS.APPS.LIST.KYCAPPLICATION',
-            link: '/crypto/kyc',
-            parentId: 36
           }
         ]
       },
@@ -340,82 +217,19 @@ export const MENU: MenuItem[] = [
         ]
       },
       {
-        id: 46,
-        label: 'MENUITEMS.APPS.LIST.NFTMARKETPLACE',
-        parentId: 8,
-        subItems: [
-          {
-            id: 47,
-            label: 'MENUITEMS.APPS.LIST.MARKETPLACE',
-            link: '/marletplace/marketplace',
-            parentId: 46
-          },
-          {
-            id: 48,
-            label: 'MENUITEMS.APPS.LIST.EXPLORENOW',
-            link: '/marletplace/explore',
-            parentId: 46
-          },
-          {
-            id: 48,
-            label: 'MENUITEMS.APPS.LIST.LIVEAUCTION',
-            link: '/marletplace/auction',
-            parentId: 46
-          },
-          {
-            id: 48,
-            label: 'MENUITEMS.APPS.LIST.ITEMDETAILS',
-            link: '/marletplace/item-details',
-            parentId: 46
-          },
-          {
-            id: 48,
-            label: 'MENUITEMS.APPS.LIST.COLLECTIONS',
-            link: '/marletplace/collections',
-            parentId: 46
-          },
-          {
-            id: 48,
-            label: 'MENUITEMS.APPS.LIST.CREATORS',
-            link: '/marletplace/creators',
-            parentId: 46
-          },
-          {
-            id: 48,
-            label: 'MENUITEMS.APPS.LIST.RANKING',
-            link: '/marletplace/raking',
-            parentId: 46
-          },
-          {
-            id: 48,
-            label: 'MENUITEMS.APPS.LIST.WALLETCONNECT',
-            link: '/marletplace/wallet',
-            parentId: 46
-          },
-          {
-            id: 48,
-            label: 'MENUITEMS.APPS.LIST.CREATENFT',
-            link: '/marletplace/create',
-            parentId: 46
-          },
-        ]
-      },
-      {
         id: 49,
         label: 'MENUITEMS.APPS.LIST.FILEMANAGER',
         link: '/file-manager',
         parentId: 8,
       },
       {
-        id: 50,
-        label: 'MENUITEMS.APPS.LIST.TODO',
-        link: '/todo',
-        parentId: 8,
-      },
-      {
         id: 51,
         label: 'MENUITEMS.APPS.LIST.JOBS',
         parentId: 8,
+        badge: {
+          variant: 'bg-success',
+          text: 'MENUITEMS.DASHBOARD.BADGE',
+        },
         subItems: [
           {
             id: 52,
@@ -490,12 +304,6 @@ export const MENU: MenuItem[] = [
             parentId: 51
           },
         ]
-      },
-      {
-        id: 64,
-        label: 'MENUITEMS.APPS.LIST.APIKEY',
-        link: '/apikey',
-        parentId: 8,
       },
     ]
   },
@@ -788,12 +596,20 @@ export const MENU: MenuItem[] = [
         id: 96,
         label: 'MENUITEMS.PAGES.LIST.PRIVACYPOLICY',
         link: '/pages/privacy-policy',
+        badge: {
+          variant: 'bg-success',
+          text: 'MENUITEMS.DASHBOARD.BADGE',
+        },
         parentId: 82
       },
       {
         id: 97,
         label: 'MENUITEMS.PAGES.LIST.TERMS&CONDITIONS',
         link: '/pages/terms-condition',
+        badge: {
+          variant: 'bg-success',
+          text: 'MENUITEMS.DASHBOARD.BADGE',
+        },
         parentId: 82
       }
     ]
@@ -819,6 +635,10 @@ export const MENU: MenuItem[] = [
         id: 87,
         label: 'MENUITEMS.LANDING.LIST.JOB',
         link: '/landing/job',
+        badge: {
+          variant: 'bg-success',
+          text: 'MENUITEMS.DASHBOARD.BADGE',
+        },
         parentId: 84,
       },
     ]
@@ -948,22 +768,11 @@ export const MENU: MenuItem[] = [
         parentId: 97
       },
       {
-        id: 117,
-        label: 'MENUITEMS.BASEUI.LIST.LINKS',
-        link: '/ui/links',
-        badge: {
-          variant: 'bg-success',
-          text: 'MENUITEMS.DASHBOARD.BADGE',
-        },
-        parentId: 97
-      },
-      {
         id: 118,
         label: 'MENUITEMS.BASEUI.LIST.GENERAL',
         link: '/ui/general',
         parentId: 97
       },
-
       {
         id: 119,
         label: 'MENUITEMS.BASEUI.LIST.RIBBONS',
@@ -993,6 +802,12 @@ export const MENU: MenuItem[] = [
         id: 124,
         label: 'MENUITEMS.ADVANCEUI.LIST.SCROLLBAR',
         link: '/advance-ui/scrollbar',
+        parentId: 121
+      },
+      {
+        id: 125,
+        label: 'MENUITEMS.ADVANCEUI.LIST.ANIMATION',
+        link: '/advance-ui/animation',
         parentId: 121
       },
       {
@@ -1185,80 +1000,60 @@ export const MENU: MenuItem[] = [
           },
           {
             id: 157,
-            label: 'MENUITEMS.CHARTS.LIST.RANGEAREA',
-            link: '/charts/range-area',
-            badge: {
-              variant: 'bg-success',
-              text: 'MENUITEMS.DASHBOARD.BADGE',
-            },
-            parentId: 150
-          },
-          {
-            id: 15,
-            label: 'MENUITEMS.CHARTS.LIST.FUNNEL',
-            link: '/charts/funnel',
-            badge: {
-              variant: 'bg-success',
-              text: 'MENUITEMS.DASHBOARD.BADGE',
-            },
-            parentId: 150
-          },
-          {
-            id: 158,
             label: 'MENUITEMS.CHARTS.LIST.CANDLSTICK',
             link: '/charts/apex-candlestick',
             parentId: 150
           },
           {
-            id: 159,
+            id: 158,
             label: 'MENUITEMS.CHARTS.LIST.BOXPLOT',
             link: '/charts/apex-boxplot',
             parentId: 150
           },
           {
-            id: 160,
+            id: 159,
             label: 'MENUITEMS.CHARTS.LIST.BUBBLE',
             link: '/charts/apex-bubble',
             parentId: 150
           },
           {
-            id: 161,
+            id: 160,
             label: 'MENUITEMS.CHARTS.LIST.SCATTER',
             link: '/charts/apex-scatter',
             parentId: 150
           },
           {
-            id: 162,
+            id: 161,
             label: 'MENUITEMS.CHARTS.LIST.HEATMAP',
             link: '/charts/apex-heatmap',
             parentId: 150
           },
           {
-            id: 163,
+            id: 162,
             label: 'MENUITEMS.CHARTS.LIST.TREEMAP',
             link: '/charts/apex-treemap',
             parentId: 150
           },
           {
-            id: 164,
+            id: 163,
             label: 'MENUITEMS.CHARTS.LIST.PIE',
             link: '/charts/apex-pie',
             parentId: 150
           },
           {
-            id: 165,
+            id: 164,
             label: 'MENUITEMS.CHARTS.LIST.RADIALBAR',
             link: '/charts/apex-radialbar',
             parentId: 150
           },
           {
-            id: 166,
+            id: 165,
             label: 'MENUITEMS.CHARTS.LIST.RADAR',
             link: '/charts/apex-radar',
             parentId: 150
           },
           {
-            id: 167,
+            id: 166,
             label: 'MENUITEMS.CHARTS.LIST.POLARAREA',
             link: '/charts/apex-polar',
             parentId: 150
@@ -1266,13 +1061,13 @@ export const MENU: MenuItem[] = [
         ]
       },
       {
-        id: 168,
+        id: 167,
         label: 'MENUITEMS.CHARTS.LIST.CHARTJS',
         link: '/charts/chartjs',
         parentId: 149
       },
       {
-        id: 169,
+        id: 168,
         label: 'MENUITEMS.CHARTS.LIST.ECHARTS',
         link: '/charts/echarts',
         parentId: 149
@@ -1280,45 +1075,45 @@ export const MENU: MenuItem[] = [
     ]
   },
   {
-    id: 170,
+    id: 169,
     label: 'MENUITEMS.ICONS.TEXT',
     icon: 'ri-compasses-2-line',
     subItems: [
       {
-        id: 171,
+        id: 170,
         label: 'MENUITEMS.ICONS.LIST.REMIX',
         link: '/icons/remix',
-        parentId: 170
+        parentId: 169
+      },
+      {
+        id: 171,
+        label: 'MENUITEMS.ICONS.LIST.BOXICONS',
+        link: '/icons/boxicons',
+        parentId: 169
       },
       {
         id: 172,
-        label: 'MENUITEMS.ICONS.LIST.BOXICONS',
-        link: '/icons/boxicons',
-        parentId: 170
+        label: 'MENUITEMS.ICONS.LIST.MATERIALDESIGN',
+        link: '/icons/materialdesign',
+        parentId: 169
       },
       {
         id: 173,
-        label: 'MENUITEMS.ICONS.LIST.MATERIALDESIGN',
-        link: '/icons/materialdesign',
-        parentId: 170
+        label: 'MENUITEMS.ICONS.LIST.LINEAWESOME',
+        link: '/icons/lineawesome',
+        parentId: 169
       },
       {
         id: 174,
-        label: 'MENUITEMS.ICONS.LIST.LINEAWESOME',
-        link: '/icons/lineawesome',
-        parentId: 170
-      },
-      {
-        id: 175,
         label: 'MENUITEMS.ICONS.LIST.FEATHER',
         link: '/icons/feather',
-        parentId: 170
+        parentId: 169
       },
       {
-        id: 176,
+        id: 174,
         label: 'MENUITEMS.ICONS.LIST.CRYPTOSVG',
         link: '/icons/icons-crypto',
-        parentId: 170,
+        parentId: 169,
       },
     ]
   },

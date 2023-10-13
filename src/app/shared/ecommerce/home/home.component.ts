@@ -1,41 +1,44 @@
-import { Component } from '@angular/core';
-import { environment } from 'environments/environment.prod';
-import { GlobalComponent } from 'src/app/global-component';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component} from '@angular/core';
 import { SelectListProductVariantDto } from 'src/app/models/dtos/product/select/selectListProductVariantDto';
 import { ProductService } from 'src/app/services/HttpClient/productService/product.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent {
- //Model Start
- secondaryPhotoUrl : string;
- productVariants : SelectListProductVariantDto [] = []
- //Model End
 
- //Variable Start
- imageFolderUrl :string
- //Variable End
+  //Model Start
+  secondaryPhotoUrl : string;
+  productVariants : SelectListProductVariantDto [] = []
+  //Model End
 
- constructor(
-   private productService : ProductService
- ) {
-   this.imageFolderUrl = GlobalComponent.API_URL
- }
+  //Variable Start
+  imageFolderUrl :string
+  //Variable End
 
- ngOnInit() {
-   this.getAllProductVariantDto()
-   //My Function Start
-   //My Function End
- }
+  constructor(
+    private productService : ProductService,
+    private cdr: ChangeDetectorRef
+  ) {
+    this.imageFolderUrl = environment.imageFolderUrl
+  }
 
+  ngOnInit() {
+    this.getAllProductVariantDto()
+    //My Function Start
+    //My Function End
+  }
 
- getAllProductVariantDto(){
-   this.productService.getAllProductVariantDtoPv().subscribe(response => {
-     this.productVariants = response.data
-     console.log(response.data)
-   })
- }
+  getAllProductVariantDto(){
+    this.productService.getAllProductVariantDtoPv().subscribe(response => {
+      this.productVariants = [...response.data];
+      console.log(response.data)
+      this.cdr.markForCheck()
+    })
+  }
+
 }

@@ -1666,13 +1666,6 @@
   resolved "https://registry.npmjs.org/@colors/colors/-/colors-1.5.0.tgz"
   integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
 
-"@ctrl/ngx-emoji-mart@^9.2.0":
-  version "9.2.0"
-  resolved "https://registry.npmjs.org/@ctrl/ngx-emoji-mart/-/ngx-emoji-mart-9.2.0.tgz"
-  integrity sha512-q8B7DiXPfyTe+VOGO6Ix7eh5gKCuADxAsud2xXRTlECTfchoKGTmirSczyjaxIKE/xmB+/ZsnkpthZqUM7SAJQ==
-  dependencies:
-    tslib "^2.3.0"
-
 "@discoveryjs/json-ext@0.5.7":
   version "0.5.7"
   resolved "https://registry.npmjs.org/@discoveryjs/json-ext/-/json-ext-0.5.7.tgz"
@@ -2810,7 +2803,7 @@
   resolved "https://registry.npmjs.org/@types/geojson/-/geojson-7946.0.11.tgz"
   integrity sha512-L7A0AINMXQpVwxHJ4jxD6/XjZ4NDufaRlUJHjNIFKYUFBH1SvOW+neaqb0VTRSLW5suSrSu19ObFEFnfNcr+qg==
 
-"@types/google.maps@^3.52.4", "@types/google.maps@^3.54.1":
+"@types/google.maps@^3.52.4":
   version "3.54.3"
   resolved "https://registry.npmjs.org/@types/google.maps/-/google.maps-3.54.3.tgz"
   integrity sha512-Civz4GMtuzGQbic9J9OSpzNHaVA+YxwvBPfB98GXa2YwH/6Zb99+PPSqKQVniHIB4hOzPl46hmZiFpsckHkGIQ==

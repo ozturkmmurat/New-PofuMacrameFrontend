@@ -26,8 +26,6 @@ import { NgApexchartsModule } from 'ng-apexcharts';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
 
-// Emoji Picker
-import { PickerModule } from '@ctrl/ngx-emoji-mart';
 
 //  Drag and drop
 import { DndModule } from 'ngx-drag-drop';
@@ -78,7 +76,6 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
     LeafletModule,
     AppsRoutingModule,
     SharedModule,
-    PickerModule,
     DndModule,
     DragDropModule,
     MatTableModule,

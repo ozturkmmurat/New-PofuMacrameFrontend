@@ -4,9 +4,10 @@ import { HomeModule } from "../shared/ecommerce/home/home.module";
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from "@angular/core";
 import { MainLandingComponent } from "./main-landing.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { NgbCollapse, NgbModule, NgbNavModule } from "@ng-bootstrap/ng-bootstrap";
+import { NgbCollapse, NgbCollapseModule, NgbModule, NgbNavModule } from "@ng-bootstrap/ng-bootstrap";
 import { SimplebarAngularModule } from "simplebar-angular";
 import { CartComponent } from "./pages/cart/cart.component";
+
 
 @NgModule({
     declarations: [
@@ -16,7 +17,7 @@ import { CartComponent } from "./pages/cart/cart.component";
     imports: [
       MainLandingRoutingModule,
       HomeModule,
-      NgbCollapse,
+      NgbCollapseModule,
       CommonModule,
       SimplebarAngularModule,
       NgbNavModule,

@@ -37,7 +37,7 @@ export class filterObject {
 
 export const productList: productModel[] = [
   {
-      id: 1,
+      id: 3410,
       images: ['assets/images/products/img-8.png', 'assets/images/products/img-6.png', 'assets/images/products/img-1.png','assets/images/products/img-8.png'],
       name: 'Full Sleeve Sweatshirt for Men (Pink)',
       category: 'Tommy Hilfiger',

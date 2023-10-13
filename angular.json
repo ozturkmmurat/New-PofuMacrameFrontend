@@ -40,10 +40,10 @@
               "src/styles.scss",
               "node_modules/slick-carousel/slick/slick.scss",
               "node_modules/slick-carousel/slick/slick-theme.scss",
-              "node_modules/@ctrl/ngx-emoji-mart/picker.css",
               "src/assets/scss/config/default/bootstrap.scss",
               "src/assets/scss/config/default/app.scss",
-              "src/assets/scss/icons.scss"
+              "src/assets/scss/icons.scss",
+              "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts":[
               "node_modules/jquery/dist/jquery.min.js",
@@ -92,7 +92,7 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
+                  "maximumWarning": "4kb",
                   "maximumError": "6kb"
                 }
               ],
@@ -113,7 +113,7 @@
             },
             "development": {
               "buildOptimizer": false,
-              "optimization": true,
+              "optimization": false,
               "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,

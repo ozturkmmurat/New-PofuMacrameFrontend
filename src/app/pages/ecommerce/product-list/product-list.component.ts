@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { GlobalComponent } from 'src/app/global-component';
-import { SelectListProductVariantDto } from 'src/app/models/dtos/product/select/selectListProductVariantDto';
 import { SelectProductDto } from 'src/app/models/dtos/product/select/selectProductDto';
 import { ProductService } from 'src/app/services/HttpClient/productService/product.service';
 
@@ -29,7 +28,7 @@ export class ProductListComponent {
   getAll(){
     this.productService.getAllDto().subscribe(response => {
       this.selectProductDto = response.data
-      console.log(this.selectProductDto)
+      console.log("Veriler",this.selectProductDto)
     })
   }
 

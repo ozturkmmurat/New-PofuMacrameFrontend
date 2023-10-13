@@ -29,11 +29,7 @@ export function createTranslateLoader(http: HttpClient): any {
   return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
 }
 
-if (environment.defaultauth === 'firebase') {
-  initFirebaseBackend(environment.firebaseConfig);
-} else {
   FakeBackendInterceptor;
-}
 
 @NgModule({
   declarations: [
@@ -52,15 +48,17 @@ if (environment.defaultauth === 'firebase') {
     HttpClientModule,
     BrowserModule,
     AppRoutingModule,
+    LayoutsModule,
+    PagesModule,
     NgPipesModule,
     ToastrModule.forRoot({
       positionClass:"toast-bottom-right"
   })
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: FakeBackendInterceptor, multi: true },
+    //{ provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    //{ provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    //{ provide: HTTP_INTERCEPTORS, useClass: FakeBackendInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })

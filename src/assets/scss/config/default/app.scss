@@ -25,8 +25,6 @@ File: Main Css File
 @import "../../structure/page-head";
 @import "../../structure/footer";
 @import "../../structure/vertical";
-@import "../../structure/horizontal";
-@import "../../structure/two-column";
 @import "../../structure/layouts";
 
 // Components
@@ -78,17 +76,12 @@ File: Main Css File
 @import "../../plugins/form-input-spin";
 @import "../../plugins/ckeditor";
 @import "../../plugins/quilljs";
-@import "../../plugins/gridjs";
-@import "../../plugins/listjs";
 @import "../../plugins/apexcharts";
-@import "../../plugins/chartjs";
-@import "../../plugins/echarts";
 @import "../../plugins/google-map";
 @import "../../plugins/autocomplete";
 @import "../../plugins/vector-maps";
 @import "../../plugins/leaflet-maps";
 @import "../../plugins/fullcalendar";
-@import "../../plugins/emoji-picker";
 @import "../../plugins/datatables";
 @import "../../plugins/select2";
 
@@ -97,7 +90,6 @@ File: Main Css File
 @import "../../plugins/choices";
 @import "../../plugins/flatpicker";
 @import "../../plugins/flag-input";
-@import "../../plugins/form-wizard";
 
 
 // Pages
@@ -107,26 +99,22 @@ File: Main Css File
 @import "../../pages/gallery";
 @import "../../pages/errors";
 @import "../../pages/profile";
-@import "../../pages/sitemap";
 @import "../../pages/team";
 @import "../../pages/coming-soon";
 @import "../../pages/search-results";
 @import "../../pages/ecommerce";
 @import "../../pages/invoice";
-@import "../../pages/chat";
-@import "../../pages/email";
-@import "../../pages/kanban";
 @import "../../pages/landing";
 @import "../../pages/nft-landing";
-@import "../../pages/file-manager";
-@import "../../pages/to-do";
-@import "../../pages/jobs";
-@import "../../pages/job-landing";
 
 @import "./angular-custom.scss";
 
+// Custom Scss
+@import "./custom.scss";
+
 //Main Css
 @import "../../main/ckEditor/ckEditor.scss";
+@import "../../main/components/home.scss"
 
 // RTL Set
 // @import "../../rtl/components-rtl";

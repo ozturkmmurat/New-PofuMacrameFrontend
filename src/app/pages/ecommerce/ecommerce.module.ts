@@ -52,6 +52,7 @@ import {NgbdCustomerSortableHeader} from './customers/customers-sortable.directi
 import {NgbdSellersSortableHeader} from './seller-details/seller-details-sortable.directive'
 
 import { DatePipe } from '@angular/common';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { AddProductVariantComponent } from './add-product-variant/add-product-variant.component';
 import { AttributeValueComponent } from './attribute-value/attribute-value.component';
 import { AttributesComponent } from './attributes/attributes.component';
@@ -61,10 +62,13 @@ import { ProductListComponent } from './product-list/product-list.component';
 import { ProductImagesComponent } from './product-images/product-images.component';
 
 const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
-  url: 'https://httpbin.org/post',
-  maxFilesize: 50,
-  acceptedFiles: 'image/*'
-};
+  // Change this to your upload POST address:
+   url: 'https://httpbin.org/post',
+   maxFilesize: 50,
+   acceptedFiles: 'image/*,.mp4,.mkv,.avi',
+   addRemoveLinks: true,
+ };
+
 
 @NgModule({
   declarations: [
@@ -113,7 +117,8 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
     EcommerceRoutingModule,
     SharedModule,
     NgxMaskDirective,
-    NgxMaskPipe
+    NgxMaskPipe,
+    NgxDatatableModule
   ],
   providers: [
     provideNgxMask(),
