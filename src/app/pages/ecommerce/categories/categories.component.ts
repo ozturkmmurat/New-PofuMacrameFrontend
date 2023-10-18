@@ -5,7 +5,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { EMPTY, catchError } from 'rxjs';
 import { Category } from 'src/app/models/category/category';
-import { ErrorService } from 'src/app/services/Helper/error.service';
+import { ErrorService } from 'src/app/services/Helper/errorService/error.service';
 import { CategoryService } from 'src/app/services/HttpClient/categoryService/category.service';
 
 @Component({

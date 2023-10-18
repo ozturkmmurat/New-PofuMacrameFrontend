@@ -49,7 +49,6 @@ export function createTranslateLoader(http: HttpClient): any {
     BrowserModule,
     AppRoutingModule,
     LayoutsModule,
-    PagesModule,
     NgPipesModule,
     ToastrModule.forRoot({
       positionClass:"toast-bottom-right"

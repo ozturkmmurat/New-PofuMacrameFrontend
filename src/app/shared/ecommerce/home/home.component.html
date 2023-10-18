@@ -125,9 +125,9 @@
                             <div _ngcontent-fbe-c135="" class="product-img position-relative thumbnail" >
                                 <a _ngcontent-fbe-c135="" href="/product-detail/1">
                                     <img _ngcontent-fbe-c135="" alt="" class="img-fluid mx-auto d-block picture1"
-                                        src="{{imageFolderUrl+variant.productPaths[0]}}" /></a>
+                                        src="{{imageFolderUrl+variant.productPaths[0]}}" [routerLink]="'productDetail/detail/'+variant.productId+'/'+ variant.productVariantId" /></a>
                                 <img _ngcontent-vbt-c135="" alt="" class="img-fluid mx-auto d-block picture2"
-                                    src="{{imageFolderUrl+variant.productPaths[1]}}" />
+                                    src="{{imageFolderUrl+variant.productPaths[1]}}" [routerLink]="'productDetail/detail/'+variant.productId+'/'+ variant.productVariantId" />
 
                                 <div class="icon-div">
                                     <i class="ri-heart-line fs-md text-center heartIcon"></i>
@@ -135,7 +135,7 @@
                             </div>
                             <div _ngcontent-fbe-c135="" class="mt-4 text-left">
                                 <h5 _ngcontent-fbe-c135="" class="mb-3 text-truncate">
-                                    <a _ngcontent-fbe-c135="" href="/product-detail/1" class="text-dark">
+                                    <a _ngcontent-fbe-c135="" [routerLink]="'productDetail/detail/'+variant.productId+'/'+ variant.productVariantId" class="text-dark">
                                         {{variant.productName}}
                                     </a>
                                 </h5>

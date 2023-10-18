@@ -36,7 +36,7 @@ export class ProductsComponent {
   url = GlobalComponent.API_URL;
   content!: productModel[];
   products!: any;
-  user = [];
+  user:any = [];
   Brand: any = [];
   Rating: any = [];
   discountRates: number[] = [];

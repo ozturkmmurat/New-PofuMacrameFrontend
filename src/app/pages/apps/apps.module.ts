@@ -22,7 +22,6 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 // Counter
 import { CountUpModule } from 'ngx-countup';
 // Apex Chart Package
-import { NgApexchartsModule } from 'ng-apexcharts';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
 
@@ -72,7 +71,6 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
     SimplebarAngularModule,
     CKEditorModule,
     CountUpModule,
-    NgApexchartsModule,
     LeafletModule,
     AppsRoutingModule,
     SharedModule,

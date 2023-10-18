@@ -13,7 +13,7 @@ import { EMPTY, catchError, empty } from 'rxjs';
 import { Attribute } from 'src/app/models/attribute/attribute';
 import { Category } from 'src/app/models/category/category';
 import { CategoryAttribute } from 'src/app/models/categoryAttribute/categoryAttribute';
-import { ErrorService } from 'src/app/services/Helper/error.service';
+import { ErrorService } from 'src/app/services/Helper/errorService/error.service';
 import { AttributeService } from 'src/app/services/HttpClient/attributeService/attribute.service';
 import { CategoryAttributeService } from 'src/app/services/HttpClient/categoryAttributeService/category-attribute.service';
 

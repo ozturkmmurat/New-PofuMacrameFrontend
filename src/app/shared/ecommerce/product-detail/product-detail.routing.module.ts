@@ -4,7 +4,7 @@ import { NgModule } from "@angular/core";
 
 const routes: Routes = [
     {
-      path: 'product-detail/:productId/:productVariantId',
+      path: 'detail/:productId/:productVariantId',
       component: ProductDetailComponent
     }
   ];

@@ -5,12 +5,10 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { CKEditorComponent } from '@ckeditor/ckeditor5-angular';
 
 // Ck Editer
-import * as Editor from 'ckeditor5/build/ckeditor';
-
+import * as Editor from 'ckeditor5/build/ckeditor'; // Eğer bu iki component den silersem düzelyor bir de bak grafik de gördün ben farklı modüldeyim ama diğer modüllerin componentleri de geliyor istatistik de gösteriyor
+//böyle değil de module yok mu doğruca şöyle böyle kullanılmak zorunda dökümana da baktım döküman harici de hepsinde typing.d.ts o kodu yazıyor ve modüle tanımlıyorlar
 import {
   DropzoneConfigInterface,
   DropzoneComponent,
@@ -30,10 +28,11 @@ import {
 import { ProductService } from 'src/app/services/HttpClient/productService/product.service';
 import { EMPTY, catchError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ErrorService } from 'src/app/services/Helper/error.service';
+import { ErrorService } from 'src/app/services/Helper/errorService/error.service';
 import { Product } from 'src/app/models/product/product';
 import { CategoryAttributeService } from 'src/app/services/HttpClient/categoryAttributeService/category-attribute.service';
 import { CkEditorConfigService } from 'src/app/services/Html/CKEditor5/ck-editor-config.service';
+
 
 @Component({
   selector: 'app-add-product',

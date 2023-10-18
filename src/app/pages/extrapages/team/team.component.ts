@@ -90,7 +90,7 @@ export class TeamComponent {
         } else {
           const id = '10';
           const backgroundImg = 'assets/images/small/img-6.jpg';
-          const userImage = null;
+          const userImage:any = null;
           const name = this.teamForm.get('name')?.value;
           const jobPosition = this.teamForm.get('jobPosition')?.value;
           const projectCount = this.teamForm.get('projectCount')?.value;

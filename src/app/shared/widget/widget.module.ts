@@ -6,8 +6,6 @@ import { CountUpModule } from 'ngx-countup';
 // Feather Icon
 import { FeatherModule } from 'angular-feather';
 import { allIcons } from 'angular-feather/icons';
-// Apex Chart Package
-import { NgApexchartsModule } from 'ng-apexcharts';
 
 import { BestSellingComponent } from './dashboard/best-selling/best-selling.component';
 import { TopSellingComponent } from './dashboard/top-selling/top-selling.component';
@@ -58,7 +56,6 @@ import { NftStatComponent } from './nft/nft-stat/nft-stat.component';
     NgbDropdownModule,
     CountUpModule,
     FeatherModule.pick(allIcons),
-    NgApexchartsModule,
   ],
   exports: [BestSellingComponent, TopSellingComponent, RecentOrdersComponent, TopPagesComponent, StatComponent, AnalaticsStatComponent, CrmStatComponent, DealsStatusComponent, UpcomingActivitiesComponent, ClosingDealsComponent, CryptoStatComponent, CurrenciesComponent, TopPerformersComponent, NewsFeedComponent, ProjectsStatComponent, ActiveProjectComponent, MyTaskComponent, TeamMembersComponent,
     NftStatComponent]

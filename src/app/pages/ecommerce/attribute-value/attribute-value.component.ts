@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { EMPTY, catchError } from 'rxjs';
 import { Attribute } from 'src/app/models/attribute/attribute';
 import { AttributeValue } from 'src/app/models/attributeValue/attributeValue';
-import { ErrorService } from 'src/app/services/Helper/error.service';
+import { ErrorService } from 'src/app/services/Helper/errorService/error.service';
 import { AttributeValueService } from 'src/app/services/HttpClient/attributeValueService/attribute-value.service';
 
 @Component({

@@ -12,7 +12,7 @@ import { EMPTY, Observable, catchError } from 'rxjs';
 import { AttributeValue } from 'src/app/models/attributeValue/attributeValue';
 import { ViewCategoryAttributeDto } from 'src/app/models/dtos/categoryAttribute/select/ViewCategoryAttributeDto';
 import { Product } from 'src/app/models/product/product';
-import { ErrorService } from 'src/app/services/Helper/error.service';
+import { ErrorService } from 'src/app/services/Helper/errorService/error.service';
 import { CategoryAttributeService } from 'src/app/services/HttpClient/categoryAttributeService/category-attribute.service';
 import { ProductService } from 'src/app/services/HttpClient/productService/product.service';
 import { ProductStockService } from 'src/app/services/HttpClient/productStockService/product-stock.service';

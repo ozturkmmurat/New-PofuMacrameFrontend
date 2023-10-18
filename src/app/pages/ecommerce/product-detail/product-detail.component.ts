@@ -14,7 +14,6 @@ import { ProductVariantService } from 'src/app/services/HttpClient/productVarian
 import { HttpErrorResponse } from '@angular/common/http';
 import { EMPTY, Observable, catchError } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { ErrorService } from 'src/app/services/Helper/error.service';
 import { GlobalComponent } from 'src/app/global-component';
 import { ProductVariant } from 'src/app/models/productVariant/productVariant';
 import { SelectProductStockDto } from 'src/app/models/dtos/productStock/select/SelectProductStockDto';
@@ -23,6 +22,7 @@ import { ProductStock } from 'src/app/models/productStock/prodcutStock';
 import { CategoryAttributeService } from 'src/app/services/HttpClient/categoryAttributeService/category-attribute.service';
 import { ProductImage } from 'src/app/models/productImage/productImage';
 import { CkEditorConfigService } from 'src/app/services/Html/CKEditor5/ck-editor-config.service';
+import { ErrorService } from 'src/app/services/Helper/errorService/error.service';
 
 @Component({
   selector: 'app-product-detail',

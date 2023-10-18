@@ -24,8 +24,6 @@ import { FlatpickrModule } from 'angularx-flatpickr';
 // Ng Select
 import { NgSelectModule } from '@ng-select/ng-select';
 
-// Apex Chart Package
-import { NgApexchartsModule } from 'ng-apexcharts';
 // Count
 import { CountUpModule } from 'ngx-countup';
 
@@ -44,7 +42,6 @@ import { OrdersDetailsComponent } from './orders-details/orders-details.componen
 import { CustomersComponent } from './customers/customers.component';
 import { CartComponent } from './cart/cart.component';
 import { CheckoutComponent } from './checkout/checkout.component';
-import { SellersComponent } from './sellers/sellers.component';
 import { SellerDetailsComponent } from './seller-details/seller-details.component';
 import { NgbdProductsSortableHeader } from './products/products-sortable.directive';
 import { NgbdOrdersSortableHeader } from './orders/orders-sortable.directive';
@@ -80,7 +77,6 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
     CustomersComponent,
     CartComponent,
     CheckoutComponent,
-    SellersComponent,
     SellerDetailsComponent,
     NgbdProductsSortableHeader,
     NgbdOrdersSortableHeader,
@@ -112,7 +108,6 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
     DropzoneModule,
     FlatpickrModule.forRoot(),
     NgSelectModule,
-    NgApexchartsModule,
     CountUpModule,
     EcommerceRoutingModule,
     SharedModule,

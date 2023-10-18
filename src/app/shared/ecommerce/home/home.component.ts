@@ -29,8 +29,6 @@ export class HomeComponent {
 
   ngOnInit() {
     this.getAllProductVariantDto()
-    //My Function Start
-    //My Function End
   }
 
   getAllProductVariantDto(){

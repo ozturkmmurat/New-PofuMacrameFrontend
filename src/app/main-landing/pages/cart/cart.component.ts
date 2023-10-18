@@ -1,35 +1,46 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CartModel } from '../../../layouts/topbar/topbar.model';
 import { cartData } from '../../../layouts/topbar/data';
+import { CartService } from 'src/app/services/Html/cart/cart.service';
+import { CartItem } from 'src/app/models/html/cart/cartItem';
+import { ProductVariantAttributeValueDto } from 'src/app/models/dtos/productVariant/select/productVarianAttributeValueDto';
+import { GlobalComponent } from 'src/app/global-component';
+import { LocalStorageService } from 'src/app/services/Helper/localStorageService/local-storage.service';
+
+const IMAGE_URL = GlobalComponent.IMAGE_URL;
+
 
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
-  styleUrls: ['./cart.component.scss']
+  styleUrls: ['./cart.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CartComponent {
 
-  cartData!: CartModel[];
-  total = 0;
-  cart_length: any = 0;
+  cartItems : CartItem[];
+  imageUrl = IMAGE_URL
 
-  ngOnInit(){
-    //  Fetch Data
-    this.cartData = cartData;
-    this.cart_length = this.cartData.length;
-    this.cartData.forEach((item) => {
-      var item_price = item.quantity * item.price
-      this.total += item_price
-    });
+  constructor(private cartService : CartService) {
   }
 
-    // Delete Item
-    deleteItem(event: any, id: any) {
-      var price = event.target.closest('.dropdown-item').querySelector('.item_price').innerHTML;
-      var Total_price = this.total - price;
-      this.total = Total_price;
-      this.cart_length = this.cart_length - 1;
-      this.total > 1 ? (document.getElementById("empty-cart") as HTMLElement).style.display = "none" : (document.getElementById("empty-cart") as HTMLElement).style.display = "block";
-      document.getElementById('item_' + id)?.remove();
+  ngOnInit(){
+    this.getCart()
+  }
+
+    getCart(){
+      this.cartItems = this.cartService.cartItemList()
+    }
+
+    removeFromCart(productVariant:ProductVariantAttributeValueDto){
+      this.cartService.removeFromCart(productVariant)
+    }
+
+    get cartTotalPrice(){
+      return this.cartService.cartTotalPrice
+    }
+
+    get cartTotalQuantity(){
+      return this.cartService.cartTotalQuantity
     }
 }

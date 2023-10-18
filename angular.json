@@ -76,7 +76,6 @@
               "leaflet",
               "sweetalert2",
               "lodash",
-              "@ckeditor/ckeditor5-build-classic",
               "ngx-csv/ngx-csv",
               "dropzone",
               "file-saver"
@@ -113,7 +112,7 @@
             },
             "development": {
               "buildOptimizer": false,
-              "optimization": false,
+              "optimization": true,
               "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,

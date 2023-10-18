@@ -7,7 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { EMPTY, catchError } from 'rxjs';
 import { GlobalComponent } from 'src/app/global-component';
 import { ProductImage } from 'src/app/models/productImage/productImage';
-import { ErrorService } from 'src/app/services/Helper/error.service';
+import { ErrorService } from 'src/app/services/Helper/errorService/error.service';
 import { ProductImageService } from 'src/app/services/HttpClient/productImageService/product-image.service';
 
   //Global Variable

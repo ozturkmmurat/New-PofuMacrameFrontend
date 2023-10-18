@@ -17,8 +17,6 @@ import { NgxSliderModule } from 'ngx-slider-v2';
 //Wizard
 import { CdkStepperModule } from '@angular/cdk/stepper';
 import { NgStepperModule } from 'angular-ng-stepper';
-// Ck Editer
-import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 // Drop Zone
 import { DropzoneModule } from 'ngx-dropzone-wrapper';
 import { DROPZONE_CONFIG } from 'ngx-dropzone-wrapper';
@@ -82,7 +80,6 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
     NgxSliderModule,
     CdkStepperModule,
     NgStepperModule,
-    CKEditorModule,
     AutocompleteLibModule,
     FormRoutingModule,
     SharedModule,

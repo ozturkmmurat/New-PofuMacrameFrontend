@@ -73,7 +73,7 @@ export class AdvancedService {
     endIndex: 9,
     totalRecords: 0
   };
-  user = [];
+  user:any = [];
   products: any | undefined;
   Products$: any;
   products$: any;

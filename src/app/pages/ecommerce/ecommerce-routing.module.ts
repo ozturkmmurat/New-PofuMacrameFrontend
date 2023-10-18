@@ -10,7 +10,6 @@ import { OrdersDetailsComponent } from "./orders-details/orders-details.componen
 import { CustomersComponent } from "./customers/customers.component";
 import { CartComponent } from "./cart/cart.component";
 import { CheckoutComponent } from "./checkout/checkout.component";
-import { SellersComponent } from "./sellers/sellers.component";
 import { SellerDetailsComponent } from "./seller-details/seller-details.component";
 import { ProductListComponent } from './product-list/product-list.component';
 import { CategoriesComponent } from './categories/categories.component';
@@ -62,16 +61,12 @@ const routes: Routes = [
     component: CheckoutComponent
   },
   {
-    path: "sellers",
-    component: SellersComponent
-  },
-  {
     path: "seller-details",
     component: SellerDetailsComponent
   }
 
 ];
-
+//burada lazy yok bu template in yaptığı burayı düzenelyecektim ama gereksiz component çoktu onları temizlemekle uğraştım ve hata falan veriyor çok kütühpaen var neyi çıkaracağımı kestiremiyorum
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]

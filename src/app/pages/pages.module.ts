@@ -7,7 +7,6 @@ import {
 
 import { FlatpickrModule } from 'angularx-flatpickr';
 import { CountUpModule } from 'ngx-countup';
-import { NgApexchartsModule } from 'ng-apexcharts';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { SimplebarAngularModule } from 'simplebar-angular';
@@ -44,7 +43,6 @@ import { EcommerceModule } from "./ecommerce/ecommerce.module";
     NgbProgressbarModule,
     FlatpickrModule.forRoot(),
     CountUpModule,
-    NgApexchartsModule,
     LeafletModule,
     NgbDropdownModule,
     SimplebarAngularModule,
@@ -54,8 +52,6 @@ import { EcommerceModule } from "./ecommerce/ecommerce.module";
     SlickCarouselModule,
     LightboxModule,
     DashboardsModule,
-    AppsModule,
-    EcommerceModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

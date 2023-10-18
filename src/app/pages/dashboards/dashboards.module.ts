@@ -12,8 +12,6 @@ import { allIcons } from 'angular-feather/icons';
 import { CountUpModule } from 'ngx-countup';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { SimplebarAngularModule } from 'simplebar-angular';
-// Apex Chart Package
-import { NgApexchartsModule } from 'ng-apexcharts';
 // Swiper Slider
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 
@@ -39,7 +37,6 @@ import { WidgetModule } from '../../shared/widget/widget.module';
     NgbDropdownModule,
     NgbNavModule,
     SimplebarAngularModule,
-    NgApexchartsModule,
     SlickCarouselModule,
     FlatpickrModule.forRoot(),
     DashboardsRoutingModule,
