@@ -1,0 +1,46 @@
+<form [formGroup]="_productStockForm">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-4 col-4">
+                        <div class='mb-3'>
+                            <label class='form-label' for='product-price-input'>Fiyat</label>
+                            <div class='input-group mb-3'> <span class='input-group-text'
+                                    id='product-price-addon'></span>
+                                <input type='number' class='form-control' id='product-price-input'
+                                    placeholder='Enter price' aria-label='Price' formControlName="price"
+                                    aria-describedby='product-price-addon'>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-4">
+                            <div class='mb-3'>
+                                <label class='form-label' for='product-price-input'>Adet</label>
+                                <div class='input-group mb-3'> <span class='input-group-text'
+                                        id='product-price-addon'></span>
+                                    <input type='number' class='form-control' id='product-price-input'
+                                        placeholder='Enter Quantity' aria-label='Quantity' formControlName="quantity"
+                                        aria-describedby='product-quantity-addon'>
+                                </div>
+                            </div>
+                    </div>
+                    <div class="col-lg-4 col-4">
+                            <div class='mb-3'>
+                                <label class='form-label' for='product-price-input'>Stok Kodu</label>
+                                <div class='input-group mb-3'> <span class='input-group-text'
+                                        id='product-price-addon'></span>
+                                    <input type='text' class='form-control' id='product-price-input' 
+                                        placeholder='Enter Stock Code' aria-label='StockCode' formControlName="stockCode"
+                                        aria-describedby='product-quantity-addon'>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-4">
+                    <button type="button" class="btn btn-primary mt-3" (click)="update()">Güncelle</button>
+                </div>
+            </div>
+
+        </div>
+    
+</form>

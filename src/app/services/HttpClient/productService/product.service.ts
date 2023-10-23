@@ -1,9 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { SelectListProductVariantDto } from 'src/app/models/dtos/product/select/selectListProductVariantDto';
 import { SelectProductDto } from 'src/app/models/dtos/product/select/selectProductDto';
 import { AddProductVariant } from 'src/app/models/dtos/productVariant/addProductVariant';
+import { FilterProduct } from 'src/app/models/entityParameter/product/filterProduct';
 import { Product } from 'src/app/models/product/product';
 import { ListResponseModel } from 'src/app/models/responseModel/listResponseModel';
 import { ResponseModel } from 'src/app/models/responseModel/responseModel';
@@ -64,16 +65,10 @@ export class ProductService {
     return this.httpClient.get<ListResponseModel<SelectProductDto>>(newPath);
   }
 
-  //Urune bagli ana varyant urunleri cekiyoruz ProdutId gore gruplayıp
-  getAllProductVariantDto():Observable<ListResponseModel<SelectListProductVariantDto>>{
-    let newPath = environment.apiUrl + "products/GetAllProductVariantDtoGroupProduct"
-    return this.httpClient.get<ListResponseModel<SelectListProductVariantDto>>(newPath);
-  }
-
     //Urune bagli ana varyant urunleri cekiyoruz
-    getAllProductVariantDtoPv():Observable<ListResponseModel<SelectListProductVariantDto>>{
-      let newPath = environment.apiUrl + "products/GetAllProductVariantDtoGroupVariant"
-      return this.httpClient.get<ListResponseModel<SelectListProductVariantDto>>(newPath);
+    getAllProductVariantDtoPv(filterProduct:FilterProduct):Observable<ListResponseModel<SelectListProductVariantDto>>{
+      let newPath = environment.apiUrl + "products/getAllProductVariantDtoGroupVariant"
+      return this.httpClient.post<ListResponseModel<SelectListProductVariantDto>>(newPath, filterProduct);
     }
 
  

@@ -15,7 +15,7 @@ import { Options } from 'ngx-slider-v2';
 import Swal from 'sweetalert2';
 
 import { Router } from '@angular/router';
-import { NgbdProductsSortableHeader, productSortEvent} from 'src/app/pages/ecommerce/products/products-sortable.directive';
+import { NgbdProductsSortableHeader, productSortEvent } from 'src/app/pages/ecommerce/products/products-sortable.directive';
 import { productModel } from '../../../pages/ecommerce/products/products.model';
 import { AdvancedService } from '../../../pages/ecommerce/products/products.service';
 import { HtmlEditService } from 'src/app/services/Html/HtmlEdit/html-edit.service';
@@ -23,6 +23,9 @@ import { NavbarService } from 'src/app/services/Design/navbarService/navbar.serv
 import { SelectListProductVariantDto } from 'src/app/models/dtos/product/select/selectListProductVariantDto';
 import { ProductService } from 'src/app/services/HttpClient/productService/product.service';
 import { environment } from 'src/environments/environment';
+import { FilterCategoryAttributeDto } from 'src/app/models/dtos/categoryAttribute/filterCategoryAttributeDto';
+import { CategoryAttributeService } from 'src/app/services/HttpClient/categoryAttributeService/category-attribute.service';
+import { FilterProduct } from 'src/app/models/entityParameter/product/filterProduct';
 
 @Component({
   selector: 'app-product-list',
@@ -34,18 +37,27 @@ export class ProductListComponent {
 
 
   //Model Start
-  productVariants : SelectListProductVariantDto [] = []
+  productVariants: SelectListProductVariantDto[] = []
+  categoryAttributes: FilterCategoryAttributeDto[] = []
 
   //My Variable Start
-  imageFolderUrl :string
+  imageFolderUrl: string
+  checkAttributeValueIdList : number[] = []
 
-   // bread crumb items
+  //My Entity Parameter Start
+  filterProduct : FilterProduct
+  
+  //My Pipe Variable Start  
+  minPrice:number=0;
+  maxPrice:number=1000;
+  // bread crumb items
   breadCrumbItems!: Array<{}>;
+  
 
   url = GlobalComponent.API_URL;
   content!: productModel[];
   products!: any;
-  user:any = [];
+  user: any = [];
   Brand: any = [];
   Rating: any = [];
   discountRates: number[] = [];
@@ -82,7 +94,8 @@ export class ProductListComponent {
     public service: AdvancedService,
     private formBuilder: UntypedFormBuilder,
     public restApiService: restApiService,
-    private productService : ProductService) {
+    private productService: ProductService,
+    private categoryAttributeService: CategoryAttributeService) {
     this.productList = service.countries$;
     this.allproductList = service.allproduct$;
     this.total$ = service.total$;
@@ -91,348 +104,98 @@ export class ProductListComponent {
 
   ngOnInit(): void {
     this.getAllProductVariantDto()
-    /**
-    * BreadCrumb
-    */
-    this.breadCrumbItems = [
-      { label: 'Ecommerce' },
-      { label: 'Products', active: true }
-    ];
-
-
-    /**
-     * fetches data
-     */
-    setTimeout(() => {
-      this.productList.subscribe(x => {
-        this.content = this.products;
-        this.products = Object.assign([], x);
-      });
-
-      this.allproductList.subscribe(x => {
-        this.allproducts = Object.assign([], x);
-      });
-      document.getElementById('elmLoader')?.classList.add('d-none')
-    }, 1000)
-
-    setTimeout(() => {
-      for (var i = 0; i < this.allproducts.length; i++) {
-        if (this.allproducts[i].category == 'Kitchen Storage & Containers') {
-          this.grocery += 1
-        }
-        if (this.allproducts[i].category == 'Clothes') {
-          this.fashion += 1
-        }
-        if (this.allproducts[i].category == 'Watches') {
-          this.watches += 1
-        } if (this.allproducts[i].category == 'Electronics') {
-          this.electronics += 1
-        } if (this.allproducts[i].category == 'Furniture') {
-          this.furniture += 1
-        } if (this.allproducts[i].category == 'Bike Accessories') {
-          this.accessories += 1
-        }
-        if (this.allproducts[i].category == 'Tableware & Dinnerware') {
-          this.appliance += 1
-        }
-        if (this.allproducts[i].category == 'Bags, Wallets and Luggage') {
-          this.kids += 1
-        }
-        if (this.allproducts[i].status == 'published') {
-          this.totalpublish += 1
-        }
-      }
-    }, 2000);
-
-    /**
-   * Form Validation
-   */
-    this.contactsForm = this.formBuilder.group({
-      subItem: this.formBuilder.array([]),
-    });
+    this.getAllFilterCategoryAttribute(9)
   }
-
-   /**
-   * Pagination
-   */
-  // loadPage(page: number) {
-  //   this.startIndex = (this.page - 1) * this.pageSize + 1;
-  //   this.endIndex = (this.page - 1) * this.pageSize + this.pageSize;
-  //   if (this.endIndex > this.totalRecords) {
-  //     this.endIndex = this.totalRecords;
-  //   }
-  //   this.products = this.allproducts.slice(this.startIndex - 1, this.endIndex);
-  // }
+  
+  options: Options = {
+    floor: 0,
+    ceil: 1000
+  };
 
   /**
-* change navigation
-*/
-onNavChange(changeEvent: NgbNavChangeEvent) {
-  if (changeEvent.nextId === 1) {
-    this.activeindex = '1'
-    this.service.productStatus = ''
-  }
-  if (changeEvent.nextId === 2) {
-    this.activeindex = '2'
-    this.service.productStatus = 'published'
-  }
-  if (changeEvent.nextId === 3) {
-    this.activeindex = '3'
-    this.service.productStatus = ''
-  }
-}
+   * Default Select2
+   */
+  multiDefaultOption = 'Watches';
+  selectedAccount = 'This is a placeholder';
+  Default = [
+    { name: 'Watches' },
+    { name: 'Headset' },
+    { name: 'Sweatshirt' },
+  ];
 
-/**
-* Sort table data
-* @param param0 sort the column
-*
-*/
-onSort({ column, direction }: productSortEvent) {
-  // resetting other headers
-  this.headers.forEach(header => {
-    if (header.productsortable !== column) {
-      header.direction = '';
-    }
-  });
-
-  this.service.sortColumn = column;
-  this.service.sortDirection = direction;
-}
-
-/**
-* Delete Model Open
-*/
-deleteId: any;
-confirm(content: any, id: any) {
-  this.deleteId = id;
-  this.modalService.open(content, { centered: true });
-}
-
-// Delete Data
-deleteData(id: any) {
-  if (id) {
-    this.restApiService.deleteData(id).subscribe({
-      next: data => { },
-      error: err => {
-        this.content = JSON.parse(err.error).message;
-      }
-    });
-    document.getElementById('p_' + id)?.remove();
-  }
-  else {
-    this.checkedValGet.forEach((item: any) => {
-      document.getElementById('p_' + item)?.remove();
-    });
-    (document.getElementById("selection-element") as HTMLElement).style.display = "none"
-  }
-}
-
-// Price Slider
-minValue = 0;
-maxValue = 1000;
-options: Options = {
-  floor: 0,
-  ceil: 1000
-};
-
-/**
- * Default Select2
- */
-multiDefaultOption = 'Watches';
-selectedAccount = 'This is a placeholder';
-Default = [
-  { name: 'Watches' },
-  { name: 'Headset' },
-  { name: 'Sweatshirt' },
-];
-
-// Check Box Checked Value Get
-checkedValGet: any[] = [];
-// Select Checkbox value Get
-onCheckboxChange(e: any) {
-  var checkboxes: any = document.getElementsByName('checkAll');
-  var checkedVal: any[] = [];
-  var result
-  for (var i = 0; i < checkboxes.length; i++) {
-    if (checkboxes[i].checked) {
-      result = checkboxes[i].value;
-      checkedVal.push(result);
-    }
-  }
-  this.checkedValGet = checkedVal
-  var checkBoxCount: any = document.getElementById('select-content') as HTMLElement;
-  checkBoxCount.innerHTML = checkedVal.length;
-  checkedVal.length > 0 ? (document.getElementById("selection-element") as HTMLElement).style.display = "block" : (document.getElementById("selection-element") as HTMLElement).style.display = "none";
-}
-/**
-  * Brand Filter
-  */
-changeBrand(e: any) {
-  if (e.target.checked) {
-    this.Brand.push(e.target.defaultValue)
-  } else {
-    for (var i = 0; i < this.Brand.length; i++) {
-      if (this.Brand[i] === e.target.defaultValue) {
-        this.Brand.splice(i, 1)
+  // Check Box Checked Value Get
+  checkedValGet: any[] = [];
+  // Select Checkbox value Get
+  onCheckboxChange(e: any) {
+    var checkboxes: any = document.getElementsByName('checkAll');
+    var checkedVal: any[] = [];
+    var result
+    for (var i = 0; i < checkboxes.length; i++) {
+      if (checkboxes[i].checked) {
+        result = checkboxes[i].value;
+        checkedVal.push(result);
       }
     }
+    this.checkedValGet = checkedVal
+    var checkBoxCount: any = document.getElementById('select-content') as HTMLElement;
+    checkBoxCount.innerHTML = checkedVal.length;
+    checkedVal.length > 0 ? (document.getElementById("selection-element") as HTMLElement).style.display = "block" : (document.getElementById("selection-element") as HTMLElement).style.display = "none";
   }
-  this.totalbrand = this.Brand.length
-}
 
-/**
-* Discount Filter
-*/
-changeDiscount(e: any) {
-  if (e.target.checked) {
-    this.discountRates.push(e.target.defaultValue)
-
-    this.productList.subscribe(x => {
-      this.products = x.filter((product: any) => {
-        return product.rating > e.target.defaultValue;
-      });
-    });
-  } else {
-    for (var i = 0; i < this.discountRates.length; i++) {
-      if (this.discountRates[i] === e.target.defaultValue) {
-        this.discountRates.splice(i, 1)
-      }
+  clearall(ev: any) {
+    var checkboxes: any = document.getElementsByName('checkAll');
+    for (var i = 0; i < checkboxes.length; i++) {
+      checkboxes[i].checked = false
     }
-  }
-  this.totaldiscount = this.discountRates.length
-}
-
-
-/**
- * Rating Filter
- */
-changeRating(e: any, rate: any) {
-  if (e.target.checked) {
-    this.Rating.push(e.target.defaultValue)
-    this.service.productRate = rate;
-  }
-  else {
-    for (var i = 0; i < this.Rating.length; i++) {
-      if (this.Rating[i] === e.target.defaultValue) {
-        this.Rating.splice(i, 1)
-      }
-    }
-    this.service.productRate = rate;
-  }
-  this.totalrate = this.Rating.length
-}
-
-
-
-/**
- * Product Filtering  
- */
-changeProducts(e: any, name: any, category: any) {
-  const iconItems = document.querySelectorAll('.filter-list');
-  iconItems.forEach((item: any) => {
-    var el = item.querySelectorAll('a')
-    el.forEach((item: any) => {
-      var element = item.querySelector('h5').innerHTML
-      if (element == category) {
-        item.classList.add("active");
-      } else {
+    // this.service.searchTerm = ''
+    this.totalbrand = 0;
+    this.totaldiscount = 0;
+    this.totalrate = 0;
+    this.Brand = []
+    this.Rating = []
+    this.discountRates = []
+    const iconItems = document.querySelectorAll('.filter-list');
+    iconItems.forEach((item: any) => {
+      var el = item.querySelectorAll('a')
+      el.forEach((item: any) => {
         item.classList.remove("active");
-      }
+      })
+    });
+    this.service.searchTerm = '';
+    this.service.ProductFilter = '';
+    this.service.productRate = 0;
+    this.service.productPrice = 0;
+  }
+
+  getAllProductVariantDto() {
+    this.filterProduct = {
+      attributes : this.checkAttributeValueIdList, categoryId : 9
+    }
+    this.productService.getAllProductVariantDtoPv(this.filterProduct).subscribe(response => {
+      this.productVariants = response.data
+      console.log(response.data)
     })
-  });
-
-  this.service.ProductFilter = name
-}
-
-
-/**
-* Search Product
-*/
-search(value: string) {
-  if (this.activeindex == '1') {
-    if (value) {
-      this.products = this.allproducts.filter((val: any) =>
-        val.category.toLowerCase().includes(value)
-      );
-      this.total = this.products.length;
-    } else {
-      this.products = this.searchproducts
-      this.total = this.allproducts.length;
-    }
-  } else if (this.activeindex == '2') {
-    if (value) {
-      this.publishedproduct = this.publishedproduct.filter((val: any) =>
-        val.category.toLowerCase().includes(value)
-      );
-      this.total = this.publishedproduct.length;
-    } else {
-      this.publishedproduct = this.allpublish
-      this.total = this.publishedproduct.length;
-    }
   }
 
-}
-
-/**
-* Range Slider Wise Data Filter
-*/
-valueChange(value: number, boundary: boolean): void {
-  if (value > 0 && value < 1000) {
-    if (this.activeindex == '1') {
-      if (boundary) {
-        this.minValue = value;
-      } else {
-        this.maxValue = value;
-      }
-    } else if (this.activeindex == '2') {
-      if (boundary) {
-        this.minValue = value;
-      } else {
-        this.maxValue = value;
-      }
-    }
-  }
-}
-
-clearall(ev: any) {
-  this.minValue = 0;
-  this.maxValue = 1000;
-  var checkboxes: any = document.getElementsByName('checkAll');
-  for (var i = 0; i < checkboxes.length; i++) {
-    checkboxes[i].checked = false
-  }
-  // this.service.searchTerm = ''
-  this.totalbrand = 0;
-  this.totaldiscount = 0;
-  this.totalrate = 0;
-  this.Brand = []
-  this.Rating = []
-  this.discountRates = []
-  const iconItems = document.querySelectorAll('.filter-list');
-  iconItems.forEach((item: any) => {
-    var el = item.querySelectorAll('a')
-    el.forEach((item: any) => {
-      item.classList.remove("active");
+  getAllFilterCategoryAttribute(categoryId: number) {
+    this.categoryAttributeService.getAllCategoryAttributeFilter(categoryId).subscribe(response => {
+      this.categoryAttributes = response.data
     })
-  });
-  this.service.searchTerm = '';
-  this.service.ProductFilter = '';
-  this.service.productRate = 0;
-  this.service.productPrice = 0;
-}
+  }
 
-godetail(id: any) {
-  this.router.navigate(['/ecommerce/product-detail/1', this.products[id]])
-}
-
-gopublishdetail(id: any) {
-  // this.router.navigate(['/ecommerce/product-detail/1', this.publishedproduct[id]])
-}
-
-getAllProductVariantDto(){
-  this.productService.getAllProductVariantDtoPv().subscribe(response => {
-    this.productVariants = response.data
-  })
-}
-
+  checkboxChange(attributeValueId:number, event:any){
+    console.log("Event", event)
+    if(event.target.checked){
+      this.checkAttributeValueIdList.push(attributeValueId)
+      this.getAllProductVariantDto()
+      console.log("Liste",this.checkAttributeValueIdList)
+    }else if(!event.target.checked){
+      let index = this.checkAttributeValueIdList.indexOf(attributeValueId)
+      if( index !== -1){
+        this.checkAttributeValueIdList.splice(index,1)
+        this.getAllProductVariantDto()
+        console.log("Liste silindi",this.checkAttributeValueIdList)
+      }
+    }
+  }
 }

@@ -213,6 +213,7 @@ export class ProductDetailComponent implements OnInit {
             {
               this.productVariantAttributeValueDto.price = 0;
               this.productVariantAttributeValueDto.endProductVariantId = 0;
+              response.data[i].productVariantAttributeValueDtos[j].isActiveAttribute = false
             }
             //Eger tum bu kosullar saglanmıyor ise yani tıklanmayan attributeleri aktif hale getirme 
             //NOT: Aktif demek secili buton degil demek

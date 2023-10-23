@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CategoryAttribute } from 'src/app/models/categoryAttribute/categoryAttribute';
+import { FilterCategoryAttributeDto } from 'src/app/models/dtos/categoryAttribute/filterCategoryAttributeDto';
 import { ViewCategoryAttributeDto } from 'src/app/models/dtos/categoryAttribute/select/ViewCategoryAttributeDto';
 import { SelectCategoryAttributeDto } from 'src/app/models/dtos/categoryAttribute/select/selectCategoryAttributeDto';
 import { ListResponseModel } from 'src/app/models/responseModel/listResponseModel';
@@ -17,13 +18,18 @@ export class CategoryAttributeService {
 
   getAllTrueSlicerAttribute(categoryId : number):Observable<ListResponseModel<ViewCategoryAttributeDto>>{
     console.log("Service gelen id", categoryId)
-    let newPath = environment.apiUrl + "categoryAttributes/GetAllViewDtoTrueSlicerAttribute?categoryId="+ categoryId;
+    let newPath = environment.apiUrl + "categoryAttributes/getAllViewDtoTrueSlicerAttribute?categoryId="+ categoryId;
     return this.httpClient.get<ListResponseModel<ViewCategoryAttributeDto>>(newPath);
   }
 
   getAllByCategoryId(categoryId : number):Observable<ListResponseModel<SelectCategoryAttributeDto>>{
-    let newPath = environment.apiUrl + "categoryAttributes/GetAllSlctCategoryByCategoryId?categoryId="+categoryId
+    let newPath = environment.apiUrl + "categoryAttributes/getAllSlctCategoryByCategoryId?categoryId="+categoryId
     return this.httpClient.get<ListResponseModel<SelectCategoryAttributeDto>>(newPath)
+  }
+
+  getAllCategoryAttributeFilter(categoryId:number):Observable<ListResponseModel<FilterCategoryAttributeDto>>{
+    let newPath = environment.apiUrl + "categoryAttributes/getAllCategoryAttributeFilter?categoryId=" + categoryId
+    return this.httpClient.get<ListResponseModel<FilterCategoryAttributeDto>>(newPath)
   }
 
   add(categoryAttribute : CategoryAttribute):Observable<ResponseModel>{
