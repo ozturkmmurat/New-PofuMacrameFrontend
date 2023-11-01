@@ -3,6 +3,9 @@ import { ProductVariantAttributeValueDto } from 'src/app/models/dtos/productVari
 import { CartItem } from 'src/app/models/html/cart/cartItem';
 import { CartItems } from 'src/app/models/html/cart/cartItems';
 import { LocalStorageService } from '../../Helper/localStorageService/local-storage.service';
+import { GlobalComponent } from 'src/app/global-component';
+
+const IMAGE_URL = GlobalComponent.IMAGE_URL;
 
 @Injectable({
   providedIn: 'root'
@@ -32,23 +35,20 @@ export class CartService {
     }
   }
 
-  list(): CartItem[] {
-    return CartItems
-  }
-
-
-  get getCart() {
+  get localSotrageCart() {
     let getCartData = JSON.parse(this.localStorageService.getItem("products"))
+    console.log("Dönen veri", getCartData)
     return getCartData
   }
 
-  test() {
-    let myData = this.getCart();
+  cartSetLocalStorageData() : Promise<void> {
+    return new Promise((resolve, reject) => {
+    let myData = this.localSotrageCart;
     if (myData && myData.length > 0) {
-      console.log('Veri dolu');
-      console.log("Yüklenecek veri", this.getCart())
-      this.cartItemList.set(this.getCart());
+      this.cartItemList.set(myData);
     }
+    resolve()
+  })
   }
 
   removeFromCart(productVariant : ProductVariantAttributeValueDto){

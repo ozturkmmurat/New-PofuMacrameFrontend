@@ -1,6 +1,6 @@
-import { Component, QueryList, ViewChildren } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, QueryList, ViewChildren } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
-import { Observable } from 'rxjs';
+import { EMPTY, Observable, catchError } from 'rxjs';
 import { NgbModal, NgbNavChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { UntypedFormBuilder, UntypedFormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { GlobalComponent } from '../../../global-component';
@@ -14,7 +14,7 @@ import { Options } from 'ngx-slider-v2';
 // Sweet Alert
 import Swal from 'sweetalert2';
 
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgbdProductsSortableHeader, productSortEvent } from 'src/app/pages/ecommerce/products/products-sortable.directive';
 import { productModel } from '../../../pages/ecommerce/products/products.model';
 import { AdvancedService } from '../../../pages/ecommerce/products/products.service';
@@ -26,6 +26,8 @@ import { environment } from 'src/environments/environment';
 import { FilterCategoryAttributeDto } from 'src/app/models/dtos/categoryAttribute/filterCategoryAttributeDto';
 import { CategoryAttributeService } from 'src/app/services/HttpClient/categoryAttributeService/category-attribute.service';
 import { FilterProduct } from 'src/app/models/entityParameter/product/filterProduct';
+import { HttpErrorResponse } from '@angular/common/http';
+import { TotalFilterProduct } from 'src/app/models/entityParameter/product/totalFilterProduct';
 
 @Component({
   selector: 'app-product-list',
@@ -38,75 +40,51 @@ export class ProductListComponent {
 
   //Model Start
   productVariants: SelectListProductVariantDto[] = []
+  keepProductVariants: SelectListProductVariantDto[] = []
   categoryAttributes: FilterCategoryAttributeDto[] = []
 
   //My Variable Start
   imageFolderUrl: string
-  checkAttributeValueIdList : number[] = []
+  totalProduct: number = 0
+  keepTotalProduct: number = 0
+  checkboxState: boolean = false
 
   //My Entity Parameter Start
-  filterProduct : FilterProduct
-  
+  filterProduct: FilterProduct = {
+    categoryId: 0, attributes: [], startLength: 0, endLength: 20
+  }
+
   //My Pipe Variable Start  
-  minPrice:number=0;
-  maxPrice:number=1000;
+  minPrice: number = 0;
+  maxPrice: number = 1000;
+  filterText = "";
+  startLengthState = false
   // bread crumb items
   breadCrumbItems!: Array<{}>;
-  
-
   url = GlobalComponent.API_URL;
-  content!: productModel[];
-  products!: any;
-  user: any = [];
-  Brand: any = [];
-  Rating: any = [];
-  discountRates: number[] = [];
-  contactsForm!: UntypedFormGroup;
-  total: any;
-  totalbrand: any;
-  totalrate: any;
-  totaldiscount: any;
-  allproduct: any;
-
-  allproducts: any;
-  activeindex = '1';
-  allpublish: any;
-  grocery: any = 0;
-  fashion: any = 0;
-  watches: any = 0;
-  electronics: any = 0;
-  furniture: any = 0;
-  accessories: any = 0;
-  appliance: any = 0;
-  kids: any = 0;
-  totalpublish: any = 0;
-
-  // Table data
-  productList!: Observable<productModel[]>;
-  allproductList!: Observable<productModel[]>;
-  total$: Observable<number>;
-  @ViewChildren(NgbdProductsSortableHeader) headers!: QueryList<NgbdProductsSortableHeader>;
-  searchproducts: any;
-  publishedproduct: any;
 
   constructor(private modalService: NgbModal,
     private router: Router,
-    public service: AdvancedService,
+    private route: ActivatedRoute,
     private formBuilder: UntypedFormBuilder,
     public restApiService: restApiService,
     private productService: ProductService,
-    private categoryAttributeService: CategoryAttributeService) {
-    this.productList = service.countries$;
-    this.allproductList = service.allproduct$;
-    this.total$ = service.total$;
+    private categoryAttributeService: CategoryAttributeService
+  ) {
     this.imageFolderUrl = environment.imageFolderUrl
   }
 
   ngOnInit(): void {
-    this.getAllProductVariantDto()
-    this.getAllFilterCategoryAttribute(9)
+    this.route.params.subscribe((params) => {
+      if (params['categoryId'])
+        this.filterProduct.categoryId = Number(params['categoryId'])
+      this.getTotalProduct(Number(params['categoryId'])).then(() => {
+        this.getAllProductVariantDto();
+        this.getAllFilterCategoryAttribute(Number(params['categoryId']));
+      })
+    })
   }
-  
+
   options: Options = {
     floor: 0,
     ceil: 1000
@@ -147,55 +125,87 @@ export class ProductListComponent {
     for (var i = 0; i < checkboxes.length; i++) {
       checkboxes[i].checked = false
     }
-    // this.service.searchTerm = ''
-    this.totalbrand = 0;
-    this.totaldiscount = 0;
-    this.totalrate = 0;
-    this.Brand = []
-    this.Rating = []
-    this.discountRates = []
-    const iconItems = document.querySelectorAll('.filter-list');
-    iconItems.forEach((item: any) => {
-      var el = item.querySelectorAll('a')
-      el.forEach((item: any) => {
-        item.classList.remove("active");
-      })
-    });
-    this.service.searchTerm = '';
-    this.service.ProductFilter = '';
-    this.service.productRate = 0;
-    this.service.productPrice = 0;
+    this.filterProduct.attributes = []
+    this.productVariants = this.keepProductVariants
   }
 
   getAllProductVariantDto() {
-    this.filterProduct = {
-      attributes : this.checkAttributeValueIdList, categoryId : 9
-    }
+    this.checkStartEndLength()
     this.productService.getAllProductVariantDtoPv(this.filterProduct).subscribe(response => {
-      this.productVariants = response.data
-      console.log(response.data)
+      this.startLengthState = true
+      this.productVariants = [...this.productVariants, ...response.data];
+      if (this.filterProduct.startLength < this.totalProduct) {
+        this.filterProduct.startLength = this.filterProduct.endLength
+      }
     })
   }
 
   getAllFilterCategoryAttribute(categoryId: number) {
+    console.log("CategoryId", categoryId)
     this.categoryAttributeService.getAllCategoryAttributeFilter(categoryId).subscribe(response => {
       this.categoryAttributes = response.data
     })
   }
 
-  checkboxChange(attributeValueId:number, event:any){
-    console.log("Event", event)
-    if(event.target.checked){
-      this.checkAttributeValueIdList.push(attributeValueId)
-      this.getAllProductVariantDto()
-      console.log("Liste",this.checkAttributeValueIdList)
-    }else if(!event.target.checked){
-      let index = this.checkAttributeValueIdList.indexOf(attributeValueId)
-      if( index !== -1){
-        this.checkAttributeValueIdList.splice(index,1)
-        this.getAllProductVariantDto()
-        console.log("Liste silindi",this.checkAttributeValueIdList)
+  getTotalProduct(categoryId: number): Promise<number> {
+    return new Promise((resolve, reject) => {
+      this.productService.getTotalProduct(categoryId).subscribe(response => {
+        this.totalProduct = Number(response.data);
+        resolve(this.totalProduct);
+      }, error => {
+        reject(error);
+      });
+    });
+  }
+
+  selectAttribute(attributeId: number, attributeValueId: number, event: any) {
+    let attribute = this.filterProduct.attributes.find(x => x.id === attributeId)
+    if (this.checkboxState == false) {
+      this.keepProductVariants = this.productVariants
+      this.checkboxState = true
+    }
+    if (event.target.checked) {
+      if (!attribute) {
+        this.filterProduct.attributes.push({
+          id: attributeId,
+          valueId: [attributeValueId]
+        })
+      } else {
+        attribute.valueId.push(attributeValueId)
       }
+    } else if (!event.target.checked) {
+      if (this.filterProduct.attributes.length > 0) {
+        let index = this.filterProduct.attributes.findIndex(x => x.id == attributeId)
+        if (index !== -1 && this.filterProduct.attributes[index].valueId.length > 0) {
+          let valueIndex = this.filterProduct.attributes[index].valueId.findIndex(x => x == attributeValueId)
+          if (valueIndex !== -1) {
+            this.filterProduct.attributes[index].valueId.splice(valueIndex, 1)
+            if (index !== -1 && this.filterProduct.attributes[index].valueId.length == 0) {
+              this.filterProduct.attributes.splice(index, 1)
+            }
+          }
+        }
+      }
+      if (this.filterProduct.attributes.length == 0 && this.checkboxState == true) {
+        this.productVariants = this.keepProductVariants
+      }
+    }
+  }
+
+
+  applyFilter() {
+    if (this.filterProduct.attributes.length > 0) {
+      console.log("Service gidecek olan filterProduct", this.filterProduct)
+      this.productVariants = []
+      this.getAllProductVariantDto()
+    }
+  }
+
+  checkStartEndLength() {
+    if (this.filterProduct.startLength > this.totalProduct) {
+      this.filterProduct.endLength -= this.totalProduct
+    } else if (this.filterProduct.endLength > this.totalProduct) {
+      this.filterProduct.endLength = this.totalProduct
     }
   }
 }

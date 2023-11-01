@@ -63,7 +63,7 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
   // Change this to your upload POST address:
    url: 'https://httpbin.org/post',
    maxFilesize: 50,
-   acceptedFiles: 'image/*,.mp4,.mkv,.avi',
+   acceptedFiles: 'image/*,.mp4,.mkv,.avi, .webp',
    addRemoveLinks: true,
  };
 

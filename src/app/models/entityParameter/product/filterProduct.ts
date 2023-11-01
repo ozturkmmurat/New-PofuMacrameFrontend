@@ -1,4 +1,8 @@
+import { FilterAttribute } from "../attribute/filterAttribute";
+
 export interface FilterProduct{
-    categoryId:number
-    attributes:number[]
+    categoryId: number;
+    startLength: number;
+    endLength: number;
+    attributes: FilterAttribute[]
 }

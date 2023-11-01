@@ -1,6 +1,6 @@
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { ProductDetailComponent } from "./product-detail.component";
-import { HttpClientModule } from "@angular/common/http";
+import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 import { CommonModule } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { SlickCarouselModule } from "ngx-slick-carousel";
@@ -22,7 +22,6 @@ import { SimplebarAngularModule } from 'simplebar-angular';
     SlickCarouselModule,
     SimplebarAngularModule
   ],
-    providers: []
   })
   export class ProductDetailModule { 
     constructor() {

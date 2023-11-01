@@ -18,7 +18,9 @@ export class HomeComponent {
   //Model End
 
   //Model Parameter Start
-  filterProduct : FilterProduct
+  filterProduct : FilterProduct = {
+    categoryId:0, attributes:[], startLength:0, endLength:7
+  }
   //Model Parameter End
 
   //Variable Start
@@ -37,9 +39,6 @@ export class HomeComponent {
   }
 
   getAllProductVariantDto(){
-    this.filterProduct = {
-      attributes : [], categoryId : 0
-    }
     this.productService.getAllProductVariantDtoPv(this.filterProduct).subscribe(response => {
       this.productVariants = [...response.data];
       console.log(response.data)

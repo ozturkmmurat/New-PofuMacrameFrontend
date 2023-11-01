@@ -1,11 +1,20 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { cartData } from '../layouts/topbar/data';
 import { CartModel } from '../layouts/topbar/topbar.model';
+import { LoadingService } from '../services/Helper/loadingService/loading.service';
+import {
+  Router,
+  Event as RouterEvent,
+  NavigationStart,
+  NavigationEnd,
+  NavigationCancel,
+  NavigationError
+} from '@angular/router'
 
 @Component({
   selector: 'app-main-landing',
   templateUrl: './main-landing.component.html',
-  styleUrls: ['./main-landing.component.scss']
+  styleUrls: ['./main-landing.component.scss'],
 })
 export class MainLandingComponent {
   currentSection = 'home';
@@ -13,8 +22,19 @@ export class MainLandingComponent {
   total = 0;
   cart_length: any = 0;
   public isCollapsed = true;
+  //
+    public showOverlay = true;
+
   
-  constructor() { }
+  constructor(
+    public loadingService : LoadingService,
+    private cdr: ChangeDetectorRef,
+    private router: Router
+  ) {
+    router.events.subscribe((event: RouterEvent) => {
+      this.navigationInterceptor(event)
+    })
+   }
 
   ngOnInit(): void {
      //  Fetch Data
@@ -78,56 +98,6 @@ export class MainLandingComponent {
     document.getElementById('item_' + id)?.remove();
   }
 
-  // Search Topbar
-  Search() {
-    var searchOptions = document.getElementById("search-close-options") as HTMLAreaElement;
-    var dropdown = document.getElementById("search-dropdown") as HTMLAreaElement;
-    var input: any, filter: any, ul: any, li: any, a: any | undefined, i: any, txtValue: any;
-    input = document.getElementById("search-options") as HTMLAreaElement;
-    filter = input.value.toUpperCase();
-    var inputLength = filter.length;
-
-    if (inputLength > 0) {
-      dropdown.classList.add("show");
-      searchOptions.classList.remove("d-none");
-      var inputVal = input.value.toUpperCase();
-      var notifyItem = document.getElementsByClassName("notify-item");
-
-      Array.from(notifyItem).forEach(function (element: any) {
-        var notifiTxt = ''
-        if (element.querySelector("h6")) {
-          var spantext = element.getElementsByTagName("span")[0].innerText.toLowerCase()
-          var name = element.querySelector("h6").innerText.toLowerCase()
-          if (name.includes(inputVal)) {
-            notifiTxt = name
-          } else {
-            notifiTxt = spantext
-          }
-        } else if (element.getElementsByTagName("span")) {
-          notifiTxt = element.getElementsByTagName("span")[0].innerText.toLowerCase()
-        }
-        if (notifiTxt)
-          element.style.display = notifiTxt.includes(inputVal) ? "block" : "none";
-
-      });
-    } else {
-      dropdown.classList.remove("show");
-      searchOptions.classList.add("d-none");
-    }
-  }
-
-  /**
-   * Search Close Btn
-   */
-  closeBtn() {
-    var searchOptions = document.getElementById("search-close-options") as HTMLAreaElement;
-    var dropdown = document.getElementById("search-dropdown") as HTMLAreaElement;
-    var searchInputReponsive = document.getElementById("search-options") as HTMLInputElement;
-    dropdown.classList.remove("show");
-    searchOptions.classList.add("d-none");
-    searchInputReponsive.value = "";
-  }
-
   LoadCss(){
     this.bodyBackground();
   }
@@ -138,4 +108,24 @@ export class MainLandingComponent {
       body.style.backgroundColor = "#F8F9FA"
     }
   }
+
+
+    // Shows and hides the loading spinner during RouterEvent changes
+    navigationInterceptor(event: RouterEvent): void {
+      if (event instanceof NavigationStart) {
+        console.log("Çalıştı")
+        this.showOverlay = true;
+      }
+      if (event instanceof NavigationEnd) {
+        this.showOverlay = false;
+      }
+  
+      // Set loading state to false in both of the below events to hide the spinner in case a request fails
+      if (event instanceof NavigationCancel) {
+        this.showOverlay = false;
+      }
+      if (event instanceof NavigationError) {
+        this.showOverlay = false;
+      }
+    }
 }

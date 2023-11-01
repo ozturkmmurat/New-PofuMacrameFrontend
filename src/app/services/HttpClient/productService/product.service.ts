@@ -1,10 +1,12 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { filter } from 'lodash';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { SelectListProductVariantDto } from 'src/app/models/dtos/product/select/selectListProductVariantDto';
 import { SelectProductDto } from 'src/app/models/dtos/product/select/selectProductDto';
 import { AddProductVariant } from 'src/app/models/dtos/productVariant/addProductVariant';
 import { FilterProduct } from 'src/app/models/entityParameter/product/filterProduct';
+import { TotalFilterProduct } from 'src/app/models/entityParameter/product/totalFilterProduct';
 import { Product } from 'src/app/models/product/product';
 import { ListResponseModel } from 'src/app/models/responseModel/listResponseModel';
 import { ResponseModel } from 'src/app/models/responseModel/responseModel';
@@ -67,9 +69,13 @@ export class ProductService {
 
     //Urune bagli ana varyant urunleri cekiyoruz
     getAllProductVariantDtoPv(filterProduct:FilterProduct):Observable<ListResponseModel<SelectListProductVariantDto>>{
+      console.log("Service gelen filterProduct", filterProduct)
       let newPath = environment.apiUrl + "products/getAllProductVariantDtoGroupVariant"
       return this.httpClient.post<ListResponseModel<SelectListProductVariantDto>>(newPath, filterProduct);
     }
 
- 
+    getTotalProduct(categoryId:number):Observable<SingleResponseModel<number>>{
+      let newPath = environment.apiUrl + "products/getTotalProduct?categoryId="+categoryId
+      return this.httpClient.get<SingleResponseModel<number>>(newPath);
+    }
 }

@@ -1,0 +1,52 @@
+<nav class="navbar navbar-expand-lg navbar-landing job-navbar is-sticky" id="navbar">
+    <div class="container-fluid custom-container">
+        <a class="navbar-brand" routerLink="">
+            <img loading="lazy" src="assets/images/logo2.jpg" class="card-logo card-logo-dark" alt="logo dark">
+            <img loading="lazy" src="assets/images/logo2.jpg" class="card-logo card-logo-light" alt="logo light">
+        </a>
+        <button class="navbar-toggler py-0 fs-20 text-body" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation" (click)="collapse.toggle()">
+            <i class="mdi mdi-menu"></i>
+        </button>
+    
+        <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed" class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mx-auto mt-2 mt-lg-0" id="navbar-example">
+                <li class="nav-item">
+                    <a class="nav-link active" href="javascript:void(0);" routerLink=""
+                        [ngClass]="{'active':currentSection === 'hero'}">Anasayfa</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0);"
+                        [ngClass]="{'active':currentSection === 'process'}">Hediye</a>
+    
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0);"
+                        [ngClass]="{'active':currentSection === 'categories'}">Bebek & Çocuk</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0);"
+                        [ngClass]="{'active':currentSection === 'findJob'}">İp Çeşitleri</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0);"
+                        [ngClass]="{'active':currentSection === 'candidates'}">İğnelikler</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0);"
+                        [ngClass]="{'active':currentSection === 'blog'}">İletişim</a>
+                </li>
+            </ul>
+
+            <!-- Cart -->
+            <app-cart></app-cart>
+
+            <div class="search-div">
+                <a routerLink="/auth/signin/basic" class="btn btn-soft-primary"><i
+                        class="ri-user-3-line align-bottom me-1"></i> Login & Register</a>
+            </div>
+        </div>
+    
+    </div>
+    </nav>

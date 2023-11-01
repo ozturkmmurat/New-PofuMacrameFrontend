@@ -7,12 +7,17 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgbCollapse, NgbCollapseModule, NgbModule, NgbNavModule } from "@ng-bootstrap/ng-bootstrap";
 import { SimplebarAngularModule } from "simplebar-angular";
 import { CartComponent } from "./pages/cart/cart.component";
+import { NavbarComponent } from "./layouts/navbar/navbar.component";
+import { FooterComponent } from "./layouts/footer/footer.component";
+import { HTTP_INTERCEPTORS } from "@angular/common/http";
 
 
 @NgModule({
     declarations: [
       MainLandingComponent,
-      CartComponent
+      CartComponent,
+      NavbarComponent,
+      FooterComponent
   ],
     imports: [
       MainLandingRoutingModule,

@@ -24,12 +24,17 @@ export class CartComponent {
   constructor(private cartService : CartService) {
   }
 
-  ngOnInit(){
+  async ngOnInit(){
+    await this.cartService.cartSetLocalStorageData()
     this.getCart()
   }
 
-    getCart(){
+  getCart(): Promise<void>{
+    return new Promise((resolve, reject) => {
       this.cartItems = this.cartService.cartItemList()
+      console.log("Cart ıtems", this.cartItems)
+      resolve()
+    });
     }
 
     removeFromCart(productVariant:ProductVariantAttributeValueDto){
@@ -41,6 +46,7 @@ export class CartComponent {
     }
 
     get cartTotalQuantity(){
+      console.log("Gelen", this.cartService.cartTotalQuantity)
       return this.cartService.cartTotalQuantity
     }
 }

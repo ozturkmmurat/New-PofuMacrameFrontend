@@ -1,4 +1,4 @@
-<div class="row" style="--vz-gutter-x:0rem">
+<div class="row" style="--vz-gutter-x:0rem" *ngIf="productVariantAttributes && product && productVariantAttributeValueDto && loadImageState">
     <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
@@ -25,21 +25,14 @@
                     <div class="col-xl-8">
                         <div class="mt-xl-0 mt-5">
                             <div class="d-flex">
-                                <div class="flex-grow-1">
-                                    <h4 *ngIf="product">{{product.productName}}</h4>
+                                <div *ngIf="product" class="flex-grow-1">
+                                    <h4 >{{product.productName}}</h4>
                                     <div class="hstack gap-3 flex-wrap">
-                                        <div *ngIf="product"><a href="javascript:void(0);"
+                                        <div><a href="javascript:void(0);"
                                                 class="text-primary d-block">{{product.categoryName}}</a></div>
                                         <div class="vr"></div>
                                         <div class="text-muted">Satıcı : <span class="text-body fw-medium">Pofu
                                                 Macrame</span></div>
-                                    </div>
-                                </div>
-                                <div class="flex-shrink-0">
-                                    <div>
-                                        <a routerLink="/ecommerce/add-product" class="btn btn-light"
-                                            data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i
-                                                class="ri-pencil-fill align-bottom"></i></a>
                                     </div>
                                 </div>
                             </div>
