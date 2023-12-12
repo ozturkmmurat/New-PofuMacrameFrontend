@@ -1,0 +1,115 @@
+    <div class="row mb-3">
+        <div class="col-xl-8">
+            <div class="row align-items-center gy-3 mb-3">
+                <div class="col-sm">
+                    <div>
+                        <h5 class="fs-14 mb-0">Sepetim (Toplam Ürün: {{cartTotalQuantity}})</h5>
+                    </div>
+                </div>
+                <div class="col-sm-auto">
+                    <a routerLink="/ecommerce/products" class="link-primary text-decoration-underline">Alışverişe Devam Et</a>
+                </div>
+            </div>
+    
+            <div class="card product" *ngFor="let item of cartItems">
+                <div class="card-body">
+                    <div class="row gy-3">
+                        <div class="col-sm-auto">
+                            <div class="avatar-lg bg-light rounded p-1">
+                                <img src="{{imageUrl + item.product.imagePath}}" alt="" class="img-fluid d-block">
+                            </div>
+                        </div>
+                        <div class="col-sm">
+                            <h5 class="fs-14 text-truncate"><a routerLink="/ecommerce/product-detail/1"
+                                    class="text-body">{{item.product.productName}}</a></h5>
+                            <ul class="list-inline text-muted">
+                                <li class="list-inline-item">{{item.product.attributeValue}}</li>
+                            </ul>
+    
+                            <div class="input-step">
+                                <button type="button" class="minus" (click)="removeFromCart(item.product)">–</button>
+                                <input type="number" class="product-quantity"
+                                    value="{{item.quantity}}" min="0" max="100" disabled>
+                                <button type="button" class="plus" (click)="addCart(item.product)">+</button>
+                            </div>
+                        </div>
+                        <div class="col-sm-auto">
+                            <div class="text-lg-end">
+                                <p class="text-muted mb-1">Adet Fiyatı:</p>
+                                <h5 class="fs-14">$<span id="ticket_price" class="product-price">{{item.product.price}}</span></h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- card body -->
+                <div class="card-footer">
+                    <div class="row align-items-center gy-3">
+                        <div class="col-sm">
+                            <div class="d-flex flex-wrap my-n1">
+                                <div>
+                                    <a href="javascript:void(0);" class="d-block text-body p-1 px-2" data-bs-toggle="modal"
+                                        data-bs-target="#removeItemModal" (click)="completelyRemoveProductFromCart(item.product)"><i
+                                            class="ri-delete-bin-fill text-muted align-bottom me-1" ></i> Sil</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-auto">
+                            <div class="d-flex align-items-center gap-2 text-muted">
+                                <div>Toplam :</div>
+                                <h5 class="fs-14 mb-0">$<span class="product-line-price">{{item.product.price * item.quantity}}</span></h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end card footer -->
+            </div>
+            <!-- end card -->
+        </div>
+        <div class="col-xl-4" *ngIf="cartItems && cartItems.length > 0">
+            <div class="sticky-side-div">
+                <div class="card">
+                    <div class="card-header border-bottom-dashed">
+                        <h5 class="card-title mb-0">Sipar Özeti</h5>
+                    </div>
+                    <div class="card-header bg-light-subtle border-bottom-dashed">
+                        <div class="text-center">
+                            <h6 class="mb-2">Have a <span class="fw-semibold">promo</span> code ?</h6>
+                        </div>
+                        <div class="hstack gap-3 px-3 mx-n3">
+                            <input class="form-control me-auto" type="text" placeholder="Enter coupon code"
+                                aria-label="Add Promo Code here...">
+                            <button type="button" class="btn btn-success w-xs">Apply</button>
+                        </div>
+                    </div>
+                    <div class="card-body pt-2">
+                        <div class="table-responsive">
+                            <table class="table table-borderless mb-0">
+                                <tbody>
+                                    <tr>
+                                        <td>Ürün Tutarı :</td>
+                                        <td class="text-end">$ <span id="cart-subtotal">{{cartTotalPrice}}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kargo Tutarı :</td>
+                                        <td class="text-end">$ <span id="cart-shipping">30.00</span></td>
+                                    </tr>
+                                    <tr class="table-active">
+                                        <th>Total (USD) :</th>
+                                        <td class="text-end">
+                                            <span class="fw-semibold">
+                                                $ <span id="cart-total">{{cartTotalPrice}}</span>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- end table-responsive -->
+                    </div>
+                </div>
+            </div>
+            <!-- end stickey -->
+    
+        </div>
+        <!-- end col -->
+    </div>

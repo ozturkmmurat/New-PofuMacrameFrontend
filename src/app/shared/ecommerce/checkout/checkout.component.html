@@ -1,0 +1,61 @@
+<div class="container-fluid">
+    <div class="row mt-5">
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="card-body checkout-tab">
+                    <div class="step-arrow-nav mt-n3 mx-n3 mb-3">
+                        <ul ngbNav #customNav="ngbNav" [activeId]="1" class="nav nav-pills custom-nav nav-justified"
+                            role="tablist">
+                            <li [ngbNavItem]="1" class="nav-item">
+                                <a ngbNavLink class="nav-link fs-15 p-3" data-bs-toggle="tab" role="tab">
+                                    <i
+                                        class="ri-truck-line fs-16 p-2 bg-primary-subtle text-primary rounded-circle align-middle mx-2"></i>
+                                    Adresler
+                                </a>
+                                <ng-template ngbNavContent>
+                                    <app-address></app-address>
+                                    <div class="d-flex align-items-start gap-3 mt-4" >
+                                        <button type="button" class="btn btn-primary btn-label right ms-auto nexttab"
+                                            data-nexttab="pills-payment-tab" [ngbNavItem]="2"><i
+                                                class="ri-shopping-basket-line label-icon align-middle fs-16 ms-2"></i>Sepet Özeti</button>
+                                    </div>
+                                </ng-template>
+                            </li>
+                            <li [ngbNavItem]="2" class="nav-item">
+                                <a ngbNavLink class="nav-link fs-15 p-3" data-bs-toggle="tab" role="tab">
+                                    <i
+                                        class="ri-shopping-basket-line fs-16 p-2 bg-primary-subtle text-primary rounded-circle align-middle mx-2"></i>
+                                    Sepet Özeti
+                                </a>
+                                <ng-template ngbNavContent>
+                                    <app-shipping-cart></app-shipping-cart>
+                                    <div class="d-flex align-items-start gap-3 mt-4">
+                                        <button type="button" class="btn btn-light btn-label previestab"
+                                            data-previous="pills-bill-info-tab" [ngbNavItem]="1"><i
+                                                class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>
+                                            Adres Bilgilerine Dön</button>
+                                            <button type="button" class="btn btn-primary btn-label right ms-auto nexttab"
+                                            data-nexttab="pills-payment-tab" (click)="payment()"><i
+                                                class="ri-bank-card-line label-icon align-middle fs-16 ms-2"></i>Ödemeye Geç</button>
+                                    </div>
+                                </ng-template>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div [ngbNavOutlet]="customNav"></div>
+                    </div>
+    
+                </div>
+                <!-- end card body -->
+            </div>
+            <!-- end card -->
+        </div>
+        <!-- end col -->
+    </div>
+    <!-- end row -->
+</div>
+
+
+

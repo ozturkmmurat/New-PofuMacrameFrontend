@@ -7,6 +7,9 @@ import {
   NavigationCancel,
   NavigationError
 } from '@angular/router'
+import { LocalStorageService } from './services/Helper/localStorageService/local-storage.service';
+import { UserService } from './services/HttpClient/userService/user.service';
+import { AuthService } from './services/HttpClient/authService/auth.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -17,11 +20,18 @@ export class AppComponent {
 
   public showOverlay = true;
 
-  constructor(private router: Router) {
+  constructor(private router: Router,
+    private localStorageService : LocalStorageService,
+    private userService : UserService,
+    private authService : AuthService) {
 
     router.events.subscribe((event: RouterEvent) => {
       this.navigationInterceptor(event)
     })
+  }
+
+  ngOnInit(){
+    this.loadUser()
   }
 
   // Shows and hides the loading spinner during RouterEvent changes
@@ -42,4 +52,13 @@ export class AppComponent {
       this.showOverlay = false;
     }
   }
+
+  loadUser(){
+    if(this.localStorageService.getToken != null){
+    this.userService.setCurrentUser()
+  }
+  else{
+    this.authService.logOut()
+  }
+}
 }

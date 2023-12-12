@@ -1,0 +1,67 @@
+<div class="mt-4 mb-3 border-bottom pb-2">
+    <div class="col-lg-12" stlye="display:block;" *ngFor="let order of orders">
+        <div class="col-lg-12 order">
+            <div class="order-header col-lg-12">
+                <div class="order-header-info col-lg-2">
+                    Sipariş tarihi
+                    <b>{{order.orderDate | date: "dd/MM/y"}}</b>
+                </div>
+                <div class="order-header-info col-lg-2">
+                    Sipariş Özeti
+                    <b title="{{order.selectSubOrderDtos.length + ' Ürün'}}">{{order.selectSubOrderDtos.length}}
+                        Ürün</b>
+                </div>
+                <div class="order-header-info col-lg-2">
+                    Tutar
+                    <b>{{order.totalPrice | number : '1.2-2'}} TL</b>
+                </div>
+                <div class="col-lg-2">
+                    <a>
+                        <button type="submit" class="btn btn-success" [routerLink]="'/userAccount/orderDetail/' + order.orderId">Sipariş Detayı</button>
+                    </a>
+                </div>
+
+            </div>
+            <div class="order-list" *ngFor="let subOrder of order.selectSubOrderDtos">
+                <div class="order-item">
+                    <div class="order-item-status">
+                        <span class="title cancel">
+
+                            <h6 class="icon-text" *ngIf="subOrder.subOrderStatus == 4"><i
+                                    class="ri-arrow-go-back-fill i-cancel"></i> Sipariş İptal Edildi
+                            </h6>
+                            <h6 class="icon-text" *ngIf="subOrder.subOrderStatus == 5"><i
+                                    class="ri-arrow-go-back-fill i-cancel"></i> İade Edildi
+                            </h6>
+
+
+                            <h6 class="icon-text" *ngIf="subOrder.subOrderStatus == 0"><i
+                                    class="ri-arrow-go-back-fill i-cancel"></i> Ödeme sonuçlandırılmadı.
+                            </h6>
+
+                            <h6 class="icon-text" *ngIf="subOrder.subOrderStatus == 1"><i
+                                    class="ri-check-fill i-success"></i>
+                                Sipariş Hazırlanıyor.</h6>
+
+                            <h6 class="icon-text" *ngIf="subOrder.subOrderStatus == 2"><i
+                                    class="ri-check-fill i-success"></i>
+                                Sipariş Kargoya Verildi.</h6>
+
+                            <h6 class="icon-text" *ngIf="subOrder.subOrderStatus == 3"><i
+                                    class="ri-check-fill i-success"></i>
+                                Sipariş Teslim Edildi.</h6>
+                        </span>
+                        <span class="description">
+                            Tutar: {{subOrder.price | number : '1.2-2'}} TL
+                        </span>
+                    </div>
+                    <div class="order-item-images">
+                        <a class="image-wrapper">
+                            <img class="order-image" [src]="imageUrl + subOrder.imagePath">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

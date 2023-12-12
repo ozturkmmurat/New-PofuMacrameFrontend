@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component} from '@angular/c
 import { SelectListProductVariantDto } from 'src/app/models/dtos/product/select/selectListProductVariantDto';
 import { FilterProduct } from 'src/app/models/entityParameter/product/filterProduct';
 import { ProductService } from 'src/app/services/HttpClient/productService/product.service';
+import { UserService } from 'src/app/services/HttpClient/userService/user.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -29,7 +30,8 @@ export class HomeComponent {
 
   constructor(
     private productService : ProductService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private userService : UserService
   ) {
     this.imageFolderUrl = environment.imageFolderUrl
   }

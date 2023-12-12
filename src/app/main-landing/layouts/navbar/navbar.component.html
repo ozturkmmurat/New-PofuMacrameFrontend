@@ -5,12 +5,13 @@
             <img loading="lazy" src="assets/images/logo2.jpg" class="card-logo card-logo-light" alt="logo light">
         </a>
         <button class="navbar-toggler py-0 fs-20 text-body" type="button" data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-            aria-expanded="false" aria-label="Toggle navigation" (click)="collapse.toggle()">
+            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation" (click)="collapse.toggle()">
             <i class="mdi mdi-menu"></i>
         </button>
-    
-        <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed" class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed" class="collapse navbar-collapse"
+            id="navbarSupportedContent">
             <ul class="navbar-nav mx-auto mt-2 mt-lg-0" id="navbar-example">
                 <li class="nav-item">
                     <a class="nav-link active" href="javascript:void(0);" routerLink=""
@@ -19,7 +20,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0);"
                         [ngClass]="{'active':currentSection === 'process'}">Hediye</a>
-    
+
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0);"
@@ -42,11 +43,38 @@
             <!-- Cart -->
             <app-cart></app-cart>
 
-            <div class="search-div">
-                <a routerLink="/auth/signin/basic" class="btn btn-soft-primary"><i
-                        class="ri-user-3-line align-bottom me-1"></i> Login & Register</a>
+            <div class="search-div" *ngIf="user == null">
+                <a routerLink="/auth/login" class="btn btn-soft-primary"><i
+                        class="ri-user-3-line align-bottom me-1"></i> Giriş Yap & Kayıt Ol</a>
             </div>
+
+            <div class="dropdown ms-sm-3 header-item topbar-user" *ngIf="user != null"  ngbDropdown>
+                <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>
+                    <span class="d-flex align-items-center">
+                        <img class="rounded-circle header-profile-user" src="assets/images/users/avatar-1.jpg"
+                            alt="Header Avatar">
+                        <span class="text-start ms-xl-2">
+                            <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{user.firstName}}</span>
+                        </span>
+                    </span>
+                </button>
+                <div class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+                    <a class="dropdown-item" routerLink="/pages/profile"><i
+                            class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span
+                            class="align-middle">Profile</span></a>
+                    <a class="dropdown-item" href="javascript: void(0);"><i
+                            class="mdi mdi-cart text-muted fs-16 align-middle me-1"></i> <span class="align-middle"
+                            data-key="t-logout">Siparişlerim</span></a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="javascript: void(0);" (click)="logOut()"><i
+                            class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle"
+                            data-key="t-logout">Çıkış Yap</span></a>
+
+                </div>
+            </div>
+
         </div>
-    
+
     </div>
-    </nav>
+</nav>

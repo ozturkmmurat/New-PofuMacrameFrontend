@@ -12,7 +12,7 @@ export class ErrorService {
   ) { }
 
   checkError(err: HttpErrorResponse) {
-    console.log(err)
+    console.log("Error yazdırıldı",err.error)
     if (err.error.Errors != undefined) {
       if (err.error.Errors.length > 0) {
         for (let i = 0; i < err.error.Errors.length; i++) {

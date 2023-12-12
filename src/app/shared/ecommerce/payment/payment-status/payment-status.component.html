@@ -1,0 +1,20 @@
+<div *ngIf="errorMessage == null && paymentStatus">
+  <div class="text-center">
+      <div class="mb-4">
+          <lord-icon src="https://cdn.lordicon.com/lupuorrc.json" trigger="loop" colors="primary:#0ab39c,secondary:#405189" style="width:120px !important;height:120px !important"></lord-icon>
+      </div>
+      <h2 class="swal2-title">Tebrikler</h2>
+      <p class="text-muted">Siparişiniz başarıyla alınmıştır.</p>
+  </div>
+</div>
+
+<div *ngIf="errorMessage != null || paymentStatus == false">
+    <div class="text-center">
+        <div class="swal2-icon swal2-error swal2-icon-show" style="display: flex;"><span class="swal2-x-mark">
+            <span class="swal2-x-mark-line-left"></span>
+            <span class="swal2-x-mark-line-right"></span>
+          </span>
+        </div>
+        <h2 class="swal2-title" id="swal2-title" style="display: block;">{{errorMessage}}</h2>
+    </div>
+  </div>

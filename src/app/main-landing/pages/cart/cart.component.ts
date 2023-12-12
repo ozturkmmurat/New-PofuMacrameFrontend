@@ -1,11 +1,8 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { CartModel } from '../../../layouts/topbar/topbar.model';
-import { cartData } from '../../../layouts/topbar/data';
+import { ChangeDetectionStrategy, Component, effect } from '@angular/core';
 import { CartService } from 'src/app/services/Html/cart/cart.service';
 import { CartItem } from 'src/app/models/html/cart/cartItem';
 import { ProductVariantAttributeValueDto } from 'src/app/models/dtos/productVariant/select/productVarianAttributeValueDto';
 import { GlobalComponent } from 'src/app/global-component';
-import { LocalStorageService } from 'src/app/services/Helper/localStorageService/local-storage.service';
 
 const IMAGE_URL = GlobalComponent.IMAGE_URL;
 
@@ -24,18 +21,21 @@ export class CartComponent {
   constructor(private cartService : CartService) {
   }
 
-  async ngOnInit(){
-    await this.cartService.cartSetLocalStorageData()
-    this.getCart()
+  async ngOnInit() {
+    await this.cartService.cartSetLocalStorageData();
+    this.getCart();
+
+    window.addEventListener('storage', (event) => {
+      if (event.key === 'products') {
+        this.getCart();
+      }
+    });
   }
 
-  getCart(): Promise<void>{
-    return new Promise((resolve, reject) => {
-      this.cartItems = this.cartService.cartItemList()
-      console.log("Cart ıtems", this.cartItems)
-      resolve()
-    });
-    }
+  getCart(): void {
+    this.cartService.cartSetLocalStorageData()
+    this.cartItems = this.cartService.cartItemList();
+  }
 
     removeFromCart(productVariant:ProductVariantAttributeValueDto){
       this.cartService.removeFromCart(productVariant)

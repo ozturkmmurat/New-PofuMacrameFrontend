@@ -43,7 +43,7 @@
               "src/assets/scss/config/default/bootstrap.scss",
               "src/assets/scss/config/default/app.scss",
               "src/assets/scss/icons.scss",
-              "node_modules/ngx-toastr/toastr.css"
+              "./node_modules/ngx-toastr/toastr.css"
             ],
             "scripts":[
               "node_modules/jquery/dist/jquery.min.js",

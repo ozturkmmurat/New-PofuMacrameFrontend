@@ -1,0 +1,43 @@
+<div class="row mt-5">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-header">
+                <ul ngbNav #customNav="ngbNav" [activeId]="1"
+                    class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
+                    <li [ngbNavItem]="1" class="nav-item">
+                        <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                            <i class="fas fa-home"></i>
+                            Hesap Bilgilerim
+                        </a>
+                        <ng-template ngbNavContent>
+                          <app-user-information></app-user-information>
+                        </ng-template>
+                    </li>
+                    <li [ngbNavItem]="2" class="nav-item">
+                        <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                            <i class="far fa-user"></i>
+                            Siparişlerim
+                        </a>
+                        <ng-template ngbNavContent>
+                           <app-user-orders></app-user-orders>
+                        </ng-template>
+                    </li>
+                    <li [ngbNavItem]="3" class="nav-item">
+                        <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                            <i class="far fa-user"></i>
+                            Adres Bilgilerim
+                        </a>
+                        <ng-template ngbNavContent>
+                            <app-address></app-address>
+                        </ng-template>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body p-4">
+                <div class="tab-content">
+                    <div [ngbNavOutlet]="customNav"></div>
+                </div>
+            </div>
+        </div>
+    </div><!--end col-->
+</div><!--end row-->

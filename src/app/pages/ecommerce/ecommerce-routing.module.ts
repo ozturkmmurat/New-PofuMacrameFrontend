@@ -66,7 +66,6 @@ const routes: Routes = [
   }
 
 ];
-//burada lazy yok bu template in yaptığı burayı düzenelyecektim ama gereksiz component çoktu onları temizlemekle uğraştım ve hata falan veriyor çok kütühpaen var neyi çıkaracağımı kestiremiyorum
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]

@@ -1,12 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 // Register Auth
 import { environment } from '../../../environments/environment';
 import { AuthenticationService } from '../../core/services/auth.service';
 import { UserProfileService } from '../../core/services/user.service';
 import { Router } from '@angular/router';
-import { first } from 'rxjs/operators';
+import { catchError, first } from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
+import { EMPTY } from 'rxjs';
+import { ErrorService } from 'src/app/services/Helper/errorService/error.service';
+import { AuthService } from 'src/app/services/HttpClient/authService/auth.service';
+import { ToastrService } from 'ngx-toastr';
+import { LocalStorageService } from 'src/app/services/Helper/localStorageService/local-storage.service';
 
 @Component({
   selector: 'app-register',
@@ -19,79 +25,49 @@ import { first } from 'rxjs/operators';
  */
 export class RegisterComponent implements OnInit {
 
-  // Login Form
-  signupForm!: UntypedFormGroup;
-  submitted = false;
-  successmsg = false;
-  error = '';
-  // set the current year
-  year: number = new Date().getFullYear();
+  registerForm: FormGroup
 
-  constructor(private formBuilder: UntypedFormBuilder, private router: Router,
-    private authenticationService: AuthenticationService,
-    private userService: UserProfileService) { }
+  constructor(
+    //Service Start
+    private authService: AuthService,
+    private toastrService: ToastrService,
+    private errorService : ErrorService,
+    //Service End
 
-  ngOnInit(): void {
-    /**
-     * Form Validatyion
-     */
-     this.signupForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      name: ['', [Validators.required]],
-      password: ['', Validators.required],
-    });
+    private formBuilder: FormBuilder,
+    private localStorageService : LocalStorageService
+  ) { }
+
+  ngOnInit() {
+    this.createRegisterForm();
   }
 
-  // convenience getter for easy access to form fields
-  get f() { return this.signupForm.controls; }
+  createRegisterForm() {
+    this.registerForm = this.formBuilder.group({
+      firstName: ["", Validators.required],
+      lastName: ["", Validators.required],
+      email: ["", Validators.required],
+      password: ["", Validators.required]
+    })
+  }
 
-  /**
-   * Register submit form
-   */
-   onSubmit() {
-    this.submitted = true;
-    
-    //Register Api
-    this.authenticationService.register(this.f['email'].value, this.f['name'].value, this.f['password'].value).pipe(first()).subscribe(
-      (data: any) => {
-      this.successmsg = true;
-      if (this.successmsg) {
-        this.router.navigate(['/auth/login']);
-      }
-    },
-    (error: any) => {
-      this.error = error ? error : '';
-    });
-
-    // stop here if form is invalid
-    // if (this.signupForm.invalid) {
-    //   return;
-    // } else {
-    //   if (environment.defaultauth === 'firebase') {
-    //     this.authenticationService.register(this.f['email'].value, this.f['password'].value).then((res: any) => {
-    //       this.successmsg = true;
-    //       if (this.successmsg) {
-    //         this.router.navigate(['']);
-    //       }
-    //     })
-    //       .catch((error: string) => {
-    //         this.error = error ? error : '';
-    //       });
-    //   } else {
-    //     this.userService.register(this.signupForm.value)
-    //       .pipe(first())
-    //       .subscribe(
-    //         (data: any) => {
-    //           this.successmsg = true;
-    //           if (this.successmsg) {
-    //             this.router.navigate(['/auth/login']);
-    //           }
-    //         },
-    //         (error: any) => {
-    //           this.error = error ? error : '';
-    //         });
-    //   }
-    // }
+  register(){
+    if(this.registerForm.valid){
+      let registerModel = Object.assign({}, this.registerForm.value)
+      this.authService.register(registerModel).pipe(
+        catchError((err : HttpErrorResponse) => {
+          this.errorService.checkError(err)
+          return EMPTY
+        }))
+        .subscribe(response => {
+          console.log("Response", response.data)
+          this.localStorageService.setToken(response.data.token)
+          this.localStorageService.setTokenExpiration(response.data.expiration)
+          this.toastrService.success(response.message)
+        })
+    }else{
+      this.toastrService.error("Formu eksiksiz doldurun.")
+    }
   }
 
 }

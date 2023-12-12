@@ -1,0 +1,136 @@
+.order{
+    border: 1px solid #e2e2e2;
+    margin-bottom: 15px;
+    border-radius: 8px;
+}
+
+.order-header{
+    display: flex;
+    border-bottom: solid 1px #e2e2e2;
+    border-radius: 8px 8px 0 0;
+    background-color: #fafafa;
+    padding: 15px 20px;
+    align-items: center;
+}
+
+.order-header-info{
+    color: #666;
+    font-weight: bold;
+    font-size: 13px;
+    display: flex;
+    flex-direction: column;
+    width:22%;
+}
+
+.order-list{
+    padding: 20px;
+}
+
+.order-item{
+    display: flex;
+    align-items: center;
+    border: 1px solid #e2e2e2;
+    border-radius: 4px;
+    margin-bottom: 0px;
+    padding: 15px 20px;
+}
+
+.order-item-status{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    color: #333;
+    font-size: 14px;
+}
+
+.title{
+    display:flex;
+}
+
+.cancel{
+    color:red;
+}
+
+.description{
+    margin-top: 5px;
+    font-size: 12px;
+    font-family: source_sans_prosemibold, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+.order-item-images{
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+b{
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    color: #333;
+    width: 130px;
+    font-weight: 400;   
+}
+
+.image-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 41px;
+    height: 62px;
+    border: 2px solid #e6e6e6;
+    border-radius: 3px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+a{
+    text-decoration: none;
+}
+
+.order-image{
+    width:90%;
+    border:0;
+    vertical-align: middle;
+}
+
+.order-detail-button{
+    width: 150px;
+    border-radius: 4px;
+    background: green;
+    border-color: green;
+    cursor: pointer;
+    padding: 6px 10px;
+    font: inherit;
+    font-size: 14px;
+    line-height: 18px;
+}
+
+i{
+    font-family: Poppins,sans-serif;
+    font-size: 17px;
+}
+
+.i-success{
+    color:green;
+}
+
+.i-cancel{
+    color:red;
+}
+
+.i-cancel, .i-success{
+    vertical-align: sub;
+}
+
+
+@media(max-width:690px){
+    .order-header{
+        display: block;
+    }
+
+    .btn-success{
+        margin-top: 12px;
+    }
+}

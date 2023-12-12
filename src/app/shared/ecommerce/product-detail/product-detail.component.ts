@@ -302,7 +302,9 @@ export class ProductDetailComponent implements OnInit {
     var checkStock = this.checkProductStockByPvId(this.productVariantAttributeValueDto.endProductVariantId)
     if (checkStock) {
       const productVariant: ProductVariantAttributeValueDto = Object.assign({}, this.productVariantAttributeValueDto);
-      productVariant.attributeValue = this.product.productName + " " + this.keepAttributeNameValue
+      productVariant.attributeValue = this.keepAttributeNameValue
+      productVariant.productName = this.product.productName
+      productVariant.categoryName = this.product.categoryName
       productVariant.imagePath = this.keepImage
       this.cartService.addToCart(productVariant);
       this.toastrService.success("Ürün başarıyla sepete eklendi.")

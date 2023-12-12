@@ -22,7 +22,7 @@ export class CartService {
     let item = this.cartItemList().find(x => x.product.endProductVariantId == productVariant.endProductVariantId);
     if (item) {
       item.quantity += 1
-      this.localStorageService.update("products", this.cartItemList())
+      this.localStorageService.updateJson("products", this.cartItemList())
       this.cartItemList.set(this.cartItemList())
     } else {
       let cartItem = new CartItem();
@@ -31,7 +31,7 @@ export class CartService {
       const currentItems = this.cartItemList()
       currentItems.push(cartItem)
       this.cartItemList.set(currentItems)
-      this.localStorageService.add("products", this.cartItemList())
+      this.localStorageService.addJson("products", this.cartItemList())
     }
   }
 
@@ -65,7 +65,20 @@ export class CartService {
 
     this.cartItemList.set(currentItems);
 
-    this.localStorageService.update("products", this.cartItemList())
+    this.localStorageService.updateJson("products", this.cartItemList())
+   }
+
+   completelyRemoveProductFromCart(productVariant : ProductVariantAttributeValueDto){
+    let currentItems = this.cartItemList();
+
+    let index = currentItems.findIndex((x) => x.product.endProductVariantId === productVariant.endProductVariantId);
+    if (index !== -1) {
+      currentItems.splice(index, 1);
+    }
+  
+    this.cartItemList.set(currentItems);
+  
+    this.localStorageService.updateJson("products", this.cartItemList())
    }
 
   get cartTotalQuantity() {

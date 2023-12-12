@@ -1,0 +1,140 @@
+<div class="mt-4 mb-3 border-bottom pb-2">
+    <div class="col-lg-12" stlye="display:block;">
+        <div class="col-lg-12 order">
+            <div class="order-header col-lg-12">
+                <span class="order-header-info">
+                    <h4 class="mb-3 order-detail-title">Sipariş Detayı</h4>
+                </span>
+                <div class="order-header-info">
+                    Sipariş Tarihi
+                    <b>{{orderDetail.orderDate | date: "dd/MM/y"}}</b>
+
+                </div>
+                <div class="order-header-info">
+                    Sipariş Özeti
+                    <b title="{{orderDetail.selectSubOrderDtos.length}}">{{orderDetail.selectSubOrderDtos.length
+                        }} Ürün</b>
+                </div>
+                <div class="col-lg-2">
+                    <a>
+                        <button type="submit" class="btn btn-danger">Siparişi İptal Et</button>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <section class="order-detail-content" *ngFor="let subOrder of orderDetail.selectSubOrderDtos">
+        <div class="order-detail-shipment">
+            <div class="shipment-content">
+                <div class="shipment-content-status-wrapper">
+                    <div class="shipment-content-status">
+                        <div class="shipment-content-status-delivered">
+                            <h6 class="icon-text" *ngIf="subOrder.subOrderStatus == 4"><i
+                                    class="ri-arrow-go-back-fill i-cancel"></i> Sipariş İptal Edildi
+                            </h6>
+                            <h6 class="icon-text" *ngIf="subOrder.subOrderStatus == 5"><i
+                                    class="ri-arrow-go-back-fill i-cancel"></i> İade Edildi
+                            </h6>
+
+
+                            <h6 class="icon-text" *ngIf="subOrder.subOrderStatus == 0"><i
+                                    class="ri-arrow-go-back-fill i-cancel"></i> Ödeme sonuçlandırılmadı.
+                            </h6>
+
+                            <h6 class="icon-text" *ngIf="subOrder.subOrderStatus == 1"><i
+                                    class="ri-check-fill i-success"></i>
+                                Sipariş Hazırlanıyor.</h6>
+
+                            <h6 class="icon-text" *ngIf="subOrder.subOrderStatus == 2"><i
+                                    class="ri-check-fill i-success"></i>
+                                Sipariş Kargoya Verildi.</h6>
+
+                            <h6 class="icon-text" *ngIf="subOrder.subOrderStatus == 3"><i
+                                    class="ri-check-fill i-success"></i>
+                                Sipariş Teslim Edildi.</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="shipment-content-products">
+                    <div class="shipment-content-product-box">
+                        <div class="product-box-image-wrapper">
+                            <img class="product-box-image" [src]="imageUrl + subOrder.imagePath">
+                        </div>
+                        <div class="product-box-info">
+                            <a>
+                                <p class="product-name">
+                                    <span>{{subOrder.productName}}</span>
+                                </p>
+                                <div class="product-summary">
+                                    <span>{{subOrder.attribute}}</span>
+                                </div>
+                                <span><span class="product-box-info-price-selling">{{subOrder.price | number : '1.2-2'}} TL</span></span>
+                            </a>
+                            <div>
+                                <button type="submit" class="btn btn-danger">Ürünü İade Et</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Adres -->
+    <div class="order-detail-summary">
+        <div class="address summary-box">
+            <div class="header">
+                <span class="header-text">
+                    Teslimat Bilgileri
+                </span>
+            </div>
+            <div class="content is-same">
+                <div class="shipping-address">
+                    <div class="address-title address-text">
+                        <span>Teslimat Adresi</span>
+                    </div>
+                    <span class="address-description">
+                        {{'Ad :' + user.firstName + ' Soyad:' + user.lastName }} 
+                    </span>
+                    <span class="address-description">
+                        {{orderDetail.address}}
+                    </span>
+                </div>
+                <div class="invoice-address">
+                    <div class="address-title">
+                        <span>Fatura Adresi</span>
+                    </div>
+                    <span>{{'Ad :' + user.firstName + ' Soyad:' + user.lastName }} </span>
+                    <span>{{orderDetail.address}}</span>
+                </div>
+            </div>
+        </div>
+        <!-- Ödeme Bİlgileri -->
+        <div class="payment summary-box">
+            <div class="header">
+                <span class="header-text">
+                    Ödeme Bilgileri
+                </span>
+            </div>
+            <div class="content">
+                <div class="price-info">
+                    <span class="price-text">Ürün Toplamı:</span>
+                    <span class="price-amount">{{orderDetail.totalPrice | number : '1.2-2'}} TL</span>
+                </div>
+                <hr class="price-info-hr">
+                <div class="price-info">
+                    <span class="price-text">Kargo Tutarı:</span>
+                    <span class="price-amount">150,00 TL</span>
+                </div>
+                <hr class="price-info-hr">
+                <div class="payment-total">
+                    <span class="payment-total-text">Toplam:</span>
+                    <span class="payment-total-amount">{{orderDetail.totalPrice | number : '1.2-2'}} TL</span>
+                </div>
+            </div>
+        </div>
+    </div>

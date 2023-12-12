@@ -19,6 +19,7 @@ import { JwtInterceptor } from './core/helpers/jwt.interceptor';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { ToastrModule } from 'ngx-toastr';
+import { AuthInterceptor } from './core/helpers/auth.interceptor';
 export function createTranslateLoader(http: HttpClient): any {
   return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
 }
@@ -49,8 +50,8 @@ export function createTranslateLoader(http: HttpClient): any {
   })
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: FakeBackendInterceptor, multi: true },
+   // { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    {     provide:HTTP_INTERCEPTORS, useClass:AuthInterceptor, multi:true }
   ],
   bootstrap: [AppComponent]
 })

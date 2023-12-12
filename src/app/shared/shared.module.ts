@@ -40,9 +40,6 @@ import { CandidatesComponent } from './landing/job/candidates/candidates.compone
 import { BlogComponent } from './landing/job/blog/blog.component';
 import { JobcategoriesComponent } from './landing/job/jobcategories/jobcategories.component';
 import { JobFooterComponent } from './landing/job/job-footer/job-footer.component';
-import { ProductListComponent } from './ecommerce/product-list/product-list.component';
-import { ProductDetailComponent } from './ecommerce/product-detail/product-detail.component';
-
 
 @NgModule({
   declarations: [

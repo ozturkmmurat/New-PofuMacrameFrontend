@@ -1,13 +1,21 @@
-import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 // Login Auth
 import { environment } from '../../../environments/environment';
 import { AuthenticationService } from '../../core/services/auth.service';
 import { AuthfakeauthenticationService } from '../../core/services/authfake.service';
-import { first } from 'rxjs/operators';
+import { catchError, first } from 'rxjs/operators';
 import { ToastService } from './toast-service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { of } from 'rxjs';
+import { UserService } from 'src/app/services/HttpClient/userService/user.service';
+import { LocalStorageService } from 'src/app/services/Helper/localStorageService/local-storage.service';
+import { ToastrService } from 'ngx-toastr';
+import { ErrorService } from 'src/app/services/Helper/errorService/error.service';
+import { AuthService } from 'src/app/services/HttpClient/authService/auth.service';
+import { UserForUpdateDto } from 'src/app/models/dtos/user/userForUpdateDto';
 
 @Component({
   selector: 'app-login',
@@ -18,91 +26,54 @@ import { ToastService } from './toast-service';
 /**
  * Login Component
  */
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
-  // Login Form
-  loginForm!: UntypedFormGroup;
-  submitted = false;
-  fieldTextType!: boolean;
-  error = '';
-  returnUrl!: string;
+  loginForm: FormGroup;
+  user: UserForUpdateDto;
 
-  toast!: false;
+  constructor(
+    private router: Router,
+    private formBuilder: FormBuilder,
+    //Service Start
+    private authService: AuthService, 
+    private errorService : ErrorService,
+    private toastrService: ToastrService, 
+    private localStorageService: LocalStorageService,
+    private userService:UserService
+    //Service End
+  ) {}
 
-  // set the current year
-  year: number = new Date().getFullYear();
+  ngOnInit() {
+    this.createLoginForm()
+  }
+  ngOnDestroy() {
+  }
 
-  constructor(private formBuilder: UntypedFormBuilder,private authenticationService: AuthenticationService,private router: Router,
-    private authFackservice: AuthfakeauthenticationService,private route: ActivatedRoute,public toastService: ToastService) {
-      // redirect to home if already logged in
-      if (this.authenticationService.currentUserValue) {
-        this.router.navigate(['/']);
-      }
-     }
+  createLoginForm() {
+    this.loginForm = this.formBuilder.group({
+      email: ["", Validators.required],
+      password: []
+    })
+  }
 
-  ngOnInit(): void {
-    if(localStorage.getItem('currentUser')) {
-      this.router.navigate(['/']);
+
+  login(){
+    if(this.loginForm.valid){
+      let loginModel = Object.assign({}, this.loginForm.value)
+      this.authService.login(loginModel).pipe(
+        catchError((err:HttpErrorResponse) => {
+          this.errorService.checkError(err)
+        return of();
+        })) 
+        .subscribe(response => {
+          console.log("Login den gelen veri", response.data)
+          this.localStorageService.setToken(response.data.token)
+            this.localStorageService.setTokenExpiration(response.data.expiration)
+            this.localStorageService.setRefreshToken(response.data.refreshToken)
+            this.userService.setCurrentUser()
+            this.router.navigate([""]);
+        })
     }
-    /**
-     * Form Validatyion
-     */
-     this.loginForm = this.formBuilder.group({
-      email: ['admin@themesbrand.com', [Validators.required, Validators.email]],
-      password: ['123456', [Validators.required]],
-    });
-    // get return url from route parameters or default to '/'
-    // this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-  }
-
-  // convenience getter for easy access to form fields
-  get f() { return this.loginForm.controls; }
-
-  /**
-   * Form submit
-   */
-   onSubmit() {
-    this.submitted = true;
-
-    // Login Api
-    this.authenticationService.login(this.f['email'].value, this.f['password'].value).subscribe((data:any) => { 
-      if(data.status == 'success'){
-        localStorage.setItem('toast', 'true');
-        localStorage.setItem('currentUser', JSON.stringify(data.data));
-        localStorage.setItem('token', data.token);
-        this.router.navigate(['/']);
-      } else {
-        this.toastService.show(data.data, { classname: 'bg-danger text-white', delay: 15000 });
-      }
-    });
-
-    // stop here if form is invalid
-    // if (this.loginForm.invalid) {
-    //   return;
-    // } else {
-    //   if (environment.defaultauth === 'firebase') {
-    //     this.authenticationService.login(this.f['email'].value, this.f['password'].value).then((res: any) => {
-    //       this.router.navigate(['/']);
-    //     })
-    //       .catch(error => {
-    //         this.error = error ? error : '';
-    //       });
-    //   } else {
-    //     this.authFackservice.login(this.f['email'].value, this.f['password'].value).pipe(first()).subscribe(data => {
-    //           this.router.navigate(['/']);
-    //         },
-    //         error => {
-    //           this.error = error ? error : '';
-    //         });
-    //   }
-    // }
-  }
-
-  /**
-   * Password Hide/Show
-   */
-   toggleFieldTextType() {
-    this.fieldTextType = !this.fieldTextType;
   }
 
 }
