@@ -21,11 +21,7 @@ export class NavbarComponent {
     private router : Router) {
      this.loadingUser()
   }
-
-  ngOnInit(){
-    this.loadingUser()
-  }
-
+  
     /**
   * Section changed method
   * @param sectionId specify the current sectionID

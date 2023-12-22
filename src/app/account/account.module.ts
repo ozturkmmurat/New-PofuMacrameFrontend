@@ -16,12 +16,15 @@ import { SigninModule } from "./auth/signin/signin.module";
 import { SignupModule } from "./auth/signup/signup.module";
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
+import { PasswordCodeComponent } from './password-code/password-code.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { PasswordResetComponent } from './password-reset/password-reset.component';
 
 @NgModule({
   declarations: [
     RegisterComponent,
     LoginComponent,
-    ToastsContainer
+    ToastsContainer,
   ],
   imports: [
     CommonModule,

@@ -45,7 +45,6 @@ export class CheckoutComponent {
     });
   }
   payment(){
-
     this.writeTsaPaymentParameter().then(() => {
       if(this.tsaPaymentParameter !== null){
         if(this.tsaPaymentParameter.addressId == 0){

@@ -14,6 +14,9 @@ import { SellerDetailsComponent } from "./seller-details/seller-details.componen
 import { ProductListComponent } from './product-list/product-list.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { AttributesComponent } from './attributes/attributes.component';
+import { OrderListComponent } from './order-list/order-list.component';
+import { OrderDetailComponent } from './order-detail/order-detail.component';
+import { OrderedProductsComponent } from './ordered-products/ordered-products.component';
 
 const routes: Routes = [
   {
@@ -43,6 +46,18 @@ const routes: Routes = [
   {
     path: "orders",
     component: OrdersComponent
+  },
+  {
+    path:"orderList",
+    component:OrderListComponent
+  },
+  {
+    path:"orderDetail/:orderId/:userId",
+    component: OrderDetailComponent
+  },
+  {
+    path:"orderedProducts",
+    component: OrderedProductsComponent
   },
   {
     path: "order-details",

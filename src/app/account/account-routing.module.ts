@@ -4,6 +4,8 @@ import { Routes, RouterModule } from '@angular/router';
 // Component Pages
 import { RegisterComponent } from "./register/register.component";
 import { LoginComponent } from "./login/login.component";
+import { PasswordCodeComponent } from './password-code/password-code.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 const routes: Routes = [
   {
@@ -40,6 +42,15 @@ const routes: Routes = [
   {
     path: "login",
     component: LoginComponent
+  },
+  {
+    path: "forgot-password", loadChildren: () => import('./forgot-password/forgot-password.module').then(m => m.ForgotPasswordModule)
+  },
+  {
+    path: "password-code", loadChildren: () => import('./password-code/password-code.module').then(m => m.PasswordCodeModule)
+  },
+  {
+    path: "password-reset", loadChildren: () => import('./password-reset/password-reset.module').then(m => m.PasswordResetModule)
   }
 
 ];

@@ -1,0 +1,54 @@
+<!-- start table -->
+<div class="col-lg-12">
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title mb-0">Ürün Stoğu</h5>
+        </div>
+        <div class="card-body">
+            <ngx-datatable style="width:100%;" #table class="material whitespace-nowrap single-selection pt-2"
+                [rows]="orders" [scrollbarH]="true" [columnMode]="'force'" [headerHeight]="50" [limit]="20"
+                [footerHeight]="50" [rowHeight]="60">
+                <ngx-datatable-column name="Id  " prop="id">
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Toplam Tutar" prop="totalPrice"> 
+                    <ng-template let-row="row"
+                        ngx-datatable-cell-template> {{ row.totalPrice | number : '1.2-2' }} TL 
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Sipariş Tarihi" prop="orderDate">
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Sipariş Kodu" prop="orderCode">
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Sipariş Durumu" prop="orderStatus">
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                        <ng-container>
+                            <span *ngIf="row.orderStatus == 4" class="badge text-uppercase bg-danger-subtle text-danger">Sipariş İptal Edildi</span>
+                            <span *ngIf="row.orderStatus == 5" class="badge text-uppercase bg-danger-subtle text-danger">İade Edildi</span>
+                            <span *ngIf="row.orderStatus == 0" class="badge text-uppercase bg-danger-subtle text-danger">Ödeme Sonuçalndırılmadı</span>
+                            <span *ngIf="row.orderStatus == 1" class="badge text-uppercase bg-secondary-subtle text-secondary">Sipariş Hazırlanıyor</span>
+                            <span *ngIf="row.orderStatus == 2" class="badge text-uppercase bg-success-subtle text-success">Sipariş Kargoya Verildi</span>
+                            <span *ngIf="row.orderStatus == 3" class="badge text-uppercase bg-success-subtle text-success">Sipariş Teslim Edildi.</span>
+                        </ng-container>
+                        
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="İşlemler" [sortable]="false">
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                        <ng-container>
+                            <div container="body" ngbDropdown placement="bottom-right">
+                                <a  class="arrow-none" role="button" id="dropdownMenuLink4"
+                                    data-bs-toggle="dropdown" aria-expanded="false" ngbDropdownToggle>
+                                    <i class="ri-more-2-fill"></i>
+                                </a>
+                                <div ngbDropdownMenu class="dropdown-menu-right dropdown-menu-arrow">
+                                    <a class="dropdown-item" [routerLink]="'/admin/ecommerce/orderDetail/' + row.id + '/' + row.userId">Sipariş Detayı</a>
+
+                                </div>
+                            </div>
+                        </ng-container>
+                    </ng-template>
+                </ngx-datatable-column>
+            </ngx-datatable>
+        </div>
+    </div>
+</div>

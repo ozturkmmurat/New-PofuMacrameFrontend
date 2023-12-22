@@ -17,7 +17,6 @@ const IMAGE_URL = GlobalComponent.IMAGE_URL;
 export class UserOrdersComponent {
 
   orders : SelectUserOrderDto[] = []
-  user:User
   imageUrl = IMAGE_URL
 
   constructor(private orderService : OrderService,
@@ -31,7 +30,6 @@ export class UserOrdersComponent {
   getAllOrder(){
     this.orderService.getAllUserOrderDto().subscribe(response => {
       this.orders = response.data
-      console.log("Order listesi ", this.orders)
     })
   }
 }

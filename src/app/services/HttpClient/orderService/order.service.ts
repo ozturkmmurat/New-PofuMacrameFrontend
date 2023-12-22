@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { ListResponseModel } from 'src/app/models/responseModel/listResponseModel';
 import { SelectUserOrderDto } from 'src/app/models/dtos/order/select/selectOrderDto';
 import { SingleResponseModel } from 'src/app/models/responseModel/singleResponseModel';
+import { Order } from 'src/app/models/order/order';
 
 @Injectable({
   providedIn: 'root'
@@ -13,13 +14,23 @@ export class OrderService {
 
   constructor(private httpClient : HttpClient) { }
 
+  getAll():Observable<ListResponseModel<Order>>{
+    let newPath = environment.apiUrl + "orders/getAll"
+    return this.httpClient.get<ListResponseModel<Order>>(newPath);
+  }
+
   getAllUserOrderDto():Observable<ListResponseModel<SelectUserOrderDto>>{
     let newPath = environment.apiUrl + "orders/getAllUserOrderDto"
     return this.httpClient.get<ListResponseModel<SelectUserOrderDto>>(newPath);
   }
 
-  getUserOrderDtoDetail(orderId : number):Observable<SingleResponseModel<SelectUserOrderDto>>{
-    let newPath = environment.apiUrl + "orders/getUserOrderDtoDetail?orderId=" + orderId
+  getAllUserOrderDtoAdmin():Observable<ListResponseModel<SelectUserOrderDto>>{
+    let newPath = environment.apiUrl + "orders/getAllUserOrderDtoAdmin"
+    return this.httpClient.get<ListResponseModel<SelectUserOrderDto>>(newPath);
+  }
+
+  getUserOrderDtoDetail(orderId : number, userId : number):Observable<SingleResponseModel<SelectUserOrderDto>>{
+    let newPath = environment.apiUrl + "orders/getUserOrderDtoDetail?orderId=" + orderId + "&userId=" + userId
     return this.httpClient.get<SingleResponseModel<SelectUserOrderDto>>(newPath);
   }
 }

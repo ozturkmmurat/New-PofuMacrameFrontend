@@ -17,7 +17,7 @@
                 </div>
                 <div class="col-lg-2">
                     <a>
-                        <button type="submit" class="btn btn-danger">Siparişi İptal Et</button>
+                        <button type="submit" class="btn btn-danger" (click)="openModal(cancelOrderModal)">Siparişi İptal Et</button>
                     </a>
                 </div>
 
@@ -74,7 +74,7 @@
                                 <span><span class="product-box-info-price-selling">{{subOrder.price | number : '1.2-2'}} TL</span></span>
                             </a>
                             <div>
-                                <button type="submit" class="btn btn-danger">Ürünü İade Et</button>
+                                <button *ngIf="subOrder.subOrderStatus != 4 && subOrder.subOrderStatus != 5 " type="submit" class="btn btn-danger" (click)="openModal(refundingProduct)" (click)="writeRefundProduct(subOrder)">Ürünü İade Et</button>
                             </div>
                         </div>
                     </div>
@@ -98,7 +98,7 @@
                         <span>Teslimat Adresi</span>
                     </div>
                     <span class="address-description">
-                        {{'Ad :' + user.firstName + ' Soyad:' + user.lastName }} 
+                        {{'Ad :' + orderDetail.firstName + ' Soyad:' + orderDetail.lastName }} 
                     </span>
                     <span class="address-description">
                         {{orderDetail.address}}
@@ -108,7 +108,7 @@
                     <div class="address-title">
                         <span>Fatura Adresi</span>
                     </div>
-                    <span>{{'Ad :' + user.firstName + ' Soyad:' + user.lastName }} </span>
+                    <span>{{'Ad :' + orderDetail.firstName + ' Soyad:' + orderDetail.lastName }} </span>
                     <span>{{orderDetail.address}}</span>
                 </div>
             </div>
@@ -138,3 +138,43 @@
             </div>
         </div>
     </div>
+
+
+
+    <ng-template #cancelOrderModal role="document" let-modal>
+        <div class="modal-header">
+            <h5 class="modal-title" id="varyingcontentModalLabel">Siparişi iptal etme sebebi</h5>
+            <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="mb-3">
+                    <label for="message-text" class="col-form-label">Mesaj:</label>
+                    <textarea class="form-control" id="message-text" rows="4"></textarea>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-light" (click)="closeModal()">Vazgeç</button>
+            <button type="button" class="btn btn-primary" (click)="cancelOrder()">Onayla</button>
+        </div>
+    </ng-template>
+
+    <ng-template #refundingProduct role="document" let-modal>
+        <div class="modal-header">
+            <h5 class="modal-title" id="varyingcontentModalLabel">Ürünü iade etme sebebi</h5>
+            <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="mb-3">
+                    <label for="message-text" class="col-form-label">Mesaj</label>
+                    <textarea class="form-control" id="message-text" rows="4"></textarea>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-light" (click)="closeModal()">Vazgeç</button>
+            <button type="button" class="btn btn-primary" (click)="refundProduct()">Onayla</button>
+        </div>
+    </ng-template>

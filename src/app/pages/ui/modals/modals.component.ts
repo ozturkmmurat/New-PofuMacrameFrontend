@@ -89,6 +89,7 @@ export class ModalsComponent implements OnInit {
    */
    MaryModal(content: any) {
     this.modalService.open(content);
+    this.modalService.open(content).dismissed.subscribe(() => { });
   }
 
   /**

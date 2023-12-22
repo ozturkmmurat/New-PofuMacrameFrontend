@@ -138,7 +138,6 @@ export class AddressComponent {
         })
       )
       .subscribe((response) => {
-        console.log("Güncellendi")
         this.toastrService.success(response.message, 'Başarılı')
         this.getAllUserAddress()
       })

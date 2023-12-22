@@ -1,16 +1,17 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { OrderDetailComponent } from "./order-detail/order-detail.component";
+import { PasswordResetComponent } from "./password-reset.component";
 
 const routes: Routes = [
     {
-      path: 'orderDetail',
-      component: OrderDetailComponent
-    }
+      path: "basic/:url",
+      component: PasswordResetComponent
+    },
   ];
   
   @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]
   })
-  export class OrderRoutingModule {}
+  export class PasswordResetRoutingModule { }
+  

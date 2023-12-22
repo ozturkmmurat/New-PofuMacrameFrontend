@@ -46,22 +46,25 @@ export class UserService {
   }
 
    setCurrentUser(): void {
-        this.getByUserId(this.getUserId("nameidentifier")).pipe(
-          catchError((err:HttpErrorResponse) => {
-            return EMPTY
-          }))
-          .subscribe(response => {
-            console.log("Service gelen user datası", response.data)
-             this.user = {
-              id: response.data.id,
-              email: response.data.email,
-              firstName: response.data.firstName,
-              lastName: response.data.lastName,
-              phoneNumber : response.data.phoneNumber
-            }
-            this._user.set(this.user)
-            console.log("Login den sonra check user", this._user())
-          })
+    var token = this.localStorageService.getToken()
+    if(token != null){
+      this.getByUserId(this.getUserId("nameidentifier")).pipe(
+        catchError((err:HttpErrorResponse) => {
+          return EMPTY
+        }))
+        .subscribe(response => {
+          console.log("Service gelen user datası", response.data)
+           this.user = {
+            id: response.data.id,
+            email: response.data.email,
+            firstName: response.data.firstName,
+            lastName: response.data.lastName,
+            phoneNumber : response.data.phoneNumber
+          }
+          this._user.set(this.user)
+          console.log("Login den sonra check user", this._user())
+        })
+    } 
   }
 
   getUserId(data : string) {

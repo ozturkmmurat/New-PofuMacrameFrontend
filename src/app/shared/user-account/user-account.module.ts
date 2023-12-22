@@ -3,7 +3,7 @@ import { UserAccountRoutingModule } from "./user-account.routing.module";
 import { UserAccountComponent } from "./user-account.component";
 import { CommonModule } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { NgbAccordionModule, NgbDropdownModule, NgbNavModule } from "@ng-bootstrap/ng-bootstrap";
+import { NgbAccordionModule, NgbDropdownModule, NgbModalModule, NgbNavModule } from "@ng-bootstrap/ng-bootstrap";
 import { NgxSliderModule } from "ngx-slider-v2";
 import { UserInformationComponent } from "./user-information/user-information.component";
 import { UserOrdersComponent } from "./user-orders/user-orders.component";
@@ -28,7 +28,8 @@ import { CheckoutModule } from "../ecommerce/checkout/checkout.module";
     NgbNavModule,
     NgbAccordionModule,
     NgbDropdownModule,
-    CheckoutModule
+    CheckoutModule,
+    NgbModalModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: []
