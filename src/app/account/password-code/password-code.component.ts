@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { EMPTY, catchError } from 'rxjs';
+import { EMPTY, catchError, firstValueFrom } from 'rxjs';
 import { ErrorService } from 'src/app/services/Helper/errorService/error.service';
 import { PasswordResetService } from 'src/app/services/HttpClient/passwordResetService/password-reset.service';
 
@@ -41,28 +41,34 @@ export class PasswordCodeComponent {
   ) {
   }
 
-  ngOnInit(){
-  
-    this.route.params.subscribe((params) => {
-      if (this.getCodeUrl(params["codeUrl"]) == true) {
-        if(params["codeUrl"]){
-          this.codeUrl = params["codeUrl"]
-            this.passwordCodeForm();
-        }
-      }else{
-        this.router.navigate([""])
+  ngOnInit() {
+    this.route.params.subscribe(params => {
+      this.codeUrl = params['codeUrl'];
+      if (this.codeUrl) {
+        this.getCodeUrl(this.codeUrl)
+          .then(success => {
+            if (success) {
+              this.passwordCodeForm();
+            } else {
+              this.router.navigate(['']);
+            }
+          })
+          .catch(() => this.router.navigate(['']));
+      } else {
+        this.router.navigate(['']);
       }
-    })
+    });
   }
 
-  getCodeUrl(codeUrl : string) : boolean{
-    var status
-    this.passwordResetService.getByCodeUrl(codeUrl).subscribe(response => {
-      status = response.success
-    })
-    return status
+  async getCodeUrl(codeUrl: string): Promise<boolean> {
+    try {
+      const response = await firstValueFrom(this.passwordResetService.getByCodeUrl(codeUrl));
+      return response.success;
+    } catch (error) {
+      console.error('Error occurred while fetching code URL: ', error);
+      throw error;
+    }
   }
-
   passwordCodeForm(){
     console.log("Form oluşturuldu", this.codeUrl)
     this._passwordCodeForm = this.formBuilder.group({

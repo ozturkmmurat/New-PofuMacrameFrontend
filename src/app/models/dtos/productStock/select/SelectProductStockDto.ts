@@ -8,6 +8,8 @@ export interface SelectProductStockDto{
     attributeValueId:number,
     quantity:number,
     price:number,
+    kdv:number,
+    netPrice:number,
     stockCode:string,
     attributeValue:string
 }

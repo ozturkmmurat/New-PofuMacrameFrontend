@@ -161,7 +161,7 @@ export class ProductDetailComponent implements OnInit {
   mappinProductStock(productStockDto : SelectProductStockDto){
     this.productStock = {
       id : productStockDto.productStockId, productId : productStockDto.productId, productVariantId : productStockDto.endProductVariantId,
-      price : productStockDto.price, quantity : productStockDto.quantity, stockCode : productStockDto.stockCode
+      price : productStockDto.price, quantity : productStockDto.quantity, stockCode : productStockDto.stockCode, kdv : productStockDto.kdv, netPrice : productStockDto.netPrice
     }
     return this.productStock
   }

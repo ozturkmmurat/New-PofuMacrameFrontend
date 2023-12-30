@@ -25,50 +25,6 @@ export const MENU: MenuItem[] = [
     icon: 'ri-apps-2-line',
     subItems: [
       {
-        id: 9,
-        label: 'MENUITEMS.APPS.LIST.CALENDAR',
-        link: '/calendar',
-        parentId: 8
-      },
-      {
-        id: 10,
-        label: 'MENUITEMS.APPS.LIST.CHAT',
-        link: '/chat',
-        parentId: 8
-      },
-      {
-        id: 11,
-        label: 'MENUITEMS.APPS.LIST.EMAIL',
-        parentId: 8,
-        subItems: [
-          {
-            id: 13,
-            label: 'MENUITEMS.APPS.LIST.MAILBOX',
-            link: '/mailbox',
-            parentId: 11
-          },
-          {
-            id: 14,
-            label: 'MENUITEMS.APPS.LIST.MAILTEMPLATES',
-            parentId: 11,
-            subItems: [
-              {
-                id: 13,
-                label: 'MENUITEMS.APPS.LIST.BASICACTION',
-                link: '/email-basic',
-                parentId: 14
-              },
-              {
-                id: 13,
-                label: 'MENUITEMS.APPS.LIST.ECOMMERCEACTION',
-                link: '/email-ecommerce',
-                parentId: 14
-              },
-            ]
-          }
-        ]
-      },
-      {
         id: 12,
         label: 'MENUITEMS.APPS.LIST.ECOMMERCE',
         parentId: 8,
@@ -138,173 +94,22 @@ export const MENU: MenuItem[] = [
             label: 'MENUITEMS.APPS.LIST.CATEGORIES',
             link: 'ecommerce/categories',
             parentId: 12
+          },
+          {
+            id: 24,
+            label: 'MENUITEMS.APPS.LIST.ORDERLIST',
+            link: 'ecommerce/orderList',
+            parentId: 12
+          },
+          {
+            id: 25,
+            label: 'MENUITEMS.APPS.LIST.ORDEREDPRODUCTS',
+            link: 'ecommerce/orderedProducts',
+            parentId: 12
           }
+
         ]
-      },
-      {
-        id: 31,
-        label: 'MENUITEMS.APPS.LIST.CRM',
-        parentId: 8,
-        subItems: [
-          {
-            id: 32,
-            label: 'MENUITEMS.APPS.LIST.CONTACTS',
-            link: '/crm/contacts',
-            parentId: 31
-          },
-          {
-            id: 33,
-            label: 'MENUITEMS.APPS.LIST.COMPANIES',
-            link: '/crm/companies',
-            parentId: 31
-          },
-          {
-            id: 34,
-            label: 'MENUITEMS.APPS.LIST.DEALS',
-            link: '/crm/deals',
-            parentId: 31
-          },
-          {
-            id: 35,
-            label: 'MENUITEMS.APPS.LIST.LEADS',
-            link: '/crm/leads',
-            parentId: 31
-          }
-        ]
-      },
-      {
-        id: 42,
-        label: 'MENUITEMS.APPS.LIST.INVOICES',
-        parentId: 8,
-        subItems: [
-          {
-            id: 43,
-            label: 'MENUITEMS.APPS.LIST.LISTVIEW',
-            link: '/invoices/list',
-            parentId: 42
-          },
-          {
-            id: 44,
-            label: 'MENUITEMS.APPS.LIST.DETAILS',
-            link: '/invoices/details',
-            parentId: 42
-          },
-          {
-            id: 45,
-            label: 'MENUITEMS.APPS.LIST.CREATEINVOICE',
-            link: '/invoices/create',
-            parentId: 42
-          }
-        ]
-      },
-      {
-        id: 46,
-        label: 'MENUITEMS.APPS.LIST.SUPPORTTICKETS',
-        parentId: 8,
-        subItems: [
-          {
-            id: 47,
-            label: 'MENUITEMS.APPS.LIST.LISTVIEW',
-            link: '/tickets/list',
-            parentId: 46
-          },
-          {
-            id: 48,
-            label: 'MENUITEMS.APPS.LIST.TICKETDETAILS',
-            link: '/tickets/details',
-            parentId: 46
-          }
-        ]
-      },
-      {
-        id: 49,
-        label: 'MENUITEMS.APPS.LIST.FILEMANAGER',
-        link: '/file-manager',
-        parentId: 8,
-      },
-      {
-        id: 51,
-        label: 'MENUITEMS.APPS.LIST.JOBS',
-        parentId: 8,
-        badge: {
-          variant: 'bg-success',
-          text: 'MENUITEMS.DASHBOARD.BADGE',
-        },
-        subItems: [
-          {
-            id: 52,
-            label: 'MENUITEMS.APPS.LIST.STATISTICS',
-            link: '/jobs/statistics',
-            parentId: 51
-          },
-          {
-            id: 53,
-            label: 'MENUITEMS.APPS.LIST.JOBLISTS',
-            subItems: [
-              {
-                id: 54,
-                label: 'MENUITEMS.APPS.LIST.LIST',
-                link: '/jobs/list',
-                parentId: 53
-              },
-              {
-                id: 55,
-                label: 'MENUITEMS.APPS.LIST.GRID',
-                link: '/jobs/grid',
-                parentId: 53
-              },
-              {
-                id: 56,
-                label: 'MENUITEMS.APPS.LIST.OVERVIEW',
-                link: '/jobs/overview',
-                parentId: 53
-              }
-            ]
-          },
-          {
-            id: 57,
-            label: 'MENUITEMS.APPS.LIST.CANDIDATELISTS',
-            subItems: [
-              {
-                id: 58,
-                label: 'MENUITEMS.APPS.LIST.LISTVIEW',
-                link: '/jobs/listview',
-                parentId: 57
-              },
-              {
-                id: 59,
-                label: 'MENUITEMS.APPS.LIST.GRIDVIEW',
-                link: '/jobs/gridview',
-                parentId: 57
-              }
-            ]
-          },
-          {
-            id: 60,
-            label: 'MENUITEMS.APPS.LIST.APPLICATION',
-            link: '/jobs/application',
-            parentId: 51
-          },
-          {
-            id: 61,
-            label: 'MENUITEMS.APPS.LIST.NEWJOB',
-            link: '/jobs/newjob',
-            parentId: 51
-          },
-          {
-            id: 62,
-            label: 'MENUITEMS.APPS.LIST.COMPANIESLIST',
-            link: '/jobs/companies-list',
-            parentId: 51
-          },
-          {
-            id: 63,
-            label: 'MENUITEMS.APPS.LIST.JOBCATEGORIES',
-            link: '/jobs/job-categories',
-            parentId: 51
-          },
-        ]
-      },
+      }
     ]
   },
   {

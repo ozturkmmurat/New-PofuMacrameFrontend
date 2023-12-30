@@ -20,12 +20,31 @@ export class LoginGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
       const requiredRoles = route.data['roles'] as string[];
-      if (this.localStorageService.isAuthenticated()) {
-        return requiredRoles.includes(this.authService.decodeToken(this.localStorageService.getToken())['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']);
-      }else{
-      this.router.navigate(["login"])
-      this.toastrService.info("Sisteme giriş yapmalısınız.")
-      return true;
+    console.log("Requriedroles", requiredRoles);
+
+    if (this.localStorageService.isAuthenticated()) {
+      const userRoles = this.authService.decodeToken(this.localStorageService.getToken())['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+      console.log("Kullanıcı Rolleri:", userRoles);
+
+      if (userRoles) {
+        const hasRequiredRole = requiredRoles.some(role => userRoles.includes(role));
+        console.log("Gerekli Rol Var Mı:", hasRequiredRole);
+        if (hasRequiredRole) {
+          return true;
+        } else {
+          //console.log("Gerekli rol yok, yönlendirme yapılıyor.");
+          this.router.navigate([""]);
+          return false;
+        }
+      } else {
+        //console.log("Kullanıcı rolleri bulunamadı veya tanımsız.");
+        this.router.navigate([""]);
+        return false;
       }
+    } else {
+      //console.log("Kullanıcı oturum açmamış.");
+      this.router.navigate([""]); 
+      return false; 
+    }
     }
   }

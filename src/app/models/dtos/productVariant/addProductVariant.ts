@@ -7,9 +7,11 @@ export interface AddProductVariant{
     categoryId:number,
     productName:string,
     description:string,
+    productCode:string
     productVariants : ProductVariant[]
     productStocks:ProductStock[],
     productAttributes:ProductAttribute[],
+
     jsonData:any,
     isVariant:boolean
 }

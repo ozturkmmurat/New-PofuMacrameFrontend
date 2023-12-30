@@ -13,7 +13,7 @@
                         class="float-end text-decoration-underline">Add New</a>Ürün kategorisi seçiniz</p>
                 <select class="form-select" name="choices-category-input"  formControlName="categoryId"
                     (ngModelChange)="getAllTrueAttrSlicer()" data-choices data-choices-search-false>
-                    <option selected>Seçiniz</option>
+                    <option value="0" selected>Seçiniz</option>
                     <option  *ngFor="let category of categories" [ngValue]="category.id">{{category.categoryName}}
                     </option>
                 </select>

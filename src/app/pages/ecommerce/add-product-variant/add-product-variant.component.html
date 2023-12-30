@@ -71,7 +71,8 @@
                                                     </span>
                                                     <input type='number' class='form-control' id='product-price-input'
                                                         placeholder='Enter price' aria-label='Price'
-                                                        aria-describedby='product-price-addon' formControlName="quantity"
+                                                        aria-describedby='product-price-addon'
+                                                        formControlName="quantity"
                                                         [value]="this.productStocksArray.controls[i].get('quantity')?.value">
                                                 </div>
                                             </div>
@@ -83,8 +84,52 @@
                                                     <span class='input-group-text' id='product-stock-addon'></span>
                                                     <input type='text' class='form-control' id='product-stock-input'
                                                         placeholder='Enter Stock Code' aria-label='Stock Code'
-                                                        aria-describedby='product-stock-addon' formControlName="stockCode"
+                                                        aria-describedby='product-stock-addon'
+                                                        formControlName="stockCode"
                                                         [value]="this.productStocksArray.controls[i].get('stockCode')?.value">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-3">
+                                            <div class="mb-3">
+                                                <label class='form-label' for='product-stock-input'>Kdv % Seçiniz</label>
+                                                <div class="input-group mb-3">
+                                                    <select class="form-select" name="choices-category-input"
+                                                    type="number"
+                                                        formControlName="kdv"
+                                                        [value]="this.productStocksArray.controls[i].get('kdv')?.value"
+                                                        data-choices data-choices-search-false>
+                                                        <option [ngValue]="0.1" type="number">%1</option>
+                                                        <option [ngValue]="0.10" type="number">%10</option>
+                                                        <option [ngValue]="0.20" type="number">%20</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+    
+                                        <div class='col-sm-3'>
+                                            <div class='mb-3'> <label class='form-label' for='product-stock-input'>Kdv
+                                                    Tutarı</label>
+                                                <div class='input-group mb-3'>
+                                                    <span class='input-group-text' id='net-price-addon'></span>
+                                                    <input type='number' class='form-control' id='kdv-amount'
+                                                    placeholder='KDV Tutarı' aria-label='KdvAmount' formControlName="kdvAmount"
+                                                    aria-describedby='product-price-addon' [value]="this.productStocksArray.controls[i].get('kdvAmount').setValue(this.productStocksArray.controls[i].get('price')?.value * this.productStocksArray.controls[i].get('kdv')?.value)" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+    
+                                        <div class='col-sm-3'>
+                                            <div class='mb-3'> <label class='form-label' for='product-stock-input'>Net
+                                                    Fiyat</label>
+                                                <div class='input-group mb-3'>
+                                                    <span class='input-group-text' id='net-price-addon'></span>
+                                                    <input type='number' class='form-control' id='product-stock-input'
+                                                        placeholder='Enter Stock Code' aria-label='Net Price'
+                                                        aria-describedby='product-stock-addon' formControlName="netPrice" [attr.disabled]="false"
+                                                        [value]="this.productStocksArray.controls[i].get('netPrice').setValue(this.productStocksArray.controls[i].get('kdvAmount')?.value + this.productStocksArray.controls[i].get('price')?.value)" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -102,15 +147,17 @@
                         </div>
                     </div>
                 </div>
-                    <div class="text-start mb-3" *ngIf="cartesianProduct.length > 0">
-                        <button type="submit" class="btn btn-success w-sm" (click)="addProductVariant()">Ürünü Oluştur</button>
-                    </div>
+                <div class="text-start mb-3" *ngIf="cartesianProduct.length > 0">
+                    <button type="submit" class="btn btn-success w-sm" (click)="addProductVariant()">Ürünü
+                        Oluştur</button>
+                </div>
             </ng-container>
 
 
 
 
-            <div class="card" *ngIf="_productVariantForm.value.isVariant == false && cartesianProduct.length <= 0 && product.id == 0 && this.productStocksArray.controls.length == 1">
+            <div class="card"
+                *ngIf="_productVariantForm.value.isVariant == false && cartesianProduct.length <= 0 && product.id == 0 && this.productStocksArray.controls.length == 1">
                 <div class="card-body">
                     <div class="variant">
                         <div class='row'>
@@ -154,26 +201,59 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="col-sm-3">
+                                        <div class="mb-3">
+                                            <label class='form-label' for='product-stock-input'>Kdv % Seçiniz</label>
+                                            <div class="input-group mb-3">
+                                                <select class="form-select" name="choices-category-input"
+                                                type="number"
+                                                    formControlName="kdv"
+                                                    [value]="this.productStocksArray.controls[0].get('kdv')?.value"
+                                                    data-choices data-choices-search-false>
+                                                    <option [ngValue]="0.1" type="number">%1</option>
+                                                    <option [ngValue]="0.10" type="number">%10</option>
+                                                    <option [ngValue]="0.20" type="number">%20</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class='col-sm-3'>
+                                        <div class='mb-3'> <label class='form-label' for='product-stock-input'>Kdv
+                                                Tutarı</label>
+                                            <div class='input-group mb-3'>
+                                                <span class='input-group-text' id='net-price-addon'></span>
+                                                <input type='number' class='form-control' id='kdv-amount'
+                                                placeholder='KDV Tutarı' aria-label='KdvAmount' formControlName="kdvAmount"
+                                                aria-describedby='product-price-addon' [value]="this.productStocksArray.controls[0].get('kdvAmount').setValue(this.productStocksArray.controls[0].get('price')?.value * this.productStocksArray.controls[0].get('kdv')?.value)" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class='col-sm-3'>
+                                        <div class='mb-3'> <label class='form-label' for='product-stock-input'>Net
+                                                Fiyat</label>
+                                            <div class='input-group mb-3'>
+                                                <span class='input-group-text' id='net-price-addon'></span>
+                                                <input type='number' class='form-control' id='product-stock-input'
+                                                    placeholder='Enter Stock Code' aria-label='Net Price'
+                                                    aria-describedby='product-stock-addon' formControlName="netPrice" [attr.disabled]="false"
+                                                    [value]="this.productStocksArray.controls[0].get('netPrice').setValue(this.productStocksArray.controls[0].get('kdvAmount')?.value + this.productStocksArray.controls[0].get('price')?.value)" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </ng-container>
                             </ng-container>
                         </div>
                     </div>
                 </div>
                 <div class="text-start mb-3">
-                    <button type="submit" class="btn btn-success w-sm" (click)="addProductVariant()">Ürünü Oluştur</button>
+                    <button type="submit" class="btn btn-success w-sm" (click)="addProductVariant()">Ürünü
+                        Oluştur</button>
                 </div>
             </div>
         </form>
     </ng-container>
     <!-- end card-->
 </ng-container>
-
-
-
-
-
-
-
-
-
-

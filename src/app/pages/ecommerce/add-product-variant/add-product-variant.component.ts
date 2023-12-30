@@ -33,6 +33,7 @@ export class AddProductVariantComponent {
   //Variables
   selectedAttributeValues: { [attributeValue: string]: AttributeValue[] } = {};
   jsonData: any = {};
+  disableInput: boolean = true
 
   //@Input() product: Product;
   @Input() viewCategoryAttributeDto: ViewCategoryAttributeDto[] = [];
@@ -43,7 +44,7 @@ export class AddProductVariantComponent {
     private formBuilder: FormBuilder,
     private categoryAttributeService: CategoryAttributeService,
     private toastrService: ToastrService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     if (this.productService.products$) {
@@ -58,19 +59,24 @@ export class AddProductVariantComponent {
       this._productVariantForm = this.formBuilder.group({
         productId: [product.id],
         categoryId: [product.categoryId, Validators.required],
-        productName: [product.productName, Validators.required], // productName alanı için zorunluluk doğrulama kuralı eklendi
+        productName: [product.productName, Validators.required],
         description: [product.description, Validators.required],
+        productCode: [product.productCode, Validators.required],
         productVariants: this.formBuilder.array([]),
         productStocks: this.formBuilder.array([
           this.formBuilder.group({
             price: new FormControl(0),
             quantity: new FormControl(0),
+            kdv: [Number(0), Validators.required],
+            kdvAmount: [0, Validators.required],
+            netPrice: [0, Validators.required],
             stockCode: [''],
           }),
         ]),
         jsonData: [this.jsonData, Validators.required],
         isVariant: [false, Validators.required],
       });
+
     });
   }
 
@@ -157,9 +163,13 @@ export class AddProductVariantComponent {
       const productStocksGroup = this.formBuilder.group({
         price: new FormControl(0, Validators.required),
         quantity: new FormControl(0, Validators.required),
+        kdv: [Number(0), Validators.required],
+        kdvAmount: [0, Validators.required],
+        netPrice: [0, Validators.required],
         stockCode: ['', Validators.required],
       });
       this.productStocksArray.push(productStocksGroup);
+      console.log("Pushlanan değer", productStocksGroup)
     }
   }
 
@@ -181,7 +191,7 @@ export class AddProductVariantComponent {
   async removeVariantHtml(index: number) {
     console.log('Gelen index numarası', index);
     const key = index.toString(); // İndeks değerini bir dizeye çevirin.
-   this.removeJsonDataArray(index)
+    this.removeJsonDataArray(index)
     this.productStocksArray.removeAt(index);
     this.cartesianProduct.splice(index, 1);
     console.log('Cartesian product', this.cartesianProduct);
@@ -217,11 +227,11 @@ export class AddProductVariantComponent {
     });
   }
 
-   removeJsonDataArray(index: number) {
+  removeJsonDataArray(index: number) {
     if (this.jsonData.hasOwnProperty(index)) {
       delete this.jsonData[index];
       const jsonDataKey = Object.keys(this.jsonData);
-      const newKey: { [key: number]: any } = {};     
+      const newKey: { [key: number]: any } = {};
       jsonDataKey.forEach((key, index) => {
         newKey[index] = this.jsonData[key];
       });

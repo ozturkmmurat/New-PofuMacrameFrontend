@@ -36,6 +36,8 @@
         "PRODUCTDETAILS": "Product Details",
         "CREATEPRODUCT": "Ürün Ekle",
         "ORDERS": "Siparişler",
+        "ORDERLIST":"Sipariş Listesi",
+        "ORDEREDPRODUCTS":"Sipariş Verilen Ürünler",
         "CATEGORIES": "Kategoriler",
         "ORDERDETAILS": "Order Details",
         "CUSTOMERS": "Customers",
