@@ -12,24 +12,22 @@ export class ErrorService {
   ) { }
 
   checkError(err: HttpErrorResponse) {
-    console.log("Error yazdırıldı",err.error)
+    console.log("Error kontorl", err)
     if (err.error.Errors != undefined) {
       if (err.error.Errors.length > 0) {
         for (let i = 0; i < err.error.Errors.length; i++) {
-          console.log("Giriş yapıldı 1")
           this.toastrService.error(err.error.Errors[i].ErrorMessage, "Doğrulama hatası")
         }
       } else if (err.error.Errors != undefined && err.error.Errors.length <= 0) {
-        console.log("Giriş yapıldı2 ")
         this.toastrService.error(err.error.message, "Hata")
       }
     }
     else if (err.error.Errors == undefined) {
-      if (err.error != undefined) {
-        console.log("giriş yapıldı 3")
-        if(err.error.message){
-          this.toastrService.error(err.error.message, "Hata")
-        }
+      if(err.error.message){
+        this.toastrService.error(err.error.message, "Hata")
+      }
+      if (err.error != undefined && typeof err.error !== 'object') {
+        this.toastrService.error(err.error)
       }
     }
   }

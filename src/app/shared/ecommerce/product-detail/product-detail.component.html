@@ -48,7 +48,7 @@
                                             </div>
                                             <div class="flex-grow-1">
                                                 <p class="text-muted mb-1">Fiyat :</p>
-                                                <h5 class="mb-0">${{productVariantAttributeValueDto.price}}</h5>
+                                                <h5 class="mb-0">{{productVariantAttributeValueDto.netPrice | number : '1.2'}} TL</h5>
                                             </div>
                                         </div>
                                     </div>
@@ -102,7 +102,7 @@
                                                 <ng-template #fiveElse>
                                                     <label
                                                         *ngIf="i == productVariantAttributes.length -1 && attribute.isActiveAttribute == false && attribute.quantity > 0 else endElse"
-                                                        (click)="writeStock(attribute.productVariantId, attribute.price)"
+                                                        (click)="writeStock(attribute.productVariantId, attribute.price , attribute.netPrice)"
                                                         class="btn btn-soft-primary label-{{+i}}"
                                                         for="productsize-radio">{{attribute.attributeValue}}</label>
                                                 </ng-template>

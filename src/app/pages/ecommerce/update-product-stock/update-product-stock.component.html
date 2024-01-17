@@ -9,7 +9,7 @@
                                     id='product-price-addon'></span>
                                 <input type='number' class='form-control' id='product-price-input'
                                     placeholder='Enter price' aria-label='Price' formControlName="price"
-                                    aria-describedby='product-price-addon'>
+                                    aria-describedby='product-price-addon' [value]="_productStockForm.get('price').value" (input)="updateKdvAmount()">
                             </div>
                         </div>
                     </div>
@@ -29,12 +29,48 @@
                                 <label class='form-label' for='product-price-input'>Stok Kodu</label>
                                 <div class='input-group mb-3'> <span class='input-group-text'
                                         id='product-price-addon'></span>
-                                    <input type='text' class='form-control' id='product-price-input' 
+                                    <input type='text' class='form-control' id='product-stock-code-input' 
                                         placeholder='Enter Stock Code' aria-label='StockCode' formControlName="stockCode"
                                         aria-describedby='product-quantity-addon'>
                                 </div>
                             </div>
                     </div>
+                    <div class="col-lg-4 col-4">
+                        <div class="mb-3">
+                            <label class='form-label' for='product-stock-input'>Kdv % Seçiniz</label>
+                            <div class="input-group mb-3">
+                                <select class="form-select" name="choices-category-input"
+                                    formControlName="kdv"
+                                    data-choices data-choices-search-false (change)="updateKdvAmount()">
+                                    <option [ngValue]="1">%1</option>
+                                    <option [ngValue]="10">%10</option>
+                                    <option [ngValue]="20">%20</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-4">
+                        <div class='mb-3'>
+                            <label class='form-label' for='product-price-input'>Kdv Tutarı</label>
+                            <div class='input-group mb-3'> <span class='input-group-text'
+                                    id='product-price-addon'></span>
+                                <input type='text' class='form-control' id='product-kdv-amount-input' 
+                                    placeholder='Enter Stock Code' aria-label='StockCode' formControlName="kdvAmount"
+                                    aria-describedby='product-quantity-addon' [value]="_productStockForm.get('kdvAmount').value | number:'1.2'" readonly>
+                            </div>
+                        </div>
+                </div>
+                <div class="col-lg-4 col-4">
+                    <div class='mb-3'>
+                        <label class='form-label' for='product-price-input'>Net Fiyat</label>
+                        <div class='input-group mb-3'> <span class='input-group-text'
+                                id='product-price-addon'></span>
+                            <input type='text' class='form-control' id='product-net-price-input' 
+                                placeholder='Enter Stock Code' aria-label='StockCode' formControlName="netPrice"
+                                aria-describedby='product-quantity-addon' [value]="_productStockForm.get('netPrice').value | number:'1.2'"readonly>
+                        </div>
+                    </div>
+            </div>
                 </div>
                 <div class="col-lg-4 col-4">
                     <button type="button" class="btn btn-primary mt-3" (click)="update()">Güncelle</button>

@@ -8,5 +8,6 @@ export interface SelectUserOrderDto{
     address:string,
     totalPrice:number,
     orderDate:Date,
+    orderStatus:number
     selectSubOrderDtos:SelectSubOrderDto[]
 }

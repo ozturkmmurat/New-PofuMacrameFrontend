@@ -36,7 +36,19 @@
                         <div class="col-sm-auto">
                             <div class="text-lg-end">
                                 <p class="text-muted mb-1">Adet Fiyatı:</p>
-                                <h5 class="fs-14">$<span id="ticket_price" class="product-price">{{item.product.price}}</span></h5>
+                                <h5 class="fs-14"><span id="ticket_price" class="product-price">{{item.product.price}} TL</span></h5>
+                            </div>
+                        </div>
+                        <div class="col-sm-auto">
+                            <div class="text-lg-end">
+                                <p class="text-muted mb-1">Kdv</p>
+                                <h5 class="fs-14"><span id="ticket_price" class="product-price">{{item.product.kdv}}%</span></h5>
+                            </div>
+                        </div>
+                        <div class="col-sm-auto">
+                            <div class="text-lg-end">
+                                <p class="text-muted mb-1">Adet Fiyatı Kdv Dahil:</p>
+                                <h5 class="fs-14"><span id="ticket_price" class="product-price">{{item.product.netPrice}} TL</span></h5>
                             </div>
                         </div>
                     </div>
@@ -56,7 +68,7 @@
                         <div class="col-sm-auto">
                             <div class="d-flex align-items-center gap-2 text-muted">
                                 <div>Toplam :</div>
-                                <h5 class="fs-14 mb-0">$<span class="product-line-price">{{item.product.price * item.quantity}}</span></h5>
+                                <h5 class="fs-14 mb-0"><span class="product-line-price">{{item.product.netPrice * item.quantity}} TL</span></h5>
                             </div>
                         </div>
                     </div>
@@ -73,7 +85,7 @@
                     </div>
                     <div class="card-header bg-light-subtle border-bottom-dashed">
                         <div class="text-center">
-                            <h6 class="mb-2">Have a <span class="fw-semibold">promo</span> code ?</h6>
+                            <h6 class="mb-2">Promosyon<span class="fw-semibold">kodunuz</span> var mı ?</h6>
                         </div>
                         <div class="hstack gap-3 px-3 mx-n3">
                             <input class="form-control me-auto" type="text" placeholder="Enter coupon code"
@@ -87,17 +99,17 @@
                                 <tbody>
                                     <tr>
                                         <td>Ürün Tutarı :</td>
-                                        <td class="text-end">$ <span id="cart-subtotal">{{cartTotalPrice}}</span></td>
+                                        <td class="text-end"><span id="cart-subtotal">{{cartTotalPrice}}</span> TL</td>
                                     </tr>
                                     <tr>
                                         <td>Kargo Tutarı :</td>
-                                        <td class="text-end">$ <span id="cart-shipping">30.00</span></td>
+                                        <td class="text-end"><span id="cart-shipping">30.00</span>  TL</td>
                                     </tr>
                                     <tr class="table-active">
-                                        <th>Total (USD) :</th>
+                                        <th>Toplam (TL) :</th>
                                         <td class="text-end">
                                             <span class="fw-semibold">
-                                                $ <span id="cart-total">{{cartTotalPrice}}</span>
+                                                <span id="cart-total">{{cartTotalPrice}}</span> TL
                                             </span>
                                         </td>
                                     </tr>

@@ -33,6 +33,7 @@ import { ErrorService } from 'src/app/services/Helper/errorService/error.service
  * ProductDetail Component
  */
 export class ProductDetailComponent implements OnInit {
+  
   public Editor = Editor;
   // bread crumb items
 

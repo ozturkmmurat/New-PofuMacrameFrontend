@@ -1,5 +1,3 @@
-
-
 export interface PasswordResetParameter{
     email:string
     code:string

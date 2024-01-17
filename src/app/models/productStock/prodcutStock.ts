@@ -5,7 +5,7 @@ export interface ProductStock{
     quantity:number,
     price:number
     kdv:number,
-    kdvAmount:number,
+    kdvAmount?:number,
     netPrice:number
     stockCode:string
 }

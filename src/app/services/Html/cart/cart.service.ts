@@ -92,7 +92,7 @@ export class CartService {
   get cartTotalPrice() {
     let cartList = this.cartItemList()
     let totalPrice = cartList.reduce((total, product) => {
-      return total + product.quantity * product.product.price;
+      return total + product.quantity * product.product.netPrice;
     }, 0)
     return totalPrice;
   }

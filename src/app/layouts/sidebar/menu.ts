@@ -37,76 +37,35 @@ export const MENU: MenuItem[] = [
           },
           {
             id: 14,
-            label: 'MENUITEMS.APPS.LIST.PRODUCTDETAILS',
-            link: 'ecommerce/product-detail/1',
-            parentId: 12
-          },
-          {
-            id: 15,
             label: 'MENUITEMS.APPS.LIST.CREATEPRODUCT',
             link: 'ecommerce/add-product',
             parentId: 12
           },
           {
             id: 16,
-            label: 'MENUITEMS.APPS.LIST.ORDERS',
-            link: 'ecommerce/orders',
-            parentId: 12
-          },
-          {
-            id: 17,
-            label: 'MENUITEMS.APPS.LIST.ORDERDETAILS',
-            link: 'ecommerce/order-details',
-            parentId: 12
-          },
-          {
-            id: 18,
-            label: 'MENUITEMS.APPS.LIST.CUSTOMERS',
-            link: 'ecommerce/customers',
-            parentId: 12
-          },
-          {
-            id: 19,
-            label: 'MENUITEMS.APPS.LIST.SHOPPINGCART',
-            link: 'ecommerce/cart',
-            parentId: 12
-          },
-          {
-            id: 20,
-            label: 'MENUITEMS.APPS.LIST.CHECKOUT',
-            link: 'ecommerce/checkout',
-            parentId: 12
-          },
-          {
-            id: 21,
-            label: 'MENUITEMS.APPS.LIST.SELLERS',
-            link: 'ecommerce/sellers',
-            parentId: 12
-          },
-          {
-            id: 22,
-            label: 'MENUITEMS.APPS.LIST.SELLERDETAILS',
-            link: 'ecommerce/seller-details',
-            parentId: 12
-          },
-          {
-            id: 23,
             label: 'MENUITEMS.APPS.LIST.CATEGORIES',
             link: 'ecommerce/categories',
             parentId: 12
           },
           {
-            id: 24,
+            id: 17,
             label: 'MENUITEMS.APPS.LIST.ORDERLIST',
             link: 'ecommerce/orderList',
             parentId: 12
           },
           {
-            id: 25,
+            id: 18,
             label: 'MENUITEMS.APPS.LIST.ORDEREDPRODUCTS',
             link: 'ecommerce/orderedProducts',
             parentId: 12
+          },
+          {
+            id: 19,
+            label: 'MENUITEMS.APPS.LIST.ATTRIBUTES',
+            link: 'ecommerce/attributes',
+            parentId: 12
           }
+
 
         ]
       }

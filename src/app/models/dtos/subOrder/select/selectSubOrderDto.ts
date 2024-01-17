@@ -6,5 +6,7 @@ export interface SelectSubOrderDto{
     attribute:string
     imagePath:string,
     price:number,
+    kdv:number,
+    netPrice:number
     subOrderStatus:number
 }

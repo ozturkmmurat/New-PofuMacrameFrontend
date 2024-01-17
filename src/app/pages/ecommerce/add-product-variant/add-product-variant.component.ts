@@ -53,6 +53,13 @@ export class AddProductVariantComponent {
     }
   }
 
+  updateKdvAmount(index : number) {
+    const selectedKdv = +this.productStocksArray.controls[index].get('kdv')?.value;
+    const price = +this.productStocksArray.controls[index].get('price')?.value;
+    const kdvAmount = (price * selectedKdv) / 100;
+    this.productStocksArray.controls[index].get('kdvAmount').setValue(kdvAmount);
+}
+
   productVariantForm() {
     this.product$.subscribe((product) => {
       console.log('Gelen id', product.categoryId);
@@ -67,7 +74,7 @@ export class AddProductVariantComponent {
           this.formBuilder.group({
             price: new FormControl(0),
             quantity: new FormControl(0),
-            kdv: [Number(0), Validators.required],
+            kdv: [Number(1), Validators.required],
             kdvAmount: [0, Validators.required],
             netPrice: [0, Validators.required],
             stockCode: [''],
@@ -90,11 +97,32 @@ export class AddProductVariantComponent {
       this.categoryAttributeService
         .getAllTrueSlicerAttribute(response.categoryId)
         .subscribe((response) => {
+          this.isVariantFalse()
           console.log('Response data', response.data);
           this.viewCategoryAttributeDto = response.data;
         });
     });
   }
+
+  isVariantFalse(){
+    if(!this._productVariantForm.value.isVariant){
+      console.log("Giriş yapıldı")
+      this.productStocksArray.clear()
+      this.cartesianProduct.splice(0, this.cartesianProduct.length)
+      this.jsonData = {}
+      this._productVariantForm.get('jsonData').setValue({})
+      const productStock = this.formBuilder.group({
+        price:new FormControl(0),
+        quantity:new FormControl(0),
+        kdv:[Number(1), Validators.required],
+        kdvAmount:[0, Validators.required],
+        netPrice:[0, Validators.required],
+        stockCode:['']
+      })
+      this.productStocksArray.push(productStock)
+    }
+  }
+
 
   onSelectionChange(
     attributeName: string,
@@ -112,7 +140,6 @@ export class AddProductVariantComponent {
     this.cartesianProduct.splice(0, this.cartesianProduct.length);
 
     if (this._productVariantForm.value.isVariant == true) {
-      this.productStocksArray.clear();
       this.cartesianProduct = this.calculateCartesianProduct();
       this.createProductFormArray(this.cartesianProduct.length);
       this.generateFormattedData();
@@ -163,13 +190,12 @@ export class AddProductVariantComponent {
       const productStocksGroup = this.formBuilder.group({
         price: new FormControl(0, Validators.required),
         quantity: new FormControl(0, Validators.required),
-        kdv: [Number(0), Validators.required],
+        kdv: [Number(1), Validators.required],
         kdvAmount: [0, Validators.required],
         netPrice: [0, Validators.required],
         stockCode: ['', Validators.required],
       });
       this.productStocksArray.push(productStocksGroup);
-      console.log("Pushlanan değer", productStocksGroup)
     }
   }
 
@@ -189,19 +215,13 @@ export class AddProductVariantComponent {
   }
 
   async removeVariantHtml(index: number) {
-    console.log('Gelen index numarası', index);
     const key = index.toString(); // İndeks değerini bir dizeye çevirin.
     this.removeJsonDataArray(index)
     this.productStocksArray.removeAt(index);
     this.cartesianProduct.splice(index, 1);
-    console.log('Cartesian product', this.cartesianProduct);
-    console.log('Stok', this.productStocksArray);
-    console.log('Json data', this.jsonData);
   }
 
   addProductVariant() {
-    console.log(this._productVariantForm);
-    console.log(this._productVariantForm.value);
     if (this._productVariantForm.valid) {
       let productModel = Object.assign({}, this._productVariantForm.value);
       this.productService

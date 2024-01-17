@@ -8,6 +8,8 @@ export interface ProductVariantAttributeValueDto{
     attributeValue:string,
     imagePath:string,
     price:number,
+    kdv:number,
+    netPrice:number
     quantity:number,
     
     isActiveAttribute:boolean //Urun detay da attribute aktif olup olmadıgını yonetmek icin db ile veya herhangi bir şey ile alakası yok

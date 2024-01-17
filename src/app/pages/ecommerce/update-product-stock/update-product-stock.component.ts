@@ -26,6 +26,7 @@ export class UpdateProductStockComponent {
 
   ngOnInit(){
     this.productStockForm()
+    this.updateKdvAmount()
   }
 
   productStockForm(){
@@ -36,6 +37,9 @@ export class UpdateProductStockComponent {
       productVariantId:[this.productStock.productVariantId, Validators.required],
       quantity:[this.productStock.quantity, Validators.required],
       price:[this.productStock.price, Validators.required],
+      kdv:[this.productStock.kdv, Validators.required],
+      kdvAmount:[0, Validators.required],
+      netPrice:[this.productStock.netPrice, Validators.required],
       stockCode:[this.productStock.stockCode, Validators.required]
     })
   }
@@ -60,4 +64,12 @@ export class UpdateProductStockComponent {
       this.productStockService.productStocks$.next(response.data)
     }))
   }
+
+  updateKdvAmount() {
+    const selectedKdv = +this._productStockForm.get('kdv')?.value;
+    const price = +this._productStockForm.get('price')?.value;
+    const kdvAmount = (price * selectedKdv) / 100;
+    this._productStockForm.get('kdvAmount').setValue(kdvAmount);
+    this._productStockForm.get('netPrice').setValue(price + kdvAmount)
+}
 }

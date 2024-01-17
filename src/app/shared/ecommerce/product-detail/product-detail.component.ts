@@ -214,6 +214,7 @@ export class ProductDetailComponent implements OnInit {
             //Eger son attribute grubunda isek ve quantity 0 eşit ve az ise bunlar ile iglili sepete ekleme gibi işlemleri aktif hale getirilemeyecek şekilde price ve endproductvariantId bilgilerini 0 olarak belirle
             else if (i == response.data.length - 1 && this.productVariantAttributes[i].productVariantAttributeValueDtos[j].quantity <= 0) {
               this.productVariantAttributeValueDto.price = 0;
+              this.productVariantAttributeValueDto.netPrice = 0;
               this.productVariantAttributeValueDto.endProductVariantId = 0;
               response.data[i].productVariantAttributeValueDtos[j].isActiveAttribute = false
             }
@@ -257,6 +258,7 @@ export class ProductDetailComponent implements OnInit {
           }
           else if (i == response.data.length - 1 && response.data[i].productVariantAttributeValueDtos[j].quantity <= 0) {
             this.productVariantAttributeValueDto.price = 0;
+            this.productVariantAttributeValueDto.netPrice = 0;
             this.productVariantAttributeValueDto.endProductVariantId = 0;
           }
           else {
@@ -293,9 +295,10 @@ export class ProductDetailComponent implements OnInit {
     })
   }
 
-  writeStock(id: number, price: number) {
+  writeStock(id: number, price: number, netPrice : number) {
     this.productVariantAttributeValueDto.endProductVariantId = id
     this.productVariantAttributeValueDto.price = price
+    this.productVariantAttributeValueDto.netPrice = netPrice
   }
 
   addCart() {
@@ -306,6 +309,7 @@ export class ProductDetailComponent implements OnInit {
       productVariant.productName = this.product.productName
       productVariant.categoryName = this.product.categoryName
       productVariant.imagePath = this.keepImage
+      console.log("Sepete eklenen ürünün bilgisi", productVariant)
       this.cartService.addToCart(productVariant);
       this.toastrService.success("Ürün başarıyla sepete eklendi.")
     } else {

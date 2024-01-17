@@ -39,8 +39,8 @@ export class NavbarComponent {
 
     logOut(){
       this.localStorageService.removeTokens()
-      this.userService._user.update(null);
-      this.router.navigate(["/auth/login"]);
+      this.userService._user.set(null);
+      this.router.navigate([""]);
 
     }
 }

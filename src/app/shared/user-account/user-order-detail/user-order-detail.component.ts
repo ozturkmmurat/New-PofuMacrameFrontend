@@ -120,6 +120,7 @@ export class UserOrderDetailComponent {
           .subscribe((response) => {
             this.toastrService.success("Siparişiniz başarıyla iptal edilmiştir.")
             this.cancelRefundStatus = true
+            this.getOrderDetail(this.orderId, this.userService._user().id)
             this.closeModal()
           })
     }

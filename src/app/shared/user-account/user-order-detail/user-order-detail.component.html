@@ -15,9 +15,11 @@
                     <b title="{{orderDetail.selectSubOrderDtos.length}}">{{orderDetail.selectSubOrderDtos.length
                         }} Ürün</b>
                 </div>
-                <div class="col-lg-2">
+                <div class="col-lg-2"
+                    *ngIf="orderDetail.orderStatus == 1 || orderDetail.orderStatus == 2 || orderDetail.orderStatus == 3">
                     <a>
-                        <button type="submit" class="btn btn-danger" (click)="openModal(cancelOrderModal)">Siparişi İptal Et</button>
+                        <button type="submit" class="btn btn-danger" (click)="openModal(cancelOrderModal)">Siparişi
+                            İptal Et</button>
                     </a>
                 </div>
 
@@ -71,10 +73,19 @@
                                 <div class="product-summary">
                                     <span>{{subOrder.attribute}}</span>
                                 </div>
-                                <span><span class="product-box-info-price-selling">{{subOrder.price | number : '1.2-2'}} TL</span></span>
+                                <span>Ürün Ücreti:<span class="product-box-info-price-selling"> {{subOrder.price |
+                                        number : '1.2-2'}} TL</span></span>
+                                <br>
+                                <span>Kdv:<span class="product-box-info-price-selling"> {{subOrder.kdv}} %</span></span>
+                                <br>
+                                <span>Kdv Dahil Ücret:<span class="product-box-info-price-selling"> {{subOrder.netPrice
+                                        | number : '1.2-2'}} TL</span></span>
+
                             </a>
                             <div>
-                                <button *ngIf="subOrder.subOrderStatus != 4 && subOrder.subOrderStatus != 5 " type="submit" class="btn btn-danger" (click)="openModal(refundingProduct)" (click)="writeRefundProduct(subOrder)">Ürünü İade Et</button>
+                                <button *ngIf="subOrder.subOrderStatus != 4 && subOrder.subOrderStatus != 5 "
+                                    type="submit" class="btn btn-danger" (click)="openModal(refundingProduct)"
+                                    (click)="writeRefundProduct(subOrder)">Ürünü İade Et</button>
                             </div>
                         </div>
                     </div>
@@ -98,7 +109,7 @@
                         <span>Teslimat Adresi</span>
                     </div>
                     <span class="address-description">
-                        {{'Ad :' + orderDetail.firstName + ' Soyad:' + orderDetail.lastName }} 
+                        {{'Ad :' + orderDetail.firstName + ' Soyad:' + orderDetail.lastName }}
                     </span>
                     <span class="address-description">
                         {{orderDetail.address}}

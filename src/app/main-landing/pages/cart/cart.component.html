@@ -42,12 +42,12 @@
                                     class="text-reset">{{productVariant.product.productName}} + {{" "}} + {{productVariant.product.attributeValue}}</a>
                             </h6>
                             <p class="mb-0 fs-12 text-muted">
-                                Adet: <span>{{productVariant.quantity}} x ${{productVariant.product.price}}</span>
+                                Adet: <span>{{productVariant.quantity}} x {{productVariant.product.netPrice}} TL</span>
                             </p>
                         </div>
                         <div class="px-2">
-                            <h5 class="m-0 fw-normal">$ <span class="item_price">{{productVariant.quantity *
-                                productVariant.product.price}}</span></h5>
+                            <h5 class="m-0 fw-normal"> <span class="item_price">{{productVariant.quantity *
+                                productVariant.product.netPrice}} TL</span></h5>
                         </div>
                         <div class="ps-2">
                             <button type="button" class="btn btn-icon btn-sm btn-ghost-secondary"
