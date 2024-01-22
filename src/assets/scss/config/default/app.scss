@@ -114,7 +114,8 @@ File: Main Css File
 
 //Main Css
 @import "../../main/ckEditor/ckEditor.scss";
-@import "../../main/components/home.scss"
+@import "../../main/components/home.scss";
+@import "../../../scss/main/navbarDropdown/navbar-dropdown.scss";
 
 // RTL Set
 // @import "../../rtl/components-rtl";

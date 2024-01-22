@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-landing job-navbar is-sticky" id="navbar">
+<!-- <nav class="navbar navbar-expand-lg navbar-landing job-navbar is-sticky" id="navbar" *ngIf="categories">
     <div class="container-fluid custom-container">
         <a class="navbar-brand" routerLink="">
             <img loading="lazy" src="assets/images/logo2.jpg" class="card-logo card-logo-dark" alt="logo dark">
@@ -19,25 +19,147 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0);"
-                        [ngClass]="{'active':currentSection === 'process'}">Hediye</a>
+                        [ngClass]="{'active':currentSection === 'blog'}">İletişim</a>
+                </li>
+                <ng-container *ngIf="categories">
+                    <li class="nav-item w-100"
+                        *ngFor="let navbarCategory of categories!" ngbDropdown>
+                        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" ngbDropdownToggle>
+                            {{navbarCategory.categoryName}}
+                        </a>
+                        <ng-container *ngIf="navbarCategory.subCategories && navbarCategory.subCategories.length > 0">
+                            <div ngbDropdownMenu class="dropdown-menu w-100 mt-2" aria-labelledby="navbarDropdown"
+                                style="border-top-left-radius: 0;
+                            border-top-right-radius: 0;">
 
-                </li>
+                                <div class="container">
+                                    <div class="row my-4">
+                                        <div class="col-md-6 col-lg-3 mb-3 mb-lg-0"
+                                            *ngFor="let category of navbarCategory.subCategories">
+                                            <div class="list-group list-group-flush">
+                                                <p class="mb-0 list-group-item text-uppercase font-weight-bold">
+                                                    {{category.categoryName}}</p>
+                                                <ng-container
+                                                    *ngIf="category.subCategories && category.subCategories.length > 0">
+                                                    <ng-container *ngFor="let subCategory of category.subCategories">
+                                                        <a href=""
+                                                            class="list-group-item list-group-item-action">{{subCategory.categoryName}}</a>
+                                                        <a href="" class="list-group-item list-group-item-action"></a>
+                                                        <a href="" class="list-group-item list-group-item-action"></a>
+                                                        <a href="" class="list-group-item list-group-item-action"></a>
+                                                        <a href="" class="list-group-item list-group-item-action"></a>
+                                                        <a href="" class="list-group-item list-group-item-action"></a>
+                                                        <a href="" class="list-group-item list-group-item-action"></a>
+                                                        <a href="" class="list-group-item list-group-item-action"></a>
+                                                        <a href="" class="list-group-item list-group-item-action"></a>
+                                                        <a href="" class="list-group-item list-group-item-action"></a>
+                                                    </ng-container>
+                                                </ng-container>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </li>
+                </ng-container>
+            </ul> -->
+
+            <!-- Cart -->
+            <!-- <app-cart></app-cart>
+
+            <div class="search-div" *ngIf="user == null">
+                <a routerLink="/auth/login" class="btn btn-soft-primary"><i
+                        class="ri-user-3-line align-bottom me-1"></i> Giriş Yap & Kayıt Ol</a>
+            </div>
+
+            <div class="dropdown ms-sm-3 header-item topbar-user" *ngIf="user" ngbDropdown>
+                <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>
+                    <span class="d-flex align-items-center">
+                        <img class="rounded-circle header-profile-user" src="assets/images/users/avatar-1.jpg"
+                            alt="Header Avatar">
+                        <span class="text-start ms-xl-2">
+                            <span
+                                class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{user.firstName}}</span>
+                        </span>
+                    </span>
+                </button>
+                <div class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+                    <a ngbDropdownItem  routerLink="/userAccount/myaccount"><i
+                            class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span
+                            class="align-middle">Hesabım</span></a>
+                    <div class="dropdown-divider"></div>
+                    <a ngbDropdownItem  href="javascript: void(0);" (click)="logOut()"><i
+                            class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle"
+                            data-key="t-logout">Çıkış Yap</span></a>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</nav> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-landing job-navbar is-sticky" id="navbar" >
+    <div class="container-fluid custom-container">
+        <a class="navbar-brand" routerLink="">
+            <img loading="lazy" src="assets/images/logo2.jpg" class="card-logo card-logo-dark" alt="logo dark">
+            <img loading="lazy" src="assets/images/logo2.jpg" class="card-logo card-logo-light" alt="logo light">
+        </a>
+        <button class="navbar-toggler py-0 fs-20 text-body" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation" (click)="collapse.toggle()">
+            <i class="mdi mdi-menu"></i>
+        </button>
+
+        <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed" class="collapse navbar-collapse"
+            id="navbarSupportedContent">
+            <ul  class="navbar-nav mx-auto mt-2 mt-lg-0 d-flex" id="navbar-example">
                 <li class="nav-item">
-                    <a class="nav-link" href="javascript:void(0);"
-                        [ngClass]="{'active':currentSection === 'categories'}">Bebek & Çocuk</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="javascript:void(0);"
-                        [ngClass]="{'active':currentSection === 'findJob'}">İp Çeşitleri</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="javascript:void(0);"
-                        [ngClass]="{'active':currentSection === 'candidates'}">İğnelikler</a>
+                    <a class="nav-link active" href="javascript:void(0);" routerLink=""
+                        [ngClass]="{'active':currentSection === 'hero'}">Anasayfa</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0);"
                         [ngClass]="{'active':currentSection === 'blog'}">İletişim</a>
                 </li>
+
+                  <div  class="d-flex" *ngFor="let navbarCategory of categories let i = index" > <!-- Bootstrap container ekleyin -->
+                        <li class="nav-item dropdown dropdown-hover position-static megamenu-li dmenu" (mouseenter)="showDropdown(i)" 
+                        (mouseleave)="hideDropdown(i)">
+                        <a class="nav-link dropdown-toggle" [id]="'dropdown'+i" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="toggleDropdown(i)"
+                            >{{navbarCategory.categoryName}}</a>
+                        <div class="dropdown-menu dropdown-menu-end megamenu sm-menu border-top border-bottom" [attr.aria-labelledby]="'dropdown' + i"
+                               style="width: 100%;" [ngClass]="{'show': isDropdownOpen[i]}" (mouseenter)="showDropdown(i)" 
+                               (mouseleave)="hideDropdown(i)">
+                                <div class="row">
+                                    <ng-container *ngIf="navbarCategory.subCategories && navbarCategory.subCategories.length > 0">
+                                        <div class="col-sm-6 col-lg-3 border-end mb-4" *ngFor="let category of navbarCategory.subCategories">
+                                            <h5><strong>{{category.categoryName}}</strong></h5>
+                                            <a ngbDropdownItem  *ngFor="let subCategory of category.subCategories">{{subCategory.categoryName}}</a>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </li>
+                        </div>
+
+
+                  
             </ul>
 
             <!-- Cart -->
@@ -48,23 +170,24 @@
                         class="ri-user-3-line align-bottom me-1"></i> Giriş Yap & Kayıt Ol</a>
             </div>
 
-            <div class="dropdown ms-sm-3 header-item topbar-user" *ngIf="user"  ngbDropdown>
+            <div class="dropdown ms-sm-3 header-item topbar-user" *ngIf="user" ngbDropdown>
                 <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>
                     <span class="d-flex align-items-center">
                         <img class="rounded-circle header-profile-user" src="assets/images/users/avatar-1.jpg"
                             alt="Header Avatar">
                         <span class="text-start ms-xl-2">
-                            <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{user.firstName}}</span>
+                            <span
+                                class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{user.firstName}}</span>
                         </span>
                     </span>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
-                    <a class="dropdown-item" routerLink="/userAccount/myaccount"><i
+                    <a ngbDropdownItem  routerLink="/userAccount/myaccount"><i
                             class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span
                             class="align-middle">Hesabım</span></a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="javascript: void(0);" (click)="logOut()"><i
+                    <a ngbDropdownItem  href="javascript: void(0);" (click)="logOut()"><i
                             class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle"
                             data-key="t-logout">Çıkış Yap</span></a>
 

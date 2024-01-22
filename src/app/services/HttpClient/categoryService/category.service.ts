@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { Category } from 'src/app/models/category/category';
+import { SelectCategoryDto } from 'src/app/models/dtos/category/select/selectCategoryDto';
 import { ListResponseModel } from 'src/app/models/responseModel/listResponseModel';
 import { ResponseModel } from 'src/app/models/responseModel/responseModel';
 import { environment } from 'src/environments/environment';
@@ -16,6 +17,11 @@ export class CategoryService {
   getAll():Observable<ListResponseModel<Category>>{
     let newPath = environment.apiUrl + "categories/getAll"
     return this.httpClient.get<ListResponseModel<Category>>(newPath);
+  }
+
+  getAllCategoryHierarchy():Observable<ListResponseModel<SelectCategoryDto>>{
+    let newPath = environment.apiUrl + "categories/getAllCategoryHierarchy"
+    return this.httpClient.get<ListResponseModel<SelectCategoryDto>>(newPath);
   }
 
   add(category : Category):Observable<ResponseModel>{

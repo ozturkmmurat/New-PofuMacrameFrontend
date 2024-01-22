@@ -1,0 +1,68 @@
+.megamenu-li {
+	position: static;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: #1ebdc2;
+}
+
+.navbar-light .navbar-nav .nav-link:focus, .navbar-light .navbar-nav .nav-link:hover {
+    color: #fff;
+}
+.navbar-light .navbar-nav .nav-link{
+    padding-top: 22px;
+    padding-bottom: 22px;
+    transition: 0.3s;
+    padding-left: 24px;
+    padding-right: 24px;
+        font-size: 14px;
+}
+.navbar-light .navbar-nav .nav-link:focus, .navbar-light .navbar-nav .nav-link:hover{
+    background: #D89122 !important;
+    transition: 0.3s;
+}
+
+
+.megamenu-li {
+	position: static;
+}
+
+.megamenu {
+	position: absolute;
+	width: 100%;
+	left: 0;
+	right: 0;
+	padding: 15px;
+}
+.megamenu h6{
+    margin-left: 21px;
+}
+.megamenu i{
+    width: 20px;
+}
+
+.sm-menu{
+    border-radius: 0px;
+    border: 0px;
+    box-shadow: rgba(173, 173, 173, 0.2) 1px 3px 4px 0px;
+}
+
+
+.navbar-nav .nav-item.dropdown {
+    position: static;
+}
+
+.navbar-nav .nav-item.dropdown:hover .dropdown-menu {
+    margin: 0;
+    transform: translate(0, 0%);
+}
+
+.dropdown-item .dropdown-item:active{
+    padding: 0px;
+   
+}
+
+.dropdown-item:active{
+    background-color: #D89122 !important;
+    transition: 0.3s !important;
+}
