@@ -132,6 +132,7 @@ export class ProductListComponent {
   getAllProductVariantDto() {
     this.checkStartEndLength()
     this.productService.getAllProductVariantDtoPv(this.filterProduct).subscribe(response => {
+      console.log("Gelen data ürün", response.data)
       this.startLengthState = true
       this.productVariants = [...this.productVariants, ...response.data];
       if (this.filterProduct.startLength < this.totalProduct) {

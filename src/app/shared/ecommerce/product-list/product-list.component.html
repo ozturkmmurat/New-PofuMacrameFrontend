@@ -23,6 +23,70 @@
 
       <div class="accordion accordion-flush">
         <div class="card-body border-bottom">
+          <div>
+            <p class="text-muted text-uppercase fs-12 fw-medium mb-2">Products</p>
+            <ul class="list-unstyled mb-0 filter-list">
+              <li class="filter-list-option">
+                <a href="javascript:void(0);" class="d-flex py-1 align-items-center">
+                  <div class="flex-grow-1">
+                    <h5 class="fs-13 mb-0 listname">Grocery</h5>
+                  </div>
+                </a>
+              </li>
+              <li class="filter-list-option">
+                <a href="javascript:void(0);" class="d-flex py-1 align-items-center">
+                  <div class="flex-grow-1">
+                    <h5 class="fs-13 mb-0 listname">Fashion</h5>
+                  </div>
+                </a>
+              </li>
+              <li class="filter-list-option">
+                <a href="javascript:void(0);" class="d-flex py-1 align-items-center">
+                  <div class="flex-grow-1">
+                    <h5 class="fs-13 mb-0 listname">Watches</h5>
+                  </div>
+                </a>
+              </li>
+              <li class="filter-list-option">
+                <a href="javascript:void(0);" class="d-flex py-1 align-items-center">
+                  <div class="flex-grow-1">
+                    <h5 class="fs-13 mb-0 listname">Electronics</h5>
+                  </div>
+                </a>
+              </li>
+              <li class="filter-list-option">
+                <a href="javascript:void(0);" class="d-flex py-1 align-items-center">
+                  <div class="flex-grow-1">
+                    <h5 class="fs-13 mb-0 listname">Furniture</h5>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="javascript:void(0);" class="d-flex py-1 align-items-center">
+                  <div class="flex-grow-1">
+                    <h5 class="fs-13 mb-0 listname">Automotive Accessories</h5>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="javascript:void(0);" class="d-flex py-1 align-items-center">
+                  <div class="flex-grow-1">
+                    <h5 class="fs-13 mb-0 listname">Appliances</h5>
+                  </div>
+                </a>
+              </li>
+
+              <li>
+                <a href="javascript:void(0);" class="d-flex py-1 align-items-center">
+                  <div class="flex-grow-1">
+                    <h5 class="fs-13 mb-0 listname">Kids</h5>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="card-body border-bottom">
           <p class="text-muted text-uppercase fs-12 fw-medium mb-4">Fiyat</p>
           <ngx-slider [(value)]="minPrice" [(highValue)]="maxPrice" [options]="options"
             id="product-price-range"></ngx-slider>
@@ -93,7 +157,7 @@
             *ngFor="let variant of productVariants | priceFilter:minPrice:maxPrice | productSearch: filterText let i = index">
             <div _ngcontent-fbe-c135="" class="card">
               <div _ngcontent-fbe-c135="" class="card-body">
-                <div _ngcontent-fbe-c135="" class="product-img position-relative thumbnail">
+                <div _ngcontent-fbe-c135="" class="product-img position-relative thumbnail" *ngIf="variant.productPaths">
                   <a _ngcontent-fbe-c135="" href="/product-detail/1">
                     <img _ngcontent-fbe-c135="" alt="" class="img-fluid mx-auto d-block picture1"
                       src="{{imageFolderUrl+variant.productPaths[0]}}"
@@ -122,7 +186,7 @@
                   </p>
                   <h5 _ngcontent-fbe-c135="" class="my-0">
                     <span _ngcontent-fbe-c135="" class="text-muted me-2"><del _ngcontent-fbe-c135="">TRY
-                        {{variant.price}}</del></span><b _ngcontent-fbe-c135="">$ {{variant.price}}</b>
+                        {{variant.netPrice}}</del></span><b _ngcontent-fbe-c135="">$ {{variant.netPrice}}</b>
                   </h5>
                 </div>
               </div>

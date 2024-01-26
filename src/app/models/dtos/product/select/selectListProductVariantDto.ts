@@ -8,6 +8,6 @@ export interface SelectListProductVariantDto{
     attributeValue: AttributeValue[],
     stockCode:string,
     productPaths:string[],
-    price:number
+    netPrice:number
     quantity:number
 }

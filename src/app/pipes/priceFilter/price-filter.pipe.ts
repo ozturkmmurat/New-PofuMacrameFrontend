@@ -8,7 +8,7 @@ export class PriceFilterPipe implements PipeTransform {
 
   transform(products: SelectListProductVariantDto[], minPrice: number, maxPrice: number): SelectListProductVariantDto[] {
     return products.filter(product => {
-      const price = product.price;
+      const price = product.netPrice;
       return (!minPrice || price >= minPrice) && (!maxPrice || price <= maxPrice);
     });
   }

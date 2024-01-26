@@ -58,7 +58,8 @@
                                                     </span>
                                                     <input type='number' class='form-control' id='product-price-input'
                                                         placeholder='Enter price' aria-label='Price'
-                                                        aria-describedby='product-price-addon' formControlName="price" (input)="updateKdvAmount(i)"
+                                                        aria-describedby='product-price-addon' formControlName="price"
+                                                        (input)="updateKdvAmount(i)"
                                                         [value]="this.productStocksArray.controls[i].get('price')?.value">
                                                 </div>
                                             </div>
@@ -93,11 +94,12 @@
 
                                         <div class="col-sm-3">
                                             <div class="mb-3">
-                                                <label class='form-label' for='product-stock-input'>Kdv % Seçiniz</label>
+                                                <label class='form-label' for='product-stock-input'>Kdv %
+                                                    Seçiniz</label>
                                                 <div class="input-group mb-3">
                                                     <select class="form-select" name="choices-category-input"
-                                                        formControlName="kdv"
-                                                        data-choices data-choices-search-false (change)="updateKdvAmount(i)">
+                                                        formControlName="kdv" data-choices data-choices-search-false
+                                                        (change)="updateKdvAmount(i)">
                                                         <option [ngValue]="1">%1</option>
                                                         <option [ngValue]="10">%10</option>
                                                         <option [ngValue]="20">%20</option>
@@ -105,27 +107,32 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <div class='col-sm-3'>
-                                            <div class='mb-3'> 
+                                            <div class='mb-3'>
                                                 <label class='form-label' for='product-stock-input'>Kdv Tutarı</label>
                                                 <div class='input-group mb-3'>
                                                     <span class='input-group-text' id='net-price-addon'></span>
                                                     <input type='number' class='form-control' id='kdv-amount'
-                                                        placeholder='KDV Tutarı' aria-label='KdvAmount' formControlName="kdvAmount" [value]="this.productStocksArray.controls[i].get('kdvAmount').value | number:'1.2'" readonly>
+                                                        placeholder='KDV Tutarı' aria-label='KdvAmount'
+                                                        formControlName="kdvAmount"
+                                                        [value]="this.productStocksArray.controls[i].get('kdvAmount').value | number:'1.2'"
+                                                        readonly>
                                                 </div>
                                             </div>
                                         </div>
-    
+
                                         <div class='col-sm-3'>
                                             <div class='mb-3'> <label class='form-label' for='product-stock-input'>Net
                                                     Fiyat</label>
                                                 <div class='input-group mb-3'>
                                                     <span class='input-group-text' id='net-price-addon'></span>
                                                     <input type='number' class='form-control' id='product-stock-input'
-                                                        placeholder='Enter Stock Code' aria-label='Net Price'
-                                                        aria-describedby='product-stock-addon' formControlName="netPrice" [attr.disabled]="false"
-                                                        [value]="this.productStocksArray.controls[i].get('netPrice').setValue(this.productStocksArray.controls[i].get('kdvAmount')?.value + this.productStocksArray.controls[i].get('price')?.value | number:'1.2')" readonly>
+                                                        placeholder='Stok Kodunu Girin' aria-label='Net Fiyat'
+                                                        aria-describedby='product-stock-addon'
+                                                        formControlName="netPrice" [attr.disabled]="false"
+                                                        [value]="this.productStocksArray.controls[i].get('netPrice').setValue(+this.productStocksArray.controls[i].get('kdvAmount')?.value + +this.productStocksArray.controls[i].get('price')?.value)"
+                                                        readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -167,7 +174,8 @@
                                                 </span>
                                                 <input type='number' class='form-control' id='product-price-input'
                                                     placeholder='Enter price' aria-label='Price'
-                                                    aria-describedby='product-price-addon' formControlName="price" (input)="updateKdvAmount(0)"
+                                                    aria-describedby='product-price-addon' formControlName="price"
+                                                    (input)="updateKdvAmount(0)"
                                                     [value]="this.productStocksArray.controls[0].get('price')?.value">
                                             </div>
                                         </div>
@@ -203,8 +211,8 @@
                                             <label class='form-label' for='product-stock-input'>Kdv % Seçiniz</label>
                                             <div class="input-group mb-3">
                                                 <select class="form-select" name="choices-category-input"
-                                                    formControlName="kdv"
-                                                    data-choices data-choices-search-false (change)="updateKdvAmount(0)">
+                                                    formControlName="kdv" data-choices data-choices-search-false
+                                                    (change)="updateKdvAmount(0)">
                                                     <option [ngValue]="1">%1</option>
                                                     <option [ngValue]="10">%10</option>
                                                     <option [ngValue]="20">%20</option>
@@ -212,14 +220,17 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <div class='col-sm-3'>
-                                        <div class='mb-3'> 
+                                        <div class='mb-3'>
                                             <label class='form-label' for='product-stock-input'>Kdv Tutarı</label>
                                             <div class='input-group mb-3'>
                                                 <span class='input-group-text' id='net-price-addon'></span>
                                                 <input type='number' class='form-control' id='kdv-amount'
-                                                    placeholder='KDV Tutarı' aria-label='KdvAmount' formControlName="kdvAmount" [value]="this.productStocksArray.controls[0].get('kdvAmount').value | number:'1.2'" readonly>
+                                                    placeholder='KDV Tutarı' aria-label='KdvAmount'
+                                                    formControlName="kdvAmount"
+                                                    [value]="this.productStocksArray.controls[0].get('kdvAmount').value | number:'1.2'"
+                                                    readonly>
                                             </div>
                                         </div>
                                     </div>
@@ -230,9 +241,11 @@
                                             <div class='input-group mb-3'>
                                                 <span class='input-group-text' id='net-price-addon'></span>
                                                 <input type='number' class='form-control' id='product-stock-input'
-                                                    placeholder='Enter Stock Code' aria-label='Net Price'
-                                                    aria-describedby='product-stock-addon' formControlName="netPrice" [attr.disabled]="false"
-                                                    [value]="this.productStocksArray.controls[0].get('netPrice').setValue(this.productStocksArray.controls[0].get('kdvAmount')?.value + this.productStocksArray.controls[0].get('price')?.value | number : '1.2') " readonly>
+                                                    placeholder='Stok Kodunu Girin' aria-label='Net Fiyat'
+                                                    aria-describedby='product-stock-addon' formControlName="netPrice"
+                                                    [attr.disabled]="false"
+                                                    [value]="this.productStocksArray.controls[0].get('netPrice').setValue(+this.productStocksArray.controls[0].get('kdvAmount')?.value + +this.productStocksArray.controls[0].get('price')?.value)"
+                                                    readonly>
                                             </div>
                                         </div>
                                     </div>
