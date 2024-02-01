@@ -65,8 +65,8 @@
                 </ng-container>
             </ul> -->
 
-            <!-- Cart -->
-            <!-- <app-cart></app-cart>
+<!-- Cart -->
+<!-- <app-cart></app-cart>
 
             <div class="search-div" *ngIf="user == null">
                 <a routerLink="/auth/login" class="btn btn-soft-primary"><i
@@ -114,7 +114,7 @@
 
 
 
-<nav class="navbar navbar-expand-lg navbar-landing job-navbar is-sticky" id="navbar" >
+<nav class="navbar navbar-expand-lg navbar-landing job-navbar is-sticky" id="navbar">
     <div class="container-fluid custom-container">
         <a class="navbar-brand" routerLink="">
             <img loading="lazy" src="assets/images/logo2.jpg" class="card-logo card-logo-dark" alt="logo dark">
@@ -128,38 +128,42 @@
 
         <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed" class="collapse navbar-collapse"
             id="navbarSupportedContent">
-            <ul  class="navbar-nav mx-auto mt-2 mt-lg-0 d-flex" id="navbar-example">
+            <ul class="navbar-nav mx-auto mt-2 mt-lg-0 d-flex" id="navbar-example">
                 <li class="nav-item">
                     <a class="nav-link active" href="javascript:void(0);" routerLink=""
                         [ngClass]="{'active':currentSection === 'hero'}">Anasayfa</a>
                 </li>
+                <div class="d-flex" *ngFor="let navbarCategory of categories let i = index">
+                    <ng-container *ngIf="navbarCategory.subCategories.length > 0">
+                        <li class="nav-item dropdown dropdown-hover position-static megamenu-li dmenu"
+                        (mouseenter)="showDropdown(i)" (mouseleave)="hideDropdown(i)">
+                        <a class="nav-link dropdown-toggle" [id]="'dropdown'+i" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false"
+                            (click)="toggleDropdown(i)">{{navbarCategory.categoryName}}</a>
+                        <div class="dropdown-menu dropdown-menu-end megamenu sm-menu border-top border-bottom"
+                            [attr.aria-labelledby]="'dropdown' + i" style="width: 100%;"
+                            [ngClass]="{'show': isDropdownOpen[i]}" (mouseenter)="showDropdown(i)"
+                            (mouseleave)="hideDropdown(i)">
+                            <div class="row">
+                                <ng-container
+                                    *ngIf="navbarCategory.subCategories && navbarCategory.subCategories.length > 0">
+                                    <div class="col-sm-6 col-lg-3 border-end mb-4"
+                                        *ngFor="let category of navbarCategory.subCategories">
+                                        <h5 ngbDropdownItem routerLink="productList/list/{{+ category.id}}"><strong>{{category.categoryName}}</strong></h5>
+                                        <a ngbDropdownItem routerLink="productList/list/{{+ subCategory.id}}"
+                                            *ngFor="let subCategory of category.subCategories">{{subCategory.categoryName}}</a>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </li>
+                    </ng-container>
+                    
+                </div>
                 <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0);"
                         [ngClass]="{'active':currentSection === 'blog'}">İletişim</a>
                 </li>
-
-                  <div  class="d-flex" *ngFor="let navbarCategory of categories let i = index" > <!-- Bootstrap container ekleyin -->
-                        <li class="nav-item dropdown dropdown-hover position-static megamenu-li dmenu" (mouseenter)="showDropdown(i)" 
-                        (mouseleave)="hideDropdown(i)">
-                        <a class="nav-link dropdown-toggle" [id]="'dropdown'+i" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="toggleDropdown(i)"
-                            >{{navbarCategory.categoryName}}</a>
-                        <div class="dropdown-menu dropdown-menu-end megamenu sm-menu border-top border-bottom" [attr.aria-labelledby]="'dropdown' + i"
-                               style="width: 100%;" [ngClass]="{'show': isDropdownOpen[i]}" (mouseenter)="showDropdown(i)" 
-                               (mouseleave)="hideDropdown(i)">
-                                <div class="row">
-                                    <ng-container *ngIf="navbarCategory.subCategories && navbarCategory.subCategories.length > 0">
-                                        <div class="col-sm-6 col-lg-3 border-end mb-4" *ngFor="let category of navbarCategory.subCategories">
-                                            <h5><strong>{{category.categoryName}}</strong></h5>
-                                            <a ngbDropdownItem  *ngFor="let subCategory of category.subCategories">{{subCategory.categoryName}}</a>
-                                        </div>
-                                    </ng-container>
-                                </div>
-                            </div>
-                        </li>
-                        </div>
-
-
-                  
             </ul>
 
             <!-- Cart -->
@@ -183,11 +187,11 @@
                     </span>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
-                    <a ngbDropdownItem  routerLink="/userAccount/myaccount"><i
+                    <a ngbDropdownItem routerLink="/userAccount/myaccount"><i
                             class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span
                             class="align-middle">Hesabım</span></a>
                     <div class="dropdown-divider"></div>
-                    <a ngbDropdownItem  href="javascript: void(0);" (click)="logOut()"><i
+                    <a ngbDropdownItem href="javascript: void(0);" (click)="logOut()"><i
                             class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle"
                             data-key="t-logout">Çıkış Yap</span></a>
 

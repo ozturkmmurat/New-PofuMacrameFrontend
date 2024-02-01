@@ -37,7 +37,7 @@ export class NavbarComponent {
   getAllCategoryHierarchy(){
     this.categoryService.getAllCategoryHierarchy().subscribe(response => {
       this.categories = response.data
-      console.log("Category data", response.data)
+      console.log("Category data", this.categories)
     })
   }
   

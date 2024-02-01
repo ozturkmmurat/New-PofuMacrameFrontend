@@ -1,5 +1,5 @@
 export interface SelectCategoryDto {
-    Id: number,
+    id: number,
     parentId?: number
     categoryName: string,
     subCategories: SelectCategoryDto[]

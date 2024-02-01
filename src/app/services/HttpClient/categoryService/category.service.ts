@@ -24,6 +24,11 @@ export class CategoryService {
     return this.httpClient.get<ListResponseModel<SelectCategoryDto>>(newPath);
   }
 
+  getAllSubCategory(categoryId:number):Observable<ListResponseModel<Category>>{
+    let newPath = environment.apiUrl + "categories/getAllSubCategory?categoryId="+ categoryId
+    return this.httpClient.get<ListResponseModel<Category>>(newPath);
+  }
+
   add(category : Category):Observable<ResponseModel>{
     console.log("Service gelen category", category)
     let newPath = environment.apiUrl + "categories/add"

@@ -11,14 +11,6 @@
               Temizle</a>
           </div>
         </div>
-
-        <div class="filter-choices-input">
-          <ng-select [items]="Default" [multiple]="true" bindLabel="name" [(ngModel)]="multiDefaultOption">
-            <ng-template ng-optgroup-tmp let-item="item">
-              {{item.country || 'Unnamed group'}}
-            </ng-template>
-          </ng-select>
-        </div>
       </div>
 
       <div class="accordion accordion-flush">
@@ -110,8 +102,10 @@
             <ng-template ngbPanelContent>
               <div class="accordion-body text-body p-0">
                 <div class="d-flex flex-column gap-2 mt-3">
-                  <div class="form-check" *ngFor="let attributeValue of categoryAttribute.attributeValues let j = index">
-                    <input class="form-check-input" name="checkAll" type="checkbox" value="Boat" id="productBrandRadio-{{i+''+j}}"
+                  <div class="form-check"
+                    *ngFor="let attributeValue of categoryAttribute.attributeValues let j = index">
+                    <input class="form-check-input" name="checkAll" type="checkbox" value="Boat"
+                      id="productBrandRadio-{{i+''+j}}"
                       (change)="selectAttribute(categoryAttribute.attributeId, attributeValue.id, $event)">
                     <label class="form-check-label" for="productBrandRadio-{{i+''+j}}">{{attributeValue.value}}</label>
                   </div>
@@ -126,7 +120,8 @@
       </div>
       <div class="flex-grow-1 mt-3 mb-3">
         <div clasS="text-center">
-          <button type="button" class="col-6 btn btn-warning w-lg waves-effect waves-light" (click)="applyFilter()">Filtreleri Uygula</button>
+          <button type="button" class="col-6 btn btn-warning w-lg waves-effect waves-light"
+            (click)="applyFilter()">Filtreleri Uygula</button>
         </div>
       </div>
     </div>
@@ -157,7 +152,8 @@
             *ngFor="let variant of productVariants | priceFilter:minPrice:maxPrice | productSearch: filterText let i = index">
             <div _ngcontent-fbe-c135="" class="card">
               <div _ngcontent-fbe-c135="" class="card-body">
-                <div _ngcontent-fbe-c135="" class="product-img position-relative thumbnail" *ngIf="variant.productPaths">
+                <div _ngcontent-fbe-c135="" class="product-img position-relative thumbnail"
+                  *ngIf="variant.productPaths">
                   <a _ngcontent-fbe-c135="" href="/product-detail/1">
                     <img _ngcontent-fbe-c135="" alt="" class="img-fluid mx-auto d-block picture1"
                       src="{{imageFolderUrl+variant.productPaths[0]}}"
@@ -193,8 +189,9 @@
             </div>
           </div>
           <div class="col-8" *ngIf="productVariants && startLengthState">
-              <button *ngIf="filterProduct.startLength < totalProduct" type="button" class="btn rounded-pill btn-warning waves-effect waves-light"
-              (click)="getAllProductVariantDto()">DİĞER ÜRÜLER</button>
+            <button *ngIf="filterProduct.startLength < totalProduct" type="button"
+              class="btn rounded-pill btn-warning waves-effect waves-light" (click)="getAllProductVariantDto()">DİĞER
+              ÜRÜLER</button>
           </div>
         </div>
       </div>

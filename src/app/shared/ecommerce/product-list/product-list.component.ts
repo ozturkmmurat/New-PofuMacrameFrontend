@@ -1,8 +1,6 @@
 import { ChangeDetectorRef, Component, NgZone, QueryList, ViewChildren } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
-import { EMPTY, Observable, catchError } from 'rxjs';
 import { NgbModal, NgbNavChangeEvent } from '@ng-bootstrap/ng-bootstrap';
-import { UntypedFormBuilder, UntypedFormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { GlobalComponent } from '../../../global-component';
 
 // Products Services
@@ -15,19 +13,14 @@ import { Options } from 'ngx-slider-v2';
 import Swal from 'sweetalert2';
 
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgbdProductsSortableHeader, productSortEvent } from 'src/app/pages/ecommerce/products/products-sortable.directive';
-import { productModel } from '../../../pages/ecommerce/products/products.model';
 import { AdvancedService } from '../../../pages/ecommerce/products/products.service';
-import { HtmlEditService } from 'src/app/services/Html/HtmlEdit/html-edit.service';
-import { NavbarService } from 'src/app/services/Design/navbarService/navbar.service';
 import { SelectListProductVariantDto } from 'src/app/models/dtos/product/select/selectListProductVariantDto';
 import { ProductService } from 'src/app/services/HttpClient/productService/product.service';
 import { environment } from 'src/environments/environment';
 import { FilterCategoryAttributeDto } from 'src/app/models/dtos/categoryAttribute/filterCategoryAttributeDto';
 import { CategoryAttributeService } from 'src/app/services/HttpClient/categoryAttributeService/category-attribute.service';
 import { FilterProduct } from 'src/app/models/entityParameter/product/filterProduct';
-import { HttpErrorResponse } from '@angular/common/http';
-import { TotalFilterProduct } from 'src/app/models/entityParameter/product/totalFilterProduct';
+import { CategoryService } from 'src/app/services/HttpClient/categoryService/category.service';
 
 @Component({
   selector: 'app-product-list',
@@ -66,10 +59,10 @@ export class ProductListComponent {
   constructor(private modalService: NgbModal,
     private router: Router,
     private route: ActivatedRoute,
-    private formBuilder: UntypedFormBuilder,
     public restApiService: restApiService,
     private productService: ProductService,
-    private categoryAttributeService: CategoryAttributeService
+    private categoryAttributeService: CategoryAttributeService,
+    private categoryService : CategoryService
   ) {
     this.imageFolderUrl = environment.imageFolderUrl
   }
@@ -77,7 +70,8 @@ export class ProductListComponent {
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       if (params['categoryId'])
-        this.filterProduct.categoryId = Number(params['categoryId'])
+      this.filterProduct.categoryId = Number(params['categoryId'])
+      this.productVariants = []
       this.getTotalProduct(Number(params['categoryId'])).then(() => {
         this.getAllProductVariantDto();
         this.getAllFilterCategoryAttribute(Number(params['categoryId']));
@@ -89,36 +83,6 @@ export class ProductListComponent {
     floor: 0,
     ceil: 1000
   };
-
-  /**
-   * Default Select2
-   */
-  multiDefaultOption = 'Watches';
-  selectedAccount = 'This is a placeholder';
-  Default = [
-    { name: 'Watches' },
-    { name: 'Headset' },
-    { name: 'Sweatshirt' },
-  ];
-
-  // Check Box Checked Value Get
-  checkedValGet: any[] = [];
-  // Select Checkbox value Get
-  onCheckboxChange(e: any) {
-    var checkboxes: any = document.getElementsByName('checkAll');
-    var checkedVal: any[] = [];
-    var result
-    for (var i = 0; i < checkboxes.length; i++) {
-      if (checkboxes[i].checked) {
-        result = checkboxes[i].value;
-        checkedVal.push(result);
-      }
-    }
-    this.checkedValGet = checkedVal
-    var checkBoxCount: any = document.getElementById('select-content') as HTMLElement;
-    checkBoxCount.innerHTML = checkedVal.length;
-    checkedVal.length > 0 ? (document.getElementById("selection-element") as HTMLElement).style.display = "block" : (document.getElementById("selection-element") as HTMLElement).style.display = "none";
-  }
 
   clearall(ev: any) {
     var checkboxes: any = document.getElementsByName('checkAll');
