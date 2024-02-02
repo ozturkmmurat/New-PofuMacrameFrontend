@@ -21,6 +21,7 @@ import { FilterCategoryAttributeDto } from 'src/app/models/dtos/categoryAttribut
 import { CategoryAttributeService } from 'src/app/services/HttpClient/categoryAttributeService/category-attribute.service';
 import { FilterProduct } from 'src/app/models/entityParameter/product/filterProduct';
 import { CategoryService } from 'src/app/services/HttpClient/categoryService/category.service';
+import { Category } from 'src/app/models/category/category';
 
 @Component({
   selector: 'app-product-list',
@@ -35,6 +36,7 @@ export class ProductListComponent {
   productVariants: SelectListProductVariantDto[] = []
   keepProductVariants: SelectListProductVariantDto[] = []
   categoryAttributes: FilterCategoryAttributeDto[] = []
+  categories : Category[] = []
 
   //My Variable Start
   imageFolderUrl: string
@@ -75,6 +77,7 @@ export class ProductListComponent {
       this.getTotalProduct(Number(params['categoryId'])).then(() => {
         this.getAllProductVariantDto();
         this.getAllFilterCategoryAttribute(Number(params['categoryId']));
+        this.getAllSubCategory(Number(params['categoryId']))
       })
     })
   }
@@ -121,6 +124,12 @@ export class ProductListComponent {
         reject(error);
       });
     });
+  }
+
+  getAllSubCategory(categoryId : number){
+    this.categoryService.getAllSubCategory(categoryId).subscribe(response => {
+      this.categories = response.data
+    })
   }
 
   selectAttribute(attributeId: number, attributeValueId: number, event: any) {

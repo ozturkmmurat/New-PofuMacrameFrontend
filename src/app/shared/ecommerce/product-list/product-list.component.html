@@ -7,71 +7,21 @@
             <h5 class="fs-16">Filtreler</h5>
           </div>
           <div class="flex-shrink-0">
-            <a href="javascript:void(0);" (click)="clearall($event)" class="text-decoration-underline">Hepsini
+            <a (click)="clearall($event)" class="text-decoration-underline">Hepsini
               Temizle</a>
           </div>
         </div>
       </div>
 
       <div class="accordion accordion-flush">
-        <div class="card-body border-bottom">
+        <div class="card-body border-bottom" *ngIf="categories != null  && categories.length > 0">
           <div>
-            <p class="text-muted text-uppercase fs-12 fw-medium mb-2">Products</p>
+            <p class="text-muted text-uppercase fs-12 fw-medium mb-2">İlgili Kategoriler</p>
             <ul class="list-unstyled mb-0 filter-list">
-              <li class="filter-list-option">
-                <a href="javascript:void(0);" class="d-flex py-1 align-items-center">
+              <li class="filter-list-option"  *ngFor="let category of categories" routerLink="/productList/list/{{category.id}}">
+                <a  class="d-flex py-1 align-items-center">
                   <div class="flex-grow-1">
-                    <h5 class="fs-13 mb-0 listname">Grocery</h5>
-                  </div>
-                </a>
-              </li>
-              <li class="filter-list-option">
-                <a href="javascript:void(0);" class="d-flex py-1 align-items-center">
-                  <div class="flex-grow-1">
-                    <h5 class="fs-13 mb-0 listname">Fashion</h5>
-                  </div>
-                </a>
-              </li>
-              <li class="filter-list-option">
-                <a href="javascript:void(0);" class="d-flex py-1 align-items-center">
-                  <div class="flex-grow-1">
-                    <h5 class="fs-13 mb-0 listname">Watches</h5>
-                  </div>
-                </a>
-              </li>
-              <li class="filter-list-option">
-                <a href="javascript:void(0);" class="d-flex py-1 align-items-center">
-                  <div class="flex-grow-1">
-                    <h5 class="fs-13 mb-0 listname">Electronics</h5>
-                  </div>
-                </a>
-              </li>
-              <li class="filter-list-option">
-                <a href="javascript:void(0);" class="d-flex py-1 align-items-center">
-                  <div class="flex-grow-1">
-                    <h5 class="fs-13 mb-0 listname">Furniture</h5>
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a href="javascript:void(0);" class="d-flex py-1 align-items-center">
-                  <div class="flex-grow-1">
-                    <h5 class="fs-13 mb-0 listname">Automotive Accessories</h5>
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a href="javascript:void(0);" class="d-flex py-1 align-items-center">
-                  <div class="flex-grow-1">
-                    <h5 class="fs-13 mb-0 listname">Appliances</h5>
-                  </div>
-                </a>
-              </li>
-
-              <li>
-                <a href="javascript:void(0);" class="d-flex py-1 align-items-center">
-                  <div class="flex-grow-1">
-                    <h5 class="fs-13 mb-0 listname">Kids</h5>
+                    <h5 class="fs-13 mb-0 listname">{{category.categoryName}}</h5>
                   </div>
                 </a>
               </li>
