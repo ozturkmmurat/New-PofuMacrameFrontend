@@ -70,18 +70,15 @@ export class ProductDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private modalService: NgbModal,
     public restApiService: restApiService,
     private productService: ProductService,
     private productVariantService: ProductVariantService,
     private sanitizer: DomSanitizer,
     private productImageService: ProductImageService,
-    private navbarService: NavbarService,
     private cartService: CartService,
     private productStockService: ProductStockService,
     private toastrService: ToastrService,
     private cdr: ChangeDetectorRef,
-    private loadingService: LoadingService
   ) {
   }
 
