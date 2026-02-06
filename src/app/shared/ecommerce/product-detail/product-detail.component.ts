@@ -19,6 +19,7 @@ import { ProductVariantAttributeValueDto } from 'src/app/models/dtos/productVari
 import { CartService } from 'src/app/services/Html/cart/cart.service';
 import { ProductStockService } from 'src/app/services/HttpClient/productStockService/product-stock.service';
 import { ToastrService } from 'ngx-toastr';
+import { ProductStock } from 'src/app/models/productStock/prodcutStock';
 import { map } from 'rxjs';
 import { LoadingService } from 'src/app/services/Helper/loadingService/loading.service';
 
@@ -170,9 +171,9 @@ export class ProductDetailComponent implements OnInit {
       }
     }
     this.getSubProductVariantDetail(productId, parentId).then(response => {
-      for (let k = 0; k < this.activeAttributes.length; k++) { // Kayıt altına alınan onceki aktif attributelerin uzunlugu kadar donuyoruz
+      for (let k = 0; k < this.activeAttributes.length; k++) {
         for (let i = 0; i < this.productVariantAttributes.length; i++) {
-          if (this.activeAttributes[k].attributeIndex == i) { // Kayıt altındaki onceki attributelerin aktiflerini yeni gelen listede aktif yapıyoruz
+          if (this.activeAttributes[k].attributeIndex == i) {
             for (let j = 0; j < this.productVariantAttributes[i].productVariantAttributeValueDtos.length; j++) {
               if (this.activeAttributes[k].attributeListIndex == j) {
                 this.productVariantAttributes[i].productVariantAttributeValueDtos[j].isActiveAttribute = true
@@ -181,50 +182,39 @@ export class ProductDetailComponent implements OnInit {
           }
         }
       }
-      var state = true;
+      var state = true
       for (let i = 0; i < this.productVariantAttributes.length; i++) {
-        if (i == selectAttributeId) { // Tıklanan attribute durumu aktif hale getiriyoruz
+        if (i == selectAttributeId) {
           for (let j = 0; j < this.productVariantAttributes[i].productVariantAttributeValueDtos.length; j++) {
             if (j == selectAttributeListId) {
               this.productVariantAttributes[i].productVariantAttributeValueDtos[j].isActiveAttribute = true
               this.keepAttributeNameValue += this.productVariantAttributes[i].attributeName + ": " + this.productVariantAttributes[i].productVariantAttributeValueDtos[j].attributeValue + " "
-            } else { //Tıklanan attribute grubundaki diger attributeleri false yani aktif olmayacak hale getiriyoruz
+            } else {
               this.productVariantAttributes[i].productVariantAttributeValueDtos[j].isActiveAttribute = false
             }
           }
         }
         if (i > selectAttributeId) {
           for (let j = 0; j < this.productVariantAttributes[i].productVariantAttributeValueDtos.length; j++) {
-            if (i != response.data.length - 1 && j == 0) { // Tıklanan attribute grubundan sonra bir attribute grubu var ise bu attribute gruplarındaki ilk attribute aktif hale getiriyoruz
+            if (i != response.data.length - 1 && j == 0) {
               this.productVariantAttributes[i].productVariantAttributeValueDtos[0].isActiveAttribute = true
             }
-            //Eger son attribute grubunda isek quantity 0 dan buyuk ise gir eger daha once bu gruptan bir ozellik aktif hale gelmis ise state false hale getir
             else if (i == response.data.length - 1 && this.productVariantAttributes[i].productVariantAttributeValueDtos[j].quantity > 0 && state == true) {
               response.data[i].productVariantAttributeValueDtos[j].isActiveAttribute = true
-              this.productVariantAttributeValueDto = response.data[i].productVariantAttributeValueDtos[j]
-              this.productVariantAttributeValueDto.endProductVariantId = response.data[i].productVariantAttributeValueDtos[j].productVariantId
               this.keepAttributeNameValue += this.productVariantAttributes[i].attributeName + ": " + this.productVariantAttributes[i].productVariantAttributeValueDtos[j].attributeValue + " "
-
-              this.productVariantAttributeValueDto.imagePath = response.data[i].productVariantAttributeValueDtos[0].imagePath
               state = false
             }
-            //Eger son attribute grubunda isek ve quantity 0 eşit ve az ise bunlar ile iglili sepete ekleme gibi işlemleri aktif hale getirilemeyecek şekilde price ve endproductvariantId bilgilerini 0 olarak belirle
             else if (i == response.data.length - 1 && this.productVariantAttributes[i].productVariantAttributeValueDtos[j].quantity <= 0) {
-              this.productVariantAttributeValueDto.price = 0;
-              this.productVariantAttributeValueDto.netPrice = 0;
-              this.productVariantAttributeValueDto.endProductVariantId = 0;
               response.data[i].productVariantAttributeValueDtos[j].isActiveAttribute = false
             }
-            //Eger tum bu kosullar saglanmıyor ise yani tıklanmayan attributeleri aktif hale getirme 
-            //NOT: Aktif demek secili buton degil demek
             else {
               this.productVariantAttributes[i].productVariantAttributeValueDtos[j].isActiveAttribute = false
             }
           }
         }
       }
+      this.setProductVariantDtoFromActiveInLastGroup()
       this.cdr.detectChanges()
-
     })
   }
 
@@ -232,14 +222,22 @@ export class ProductDetailComponent implements OnInit {
     this.productService.getByProductDto(productId).subscribe((response) => {
       this.safeHtml = this.sanitizer.bypassSecurityTrustHtml(response.data.description);
       this.product = response.data;
+      console.log("Product Detail", this.product)
       this.cdr.detectChanges()
     });
   }
 
   getDefaultProductVariantDetail(productId: number, parentId: number) {
-    var state = true;
     this.keepAttributeNameValue = ""
     this.productVariantService.getDefaultProductVariantDetail(productId, parentId).subscribe(response => {
+      if (!response.data || response.data.length === 0) {
+        this.productVariantAttributes = []
+        this.loadProductVariantValueDtoForNoVariant(productId, parentId)
+        this.getProductVariantImage(parentId)
+        this.cdr.detectChanges()
+        return
+      }
+      var state = true
       for (let i = 0; i < response.data.length; i++) {
         for (let j = 0; j < response.data[i].productVariantAttributeValueDtos.length; j++) {
           if (i != response.data.length - 1 && j == 0) {
@@ -248,15 +246,11 @@ export class ProductDetailComponent implements OnInit {
           }
           else if (i == response.data.length - 1 && response.data[i].productVariantAttributeValueDtos[j].quantity > 0 && state == true) {
             response.data[i].productVariantAttributeValueDtos[j].isActiveAttribute = true
-            this.productVariantAttributeValueDto = response.data[i].productVariantAttributeValueDtos[j]
-            this.productVariantAttributeValueDto.endProductVariantId = response.data[i].productVariantAttributeValueDtos[j].productVariantId
             this.keepAttributeNameValue += " " + response.data[i].attributeName + ": " + response.data[i].productVariantAttributeValueDtos[j].attributeValue
             state = false
           }
           else if (i == response.data.length - 1 && response.data[i].productVariantAttributeValueDtos[j].quantity <= 0) {
-            this.productVariantAttributeValueDto.price = 0;
-            this.productVariantAttributeValueDto.netPrice = 0;
-            this.productVariantAttributeValueDto.endProductVariantId = 0;
+            response.data[i].productVariantAttributeValueDtos[j].isActiveAttribute = false
           }
           else {
             response.data[i].productVariantAttributeValueDtos[j].isActiveAttribute = false
@@ -264,11 +258,47 @@ export class ProductDetailComponent implements OnInit {
         }
       }
       this.productVariantAttributes = response.data
+      this.setProductVariantDtoFromActiveInLastGroup()
       this.getProductVariantImage(parentId)
-
       this.cdr.detectChanges()
-
     })
+  }
+
+  /** Varyantsız ürün için tek varyantın fiyatını ve Sepete Ekle için DTO'yu doldurur */
+  loadProductVariantValueDtoForNoVariant(productId: number, productVariantId: number) {
+    this.productStockService.getByProductVariantId(productVariantId).subscribe(res => {
+      const stock: ProductStock = res.data
+      if (!this.productVariantAttributeValueDto) {
+        this.productVariantAttributeValueDto = {} as ProductVariantAttributeValueDto
+      }
+      this.productVariantAttributeValueDto.productId = productId
+      this.productVariantAttributeValueDto.productVariantId = productVariantId
+      this.productVariantAttributeValueDto.endProductVariantId = productVariantId
+      this.productVariantAttributeValueDto.price = stock.price
+      this.productVariantAttributeValueDto.netPrice = stock.netPrice
+      this.productVariantAttributeValueDto.kdv = stock.kdv
+      this.productVariantAttributeValueDto.quantity = stock.quantity
+      this.productVariantAttributeValueDto.attributeValue = ''
+      this.cdr.detectChanges()
+    })
+  }
+
+  /** Son varyant grubunda seçili (isActiveAttribute) olan elemana göre fiyat DTO'sunu günceller */
+  setProductVariantDtoFromActiveInLastGroup() {
+    if (!this.productVariantAttributes?.length) return
+    const lastGroup = this.productVariantAttributes[this.productVariantAttributes.length - 1]
+    const activeDto = lastGroup?.productVariantAttributeValueDtos?.find(dto => dto.isActiveAttribute)
+    if (activeDto) {
+      if (!this.productVariantAttributeValueDto) {
+        this.productVariantAttributeValueDto = {} as ProductVariantAttributeValueDto
+      }
+      Object.assign(this.productVariantAttributeValueDto, activeDto)
+      this.productVariantAttributeValueDto.endProductVariantId = activeDto.quantity > 0 ? activeDto.productVariantId : 0
+      if (activeDto.quantity <= 0) {
+        this.productVariantAttributeValueDto.price = 0
+        this.productVariantAttributeValueDto.netPrice = 0
+      }
+    }
   }
 
   getSubProductVariantDetail(productId: number, parentId: number): Promise<any> {

@@ -116,7 +116,7 @@
                                                     <input type='number' class='form-control' id='kdv-amount'
                                                         placeholder='KDV Tutarı' aria-label='KdvAmount'
                                                         formControlName="kdvAmount"
-                                                        [value]="this.productStocksArray.controls[i].get('kdvAmount').value | number:'1.2'"
+                                                        step="0.01"
                                                         readonly>
                                                 </div>
                                             </div>
@@ -229,7 +229,7 @@
                                                 <input type='number' class='form-control' id='kdv-amount'
                                                     placeholder='KDV Tutarı' aria-label='KdvAmount'
                                                     formControlName="kdvAmount"
-                                                    [value]="this.productStocksArray.controls[0].get('kdvAmount').value | number:'1.2'"
+                                                    step="0.01"
                                                     readonly>
                                             </div>
                                         </div>

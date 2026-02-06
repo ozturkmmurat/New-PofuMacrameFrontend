@@ -30,14 +30,12 @@
         </div>
         <div class="card-body border-bottom">
           <p class="text-muted text-uppercase fs-12 fw-medium mb-4">Fiyat</p>
-          <ngx-slider [(value)]="minPrice" [(highValue)]="maxPrice" [options]="options"
+          <ngx-slider [(value)]="sliderMinPrice" [(highValue)]="sliderMaxPrice" [options]="options"
             id="product-price-range"></ngx-slider>
           <div class="formCost d-flex gap-2 align-items-center mt-3">
-            <input class="form-control form-control-sm" type="text" [(ngModel)]="minPrice" id="minCost"
-              value="{{minPrice}}" />
-            <span class="fw-semibold text-muted">to</span>
-            <input class="form-control form-control-sm" type="text" [(ngModel)]="maxPrice" id="maxCost"
-              value="{{maxPrice}}" />
+            <input class="form-control form-control-sm" type="text" [(ngModel)]="sliderMinPrice" id="minCost" />
+            <span class="fw-semibold text-muted">-</span>
+            <input class="form-control form-control-sm" type="text" [(ngModel)]="sliderMaxPrice" id="maxCost" />
           </div>
         </div>
 
@@ -111,10 +109,6 @@
                   <img _ngcontent-vbt-c135="" alt="" class="img-fluid mx-auto d-block picture2"
                     src="{{imageFolderUrl+variant.productPaths[1]}}"
                     [routerLink]="'/productDetail/detail/'+variant.productId+'/'+ variant.productVariantId" />
-
-                  <div class="icon-div">
-                    <i class="ri-heart-line fs-md text-center heartIcon"></i>
-                  </div>
                 </div>
                 <div _ngcontent-fbe-c135="" class="mt-4 text-left">
                   <h5 _ngcontent-fbe-c135="" class="mb-3 text-truncate">
@@ -141,7 +135,7 @@
           <div class="col-8" *ngIf="productVariants && startLengthState">
             <button *ngIf="filterProduct.startLength < totalProduct" type="button"
               class="btn rounded-pill btn-warning waves-effect waves-light" (click)="getAllProductVariantDto()">DİĞER
-              ÜRÜLER</button>
+              ÜRÜNLER</button>
           </div>
         </div>
       </div>

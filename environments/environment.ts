@@ -5,8 +5,8 @@
 export const environment = {
   production: false,
   defaultauth: 'fackbackend',
-  apiUrl:"https://localhost:44343/api/",
-  imageFolderUrl:"https://localhost:44343/Uploads/Images/",
+  apiUrl:"https://localhost:5001/api/",
+  imageFolderUrl:"https://localhost:5001/Uploads/Images/",
   firebaseConfig: {
     apiKey: '',
     authDomain: '',

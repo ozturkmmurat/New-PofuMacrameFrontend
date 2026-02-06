@@ -24,17 +24,10 @@ import lottie from 'lottie-web';
 import { PagesRoutingModule } from "./pages-routing.module";
 import { SharedModule } from "../shared/shared.module";
 import { WidgetModule } from '../shared/widget/widget.module';
-import { DashboardComponent } from './dashboards/dashboard/dashboard.component';
-import { ToastsContainer } from './dashboards/dashboard/toasts-container.component';
-import { DashboardsModule } from "./dashboards/dashboards.module";
-import { AppsModule } from "./apps/apps.module";
-import { EcommerceModule } from "./ecommerce/ecommerce.module";
 
 
 @NgModule({
   declarations: [
-    DashboardComponent,
-    ToastsContainer
   ],
   imports: [
     CommonModule,
@@ -51,7 +44,6 @@ import { EcommerceModule } from "./ecommerce/ecommerce.module";
     WidgetModule,
     SlickCarouselModule,
     LightboxModule,
-    DashboardsModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

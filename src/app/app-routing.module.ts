@@ -12,8 +12,6 @@ const routes: Routes = [
   { path: 'admin', component: LayoutComponent, loadChildren: () => import('./pages/pages.module').then(m => m.PagesModule), canActivate:[LoginGuard], data: { roles: ['admin']}},
   { path: 'auth', loadChildren: () => import('./account/account.module').then(m => m.AccountModule)  },
   { path: 'pages', loadChildren: () => import('./extraspages/extraspages.module').then(m => m.ExtraspagesModule), canActivate:[LoginGuard], data: { roles: ['admin']} },
-  { path: 'landing', loadChildren: () => import('./landing/landing.module').then(m => m.LandingModule), canActivate:[LoginGuard], data: { roles: ['admin']} }
-
 ];
 
 @NgModule({

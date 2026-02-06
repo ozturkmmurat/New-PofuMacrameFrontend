@@ -49,9 +49,12 @@ export class ProductListComponent {
     categoryId: 0, attributes: [], startLength: 0, endLength: 20
   }
 
-  //My Pipe Variable Start  
+  //My Pipe Variable Start (filtre uygulandığında pipe bunları kullanır)
   minPrice: number = 0;
   maxPrice: number = 1000;
+  // Slider/input'ta gösterilen değerler (sadece Filtreleri Uygula'da minPrice/maxPrice'a kopyalanır)
+  sliderMinPrice: number = 0;
+  sliderMaxPrice: number = 1000;
   filterText = "";
   startLengthState = false
   // bread crumb items
@@ -94,6 +97,7 @@ export class ProductListComponent {
     }
     this.filterProduct.attributes = []
     this.productVariants = this.keepProductVariants
+    this.updateSliderRangeFromProducts()
   }
 
   getAllProductVariantDto() {
@@ -105,7 +109,30 @@ export class ProductListComponent {
       if (this.filterProduct.startLength < this.totalProduct) {
         this.filterProduct.startLength = this.filterProduct.endLength
       }
+      this.updateSliderRangeFromProducts()
     })
+  }
+
+  /** productVariants içindeki en düşük ve en yüksek netPrice'a göre slider aralığını günceller */
+  updateSliderRangeFromProducts() {
+    if (!this.productVariants?.length) {
+      this.options = { floor: 0, ceil: 1000 }
+      this.sliderMinPrice = 0
+      this.sliderMaxPrice = 1000
+      this.minPrice = 0
+      this.maxPrice = 1000
+      return
+    }
+    const prices = this.productVariants.map(p => Number(p.netPrice)).filter(n => !isNaN(n))
+    const minVal = prices.length ? Math.floor(Math.min(...prices)) : 0
+    const maxVal = prices.length ? Math.ceil(Math.max(...prices)) : 1000
+    const floor = minVal
+    const ceil = maxVal > minVal ? maxVal : minVal + 1
+    this.options = { floor, ceil }
+    this.sliderMinPrice = floor
+    this.sliderMaxPrice = ceil
+    this.minPrice = floor
+    this.maxPrice = ceil
   }
 
   getAllFilterCategoryAttribute(categoryId: number) {
@@ -168,6 +195,8 @@ export class ProductListComponent {
 
 
   applyFilter() {
+    this.minPrice = this.sliderMinPrice
+    this.maxPrice = this.sliderMaxPrice
     if (this.filterProduct.attributes.length > 0) {
       console.log("Service gidecek olan filterProduct", this.filterProduct)
       this.productVariants = []

@@ -1,19 +1,21 @@
-<div class="row" style="--vz-gutter-x:0rem" *ngIf="productVariantAttributes && product && productVariantAttributeValueDto && loadImageState">
+<div class="row" style="--vz-gutter-x:0rem" *ngIf="product && loadImageState">
     <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
                 <div class="row gx-lg-5" style="--vz-gutter-x:0rem">
                     <div class="col-xl-3 col-md-8 mx-auto">
-                        <div  class="product-img-slider sticky-side-div">
-                            <ngx-slick-carousel [config]="config" class="carousel" #slickModal="slick-carousel" (afterChange)="slickChange($event)">
-                                <div class="swiper-slide"  *ngFor="let image of productImage" ngxSlickItem>
+                        <div class="product-img-slider sticky-side-div">
+                            <ngx-slick-carousel [config]="config" class="carousel" #slickModal="slick-carousel"
+                                (afterChange)="slickChange($event)">
+                                <div class="swiper-slide" *ngFor="let image of productImage" ngxSlickItem>
                                     <img [src]="imageUrl + image.path" alt="" class="img-fluid d-block" />
-                                    </div>
+                                </div>
                             </ngx-slick-carousel>
                             <ngx-slick-carousel class="carousel swiper product-nav-slider mt-2" [config]="slidesConfig">
-                                <div ngxSlickItem *ngFor="let image of productImage;let i = index" class="swiper-slide swiperlist me-2" (click)="slidePreview(i,$event)">
+                                <div ngxSlickItem *ngFor="let image of productImage;let i = index"
+                                    class="swiper-slide swiperlist me-2" (click)="slidePreview(i,$event)">
                                     <div class="nav-slide-item">
-                                                <img [src]="imageUrl + image.path" alt="" class="img-fluid d-block" />
+                                        <img [src]="imageUrl + image.path" alt="" class="img-fluid d-block" />
                                     </div>
                                 </div>
                             </ngx-slick-carousel>
@@ -26,18 +28,17 @@
                         <div class="mt-xl-0 mt-5">
                             <div class="d-flex">
                                 <div *ngIf="product" class="flex-grow-1">
-                                    <h4 >{{product.productName}}</h4>
+                                    <h1>{{product.productName}}</h1>
                                     <div class="hstack gap-3 flex-wrap">
-                                        <div><a href="javascript:void(0);"
-                                                class="text-primary d-block">{{product.categoryName}}</a></div>
+                                        <div><a class="text-primary d-block">Kategori: {{product.categoryName}}</a>
+                                        </div>
                                         <div class="vr"></div>
-                                        <div class="text-muted">Satıcı : <span class="text-body fw-medium">Pofu
-                                                Macrame</span></div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="row mt-4" *ngIf="productVariantAttributeValueDto && productVariantAttributeValueDto.endProductVariantId != 0">
+                            <div class="row mt-4"
+                                *ngIf="productVariantAttributeValueDto && productVariantAttributeValueDto.endProductVariantId != 0">
                                 <div class="col-lg-3 col-sm-6">
                                     <div class="p-2 border border-dashed rounded">
                                         <div class="d-flex align-items-center">
@@ -48,7 +49,8 @@
                                             </div>
                                             <div class="flex-grow-1">
                                                 <p class="text-muted mb-1">Fiyat :</p>
-                                                <h5 class="mb-0">{{productVariantAttributeValueDto.netPrice | number : '1.2'}} TL</h5>
+                                                <h5 class="mb-0">{{productVariantAttributeValueDto.netPrice | number :
+                                                    '1.2'}} TL</h5>
                                             </div>
                                         </div>
                                     </div>
@@ -62,30 +64,30 @@
                                         <h5 class="fs-14">{{productVariantAttribute.attributeName}}:</h5>
                                         <div class="d-flex flex-wrap gap-2">
                                             <div placement="top"
-                                            *ngFor="let attribute of productVariantAttribute.productVariantAttributeValueDtos let j = index"
-                                            class="sizelist"
-                                            (click)="selectAttribute($event, 'label-'+i, i, j, attribute.productId, attribute.productVariantId)">
-                                            <img *ngIf="attribute.imagePath else  firstElse"
-                                                [src]="imageUrl + attribute.imagePath"
-                                                class="attributeImage active label-{{+i}}"
-                                                (click)="getProductVariantImage(attribute.productVariantId)">
-                                            <ng-template #firstElse>
-                                                <label
-                                                    *ngIf="attribute.productVariantId == productVariantId else secondElse"
-                                                    class="btn btn-soft-primary active label-{{+i}}"
-                                                    for="productsize-radio">{{attribute.attributeValue}}</label>
-                                            </ng-template>
-                                            <ng-template #secondElse>
-                                                <label
-                                                    *ngIf="i != productVariantAttributes.length -1 &&  attribute.isActiveAttribute == true else thirdElse"
-                                                    class="btn btn-soft-primary active label-{{+i}}"
-                                                    for="productsize-radio">{{attribute.attributeValue}}</label>
-                                            </ng-template>
+                                                *ngFor="let attribute of productVariantAttribute.productVariantAttributeValueDtos let j = index"
+                                                class="sizelist"
+                                                (click)="selectAttribute($event, 'label-'+i, i, j, attribute.productId, attribute.productVariantId)">
+                                                <img *ngIf="attribute.imagePath else  firstElse"
+                                                    [src]="imageUrl + attribute.imagePath"
+                                                    class="attributeImage active label-{{+i}}"
+                                                    (click)="getProductVariantImage(attribute.productVariantId)">
+                                                <ng-template #firstElse>
+                                                    <label
+                                                        *ngIf="attribute.productVariantId == productVariantId else secondElse"
+                                                        class="btn btn-soft-primary active label-{{+i}}"
+                                                        for="productsize-radio">{{attribute.attributeValue}}</label>
+                                                </ng-template>
+                                                <ng-template #secondElse>
+                                                    <label
+                                                        *ngIf="i != productVariantAttributes.length -1 &&  attribute.isActiveAttribute == true else thirdElse"
+                                                        class="btn btn-soft-primary active label-{{+i}}"
+                                                        for="productsize-radio">{{attribute.attributeValue}}</label>
+                                                </ng-template>
                                                 <ng-template #thirdElse>
                                                     <div ngbTooltip="Stokta bulunmuyor"
                                                         *ngIf="i == productVariantAttributes.length -1 && attribute.quantity <= 0  else fourElse">
-                                                        <input type="radio" value="Stokta bulunmuyor"
-                                                            class="btn-check" name="productsize-radio{{+i+''+j}}"
+                                                        <input type="radio" value="Stokta bulunmuyor" class="btn-check"
+                                                            name="productsize-radio{{+i+''+j}}"
                                                             id="productsize-radio{{+i+''+j}}" disabled>
                                                         <label class="btn btn-soft-primary label-{{+i}}"
                                                             for="productsize-radio{{+i+''+j}}"
@@ -118,20 +120,22 @@
                             </div>
 
                             <hr>
-                                <div *ngIf="productVariantAttributeValueDto && productVariantAttributeValueDto.endProductVariantId != 0"><a class="btn btn-success" (click)="addCart()"><i class="ri-add-line align-bottom me-1"></i>Sepete Ekle</a></div>
-                                <div *ngIf="product" class="mt-4 text-muted">
-                                    <h5 class="fs-14">Açıklama</h5>
-                                    <div [innerHTML]="safeHtml"></div>
-                                </div>
+                            <div
+                                *ngIf="productVariantAttributeValueDto && productVariantAttributeValueDto.endProductVariantId != 0">
+                                <a class="btn btn-success" (click)="addCart()"><i
+                                        class="ri-add-line align-bottom me-1"></i>Sepete Ekle</a></div>
+                            <div *ngIf="product" class="mt-4 text-muted">
+                                <div [innerHTML]="safeHtml"></div>
                             </div>
                         </div>
-                        <!-- end col -->
                     </div>
-                    <!-- end row -->
+                    <!-- end col -->
                 </div>
-                <!-- end card body -->
+                <!-- end row -->
             </div>
-            <!-- end card -->
+            <!-- end card body -->
         </div>
-        <!-- end col -->
+        <!-- end card -->
     </div>
+    <!-- end col -->
+</div>

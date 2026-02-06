@@ -21,5 +21,5 @@ export const GlobalComponent = {
     customer:'apps/customer',
 
     // IMAGE_URL
-    IMAGE_URL: 'https://localhost:44343/uploads/images/'
+    IMAGE_URL: 'https://localhost:5001/uploads/images/'
 }
