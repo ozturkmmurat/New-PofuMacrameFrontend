@@ -1,7 +1,7 @@
-export interface SelectProductDto{
-    productId:number,
-    categoryId:number,
-    productName:string,
-    categoryName:string,
-    description:string
+export interface SelectProductDto {
+  productId: number;
+  mainCategoryId: number;
+  productName: string;
+  categoryName: string;
+  description: string;
 }

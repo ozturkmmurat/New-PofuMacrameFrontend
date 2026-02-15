@@ -1,29 +1,3 @@
-
-//Product Card Hover Start
-.picture1 {
-    transition: .5s ease;
-}
-
-.thumbnail .picture2 {
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    opacity: 0;
-}
-
-.thumbnail:hover .picture1 {
-    display: none;
-    opacity: 0;
-}
-
-.thumbnail:hover .picture2 {
-    position: absolute;
-    display: block;
-    opacity: 0.5;
-    transition: opacity 0.6s ease;
-}
-
 .heartIcon {
     font-size: 34px;
     float: left;
@@ -50,19 +24,178 @@
     max-width: 100%;
     color: #FF7808;
 }
-//Product Card Hover End
-
 
 .rounded {
     border-radius: var(--fc-border-radius) !important;
 }
 
-// .nft-hero {
-//     background-image: url('../../../../assets/images/rainbow-header-bg.jpg');
-// }
+/* Anasayfa hero - tek görsel, koyu zemin */
+.home-hero {
+    position: relative;
+    overflow: hidden;
+}
+
+.home-hero__dark-bg {
+    position: absolute;
+    inset: 0;
+    background: #2d2d2d;
+    z-index: 0;
+}
+
+.home-hero__img-wrap {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 60vh;
+    min-height: 400px;
+}
+
+.home-hero__img {
+    width: 100%;
+    height: 100%;
+    object-position: center;
+    image-rendering: auto;
+    display: block;
+}
 
 .title-div {
     text-align: -webkit-center;
+}
+
+/* Siyah-beyaz tema: bölüm başlıkları (çiçekçi / zarif) */
+.section-title {
+    font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(1.65rem, 3.5vw, 2rem);
+    font-weight: 500;
+    color: #111;
+    letter-spacing: 0.02em;
+    margin: 0;
+    padding-bottom: 0.65rem;
+    position: relative;
+    display: inline-block;
+
+    &::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        transform: translateX(-50%);
+        width: 2.5rem;
+        height: 1px;
+        background: #333;
+    }
+}
+
+/* Günün Ürünleri - ngx-slick-carousel: 4 fotoğraf, ok + nokta ile kaydırma, max 12 ürün (3 sayfa) */
+.day-products-slick {
+    margin-bottom: 1.5rem;
+    position: relative;
+
+    .slick-slide {
+        border: none;
+    }
+
+    ::ng-deep .slick-list {
+        margin: 0 -6px;
+    }
+    ::ng-deep .slick-slide {
+        padding: 0 6px;
+        line-height: 0; /* Alt boşluk: inline/line-box kaynaklı gap'i kaldırır */
+    }
+    ::ng-deep .slick-slide .day-product-slide {
+        display: block;
+        line-height: normal;
+        vertical-align: top;
+    }
+    /* Sol/sağ ok butonları */
+    ::ng-deep .day-products-arrow {
+        width: 40px;
+        height: 40px;
+        z-index: 2;
+        border-radius: 50%;
+        background: #fff;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+
+        &::before {
+            display: none;
+        }
+        i {
+            font-size: 1.4rem;
+            color: #111;
+        }
+        &:hover {
+            background: #f5f5f5;
+            border-color: #ccc;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+        }
+        &.slick-disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+    }
+    ::ng-deep .slick-prev.day-products-prev {
+        left: -8px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    ::ng-deep .slick-next.day-products-next {
+        right: -8px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    /* Üç nokta (dots) */
+    ::ng-deep .slick-dots {
+        bottom: -28px;
+
+        li button::before {
+            font-size: 10px;
+            color: #333;
+        }
+        li.slick-active button::before {
+            color: #111;
+        }
+    }
+}
+
+.day-product-slide-img {
+    aspect-ratio: 1;
+    width: 100%;
+    overflow: hidden;
+    background: #f5f5f5;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+    }
+}
+
+.day-product-slide-info {
+    padding: 0.5rem 0.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.day-product-slide-name {
+    font-size: 0.85rem;
+    color: #111;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.day-product-slide-price {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #333;
 }
 
 
@@ -464,13 +597,6 @@ input[type=submit],
     padding-top: 15px;
     padding-bottom: 15px;
 }
-
-.card-img-product-category{
-    height: auto;
-    max-height: 76vh;
-}
-
-
 
  /* Flex wrap'ı etkinleştirecek sınıf */
  .flex-wrap-web {

@@ -22,6 +22,10 @@ import { ToastrService } from 'ngx-toastr';
 import { ProductStock } from 'src/app/models/productStock/prodcutStock';
 import { map } from 'rxjs';
 import { LoadingService } from 'src/app/services/Helper/loadingService/loading.service';
+import { ProductPriceFactorService } from 'src/app/services/HttpClient/productPriceFactorService/product-price-factor.service';
+import { ProductPriceFactor } from 'src/app/models/productPriceFactor/product-price-factor';
+import { DistrictService } from 'src/app/services/HttpClient/districtService/district.service';
+import { District } from 'src/app/models/district/district';
 
 //Global Variable
 const IMAGE_URL = GlobalComponent.IMAGE_URL;
@@ -60,6 +64,11 @@ export class ProductDetailComponent implements OnInit {
   keepAttributeNameValue: string
   loadImageState = false
 
+  // İlçe / fiyat çarpanı (ProductPriceFactor)
+  productPriceFactors: ProductPriceFactor[] = [];
+  districts: District[] = [];
+  selectedPriceFactor: ProductPriceFactor | null = null;
+
   // bread crumb items
   breadCrumbItems!: Array<{}>;
   isImage: any;
@@ -80,6 +89,8 @@ export class ProductDetailComponent implements OnInit {
     private productStockService: ProductStockService,
     private toastrService: ToastrService,
     private cdr: ChangeDetectorRef,
+    private productPriceFactorService: ProductPriceFactorService,
+    private districtService: DistrictService,
   ) {
   }
 
@@ -100,6 +111,43 @@ export class ProductDetailComponent implements OnInit {
         this.productVariantId = params['productVariantId']
       }
     });
+    this.loadProductPriceFactors();
+    this.loadDistricts();
+  }
+
+  get isCartEmpty(): boolean {
+    return (this.cartService.cartItemList()?.length ?? 0) === 0;
+  }
+
+  loadProductPriceFactors() {
+    this.productPriceFactorService.getAllAsNoTracking().subscribe((res) => {
+      this.productPriceFactors = (res.data || []).filter((f) => f.status);
+      if (!this.isCartEmpty) {
+        const defaultId = this.cartService.defaultProductPriceFactorId;
+        this.selectedPriceFactor = this.productPriceFactors.find((f) => f.id === defaultId) ?? null;
+      }
+      this.cdr.detectChanges();
+    });
+  }
+
+  loadDistricts() {
+    this.districtService.getAllAsNoTracking().subscribe((res) => {
+      this.districts = res.data || [];
+      this.cdr.detectChanges();
+    });
+  }
+
+  getDistrictName(districtId: number): string {
+    return this.districts.find((d) => d.id === districtId)?.name ?? '';
+  }
+
+  onDistrictChange(): void {
+    this.cdr.detectChanges();
+  }
+
+  /** Ürün detayda her zaman sadece varyantın kendi fiyatı gösterilir; ilçe seçimi fiyatı değiştirmez */
+  get displayNetPrice(): number {
+    return this.productVariantAttributeValueDto?.netPrice ?? 0;
   }
 
   /**
@@ -337,7 +385,10 @@ export class ProductDetailComponent implements OnInit {
       productVariant.categoryName = this.product.categoryName
       productVariant.imagePath = this.keepImage
       console.log("Sepete eklenen ürünün bilgisi", productVariant)
-      this.cartService.addToCart(productVariant);
+      const productPriceFactorId = this.isCartEmpty
+        ? (this.selectedPriceFactor?.id ?? 0)
+        : this.cartService.defaultProductPriceFactorId;
+      this.cartService.addToCart(productVariant, productPriceFactorId);
       this.toastrService.success("Ürün başarıyla sepete eklendi.")
     } else {
       this.toastrService.error("Ürün stokta bulunamadı.")

@@ -11,8 +11,8 @@
 
 
             <!-- end card -->
-            <ng-container *ngIf="_productVariantForm.value.isVariant == true && viewCategoryAttributeDto.length > 0 ">
-                <div class="card" *ngFor="let categoryAttribute of viewCategoryAttributeDto">
+            <ng-container *ngIf="_productVariantForm.value.isVariant == true && effectiveViewCategoryAttributeDto.length > 0 ">
+                <div class="card" *ngFor="let categoryAttribute of effectiveViewCategoryAttributeDto">
                     <div class="card-header">
                         <h5 class="card-title mb-0">{{ categoryAttribute.attributeName }}</h5>
                     </div>
@@ -130,9 +130,7 @@
                                                     <input type='number' class='form-control' id='product-stock-input'
                                                         placeholder='Stok Kodunu Girin' aria-label='Net Fiyat'
                                                         aria-describedby='product-stock-addon'
-                                                        formControlName="netPrice" [attr.disabled]="false"
-                                                        [value]="this.productStocksArray.controls[i].get('netPrice').setValue(+this.productStocksArray.controls[i].get('kdvAmount')?.value + +this.productStocksArray.controls[i].get('price')?.value)"
-                                                        readonly>
+                                                        formControlName="netPrice" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -243,8 +241,6 @@
                                                 <input type='number' class='form-control' id='product-stock-input'
                                                     placeholder='Stok Kodunu Girin' aria-label='Net Fiyat'
                                                     aria-describedby='product-stock-addon' formControlName="netPrice"
-                                                    [attr.disabled]="false"
-                                                    [value]="this.productStocksArray.controls[0].get('netPrice').setValue(+this.productStocksArray.controls[0].get('kdvAmount')?.value + +this.productStocksArray.controls[0].get('price')?.value)"
                                                     readonly>
                                             </div>
                                         </div>

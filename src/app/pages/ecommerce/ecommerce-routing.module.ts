@@ -17,6 +17,8 @@ import { AttributesComponent } from './attributes/attributes.component';
 import { OrderListComponent } from './order-list/order-list.component';
 import { OrderDetailComponent } from './order-detail/order-detail.component';
 import { OrderedProductsComponent } from './ordered-products/ordered-products.component';
+import { ProductPricefactorComponent } from './product-pricefactor/product-pricefactor.component';
+import { DistrictComponent } from './district/district.component';
 
 const routes: Routes = [
   {
@@ -40,8 +42,16 @@ const routes: Routes = [
     component: CategoriesComponent
   },
   {
-    path:"attributes",
+    path: "attributes",
     component: AttributesComponent
+  },
+  {
+    path: "product-pricefactor",
+    component: ProductPricefactorComponent
+  },
+  {
+    path: "district",
+    component: DistrictComponent
   },
   {
     path: "orders",

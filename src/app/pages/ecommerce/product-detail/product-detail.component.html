@@ -9,22 +9,10 @@
             <div class="row">
                 <div class="col-lg-12">
 
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="card-title mb-0">Ürün Kategorisi</h5>
-                        </div>
-                        <div class="card-body">
-                            <p class="text-muted mb-2"> <a href="javascript:void(0);"
-                                    class="float-end text-decoration-underline">Add New</a>Ürün kategorisi seçiniz</p>
-                            <select class="form-select" name="choices-category-input" formControlName="categoryId"
-                                data-choices data-choices-search-false (ngModelChange)="getAllTrueAttrSlicer()">
-                                <option *ngFor="let category of categories" [ngValue]="category.id">
-                                    {{category.categoryName}}
-                                </option>
-                            </select>
-                        </div>
-                        <!-- end card body -->
-                    </div>
+                    <app-product-category [productId]="product?.id"
+                        [mainCategoryLocked]="product?.id > 0"
+                        (mainCategoryIdChange)="getAllTrueAttrSlicer()">
+                    </app-product-category>
                 </div>
                 <div class="col-lg-8">
                     <div class="card">
@@ -91,9 +79,8 @@
     </ng-container>
 
 
-    <div class="col-lg-12" *ngIf="product">
-        <app-add-product-variant
-            [viewCategoryAttributeDto]="viewCategoryAttributeDto"></app-add-product-variant>
+    <div class="col-lg-12" *ngIf="product && categoryAndProductReady">
+        <app-add-product-variant></app-add-product-variant>
     </div>
     <!-- end col -->
 
@@ -113,16 +100,16 @@
                     </ngx-datatable-column>
                     <ngx-datatable-column name="Adet" prop="quantity">
                     </ngx-datatable-column>
-                    <ngx-datatable-column name="Fiyat" prop="price">
+                    <ngx-datatable-column name="Fiyat (Varyant)" prop="price">
                         <ng-template let-row="row" ngx-datatable-cell-template>
-                            {{row.price | number:'1.2'}}
+                            {{ (row.price ?? 0) | number:'1.2' }}
                         </ng-template>
                     </ngx-datatable-column>
                     <ngx-datatable-column name="Kdv" prop="kdv">
                     </ngx-datatable-column>
-                    <ngx-datatable-column name="Net Fiyat" prop="{{'netPrice' | number:'1.2'}}">
-                        <ng-template let-row="row" ngx-datatable-cell-template="">
-                            {{row.netPrice | number:'1.2'}}
+                    <ngx-datatable-column name="Net Fiyat (Varyant)" prop="netPrice">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ (row.netPrice ?? 0) | number:'1.2' }}
                         </ng-template>
                     </ngx-datatable-column>
                     <ngx-datatable-column name="İşlemler" [sortable]="false">
@@ -135,7 +122,6 @@
                                         <i class="ri-more-2-fill"></i>
                                     </a>
                                     <div ngbDropdownMenu class="dropdown-menu-right dropdown-menu-arrow">
-                                        <a class="dropdown-item" href="javascript:void(0)" (click)="deleteProductVariant(row)">Sil</a>
                                         <a class="dropdown-item" href="javascript:void(0)" (click)="productImageModal(row)">Varyant Fotoğrafı</a>
                                         <a class="dropdown-item" href="javascript:void(0)" (click)="productStockModal(row)">Stok Bilgisini güncelle</a>
 
@@ -161,11 +147,6 @@
             <h6 class="fs-15">Ürün Galerisi</h6>
             <app-product-images [productImage]="productImage" [form]="form" [formData]="formData" ></app-product-images>
         </div>
-        <div class="modal-footer">
-            <a href="javascript:void(0);" class="btn btn-link link-success fw-medium" data-bs-dismiss="modal"
-                (click)="modal.dismiss('Close click')"><i class="ri-close-line me-1 align-middle"></i> Close</a>
-            <button type="button" class="btn btn-primary ">Save changes</button>
-        </div>
     </div><!-- /.modal-content -->
 </ng-template><!-- /.modal -->
 
@@ -181,10 +162,6 @@
             <div class="modal-body">
                 <h6 class="fs-15">Stok Bilgisi</h6>
                 <app-update-product-stock  [productStock]="productStock"></app-update-product-stock>
-            </div>
-            <div class="modal-footer">
-                <a href="javascript:void(0);" class="btn btn-link link-success fw-medium" data-bs-dismiss="modal"
-                    (click)="modal.dismiss('Close click')"><i class="ri-close-line me-1 align-middle"></i> Close</a>
             </div>
         </div><!-- /.modal-content -->
     </ng-template><!-- /.modal -->

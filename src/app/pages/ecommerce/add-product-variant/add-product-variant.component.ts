@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -8,15 +8,18 @@ import {
   Validators,
 } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { EMPTY, Observable, catchError } from 'rxjs';
+import { EMPTY, Observable, catchError, combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { AttributeValue } from 'src/app/models/attributeValue/attributeValue';
 import { ViewCategoryAttributeDto } from 'src/app/models/dtos/categoryAttribute/select/ViewCategoryAttributeDto';
+import { Category } from 'src/app/models/category/category';
 import { Product } from 'src/app/models/product/product';
 import { ErrorService } from 'src/app/services/Helper/errorService/error.service';
 import { CategoryAttributeService } from 'src/app/services/HttpClient/categoryAttributeService/category-attribute.service';
+import { CategoryService } from 'src/app/services/HttpClient/categoryService/category.service';
 import { ProductService } from 'src/app/services/HttpClient/productService/product.service';
 import { ProductStockService } from 'src/app/services/HttpClient/productStockService/product-stock.service';
-import { ProductVariantService } from 'src/app/services/HttpClient/productVariantService/productVariant.service';
+import { ProductCategoryService, ProductCategoryState } from 'src/app/services/HttpClient/productCategoryService/product-category.service';
 
 @Component({
   selector: 'app-add-product-variant',
@@ -29,43 +32,91 @@ export class AddProductVariantComponent {
   //Cartesian
   selectedValues: { [key: string]: AttributeValue[] } = {};
   cartesianProduct: any[] = [];
-  product$: Observable<Product> = this.productService.products$;
+  /** Ürün productService'ten, kategori ProductCategory üzerinden ProductCategoryService'ten gelir */
+  product$: Observable<Product & ProductCategoryState> = combineLatest([
+    this.productService.products$,
+    this.productCategoryService.getState$()
+  ]).pipe(
+    map(([product, category]) => ({
+      ...product,
+      mainCategoryId: category.mainCategoryId,
+      categoryId: category.categoryId
+    }))
+  );
   //Variables
   selectedAttributeValues: { [attributeValue: string]: AttributeValue[] } = {};
   jsonData: any = {};
-  disableInput: boolean = true
+  disableInput: boolean = true;
 
-  //@Input() product: Product;
-  @Input() viewCategoryAttributeDto: ViewCategoryAttributeDto[] = [];
+  /** Kategori değişince güncellenir; Fiyat/KDV alan sayısı hep bu kategoriye göre */
+  effectiveViewCategoryAttributeDto: ViewCategoryAttributeDto[] = [];
+  /** Ana kategori + yan kategoriler için liste */
+  categories: Category[] = [];
+
   constructor(
     private productService: ProductService,
     private productStockService: ProductStockService,
+    private productCategoryService: ProductCategoryService,
     private errorService: ErrorService,
     private formBuilder: FormBuilder,
     private categoryAttributeService: CategoryAttributeService,
+    private categoryService: CategoryService,
     private toastrService: ToastrService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    if (this.productService.products$) {
-      this.productVariantForm();
-      this.product$ = this.productService.products$;
-    }
+    console.log("Product variant kontrol", this.product$)
+    this.loadCategories();
+    this.productVariantForm();
   }
 
-  updateKdvAmount(index : number) {
-    const selectedKdv = +this.productStocksArray.controls[index].get('kdv')?.value;
-    const price = +this.productStocksArray.controls[index].get('price')?.value;
+  loadCategories(): void {
+    this.categoryService.getAll().subscribe((res) => {
+      this.categories = res.data ?? [];
+    });
+  }
+
+  updateKdvAmount(index: number) {
+    const control = this.productStocksArray.controls[index];
+    const selectedKdv = +control.get('kdv')?.value || 0;
+    const price = +control.get('price')?.value || 0;
     const kdvAmount = (price * selectedKdv) / 100;
-    this.productStocksArray.controls[index].get('kdvAmount').setValue(kdvAmount);
-}
+    const netPrice = price + kdvAmount;
+    control.get('kdvAmount')?.setValue(kdvAmount);
+    control.get('netPrice')?.setValue(netPrice);
+  }
 
   productVariantForm() {
+        console.log("Product variant kontrol", this.product$)
+
     this.product$.subscribe((product) => {
-      console.log('Gelen id', product.categoryId);
+      // ProductDetail: ürün + kategori API'den. Add-product: kategori sadece product-category state'inden.
+      const mainCategoryId = product?.mainCategoryId ?? this.productCategoryService.state?.mainCategoryId ?? 0;
+      const categoryId = product?.categoryId ?? this.productCategoryService.state?.categoryId ?? [];
+      if (!product?.productName && product?.id === undefined) return;
+
+      if (this._productVariantForm) {
+        const prevMain = this._productVariantForm.get('mainCategoryId')?.value;
+        this._productVariantForm.patchValue({
+          productId: product.id,
+          mainCategoryId,
+          categoryId,
+          productName: product.productName,
+          description: product.description,
+          productCode: product.productCode,
+        });
+        this.productCategoryService.setState(mainCategoryId, categoryId);
+        if (prevMain !== mainCategoryId) {
+          this.resetVariantAndStockForNewCategory();
+          this.loadAttributesForCategory(mainCategoryId);
+        }
+        return;
+      }
+
       this._productVariantForm = this.formBuilder.group({
         productId: [product.id],
-        categoryId: [product.categoryId, Validators.required],
+        mainCategoryId: [mainCategoryId, Validators.required],
+        categoryId: [categoryId],
         productName: [product.productName, Validators.required],
         description: [product.description, Validators.required],
         productCode: [product.productCode, Validators.required],
@@ -83,8 +134,38 @@ export class AddProductVariantComponent {
         jsonData: [this.jsonData, Validators.required],
         isVariant: [false, Validators.required],
       });
-
+      this.syncFormCategoryToService();
+      this.loadAttributesForCategory(mainCategoryId);
     });
+  }
+
+  /** Formdaki kategori değişince ProductCategoryService güncellenir; product$ buna göre emit eder */
+  private syncFormCategoryToService(): void {
+    const mainCtrl = this._productVariantForm.get('mainCategoryId');
+    const catCtrl = this._productVariantForm.get('categoryId');
+    if (!mainCtrl || !catCtrl) return;
+    const update = () => {
+      this.productCategoryService.setState(
+        +(mainCtrl.value ?? 0),
+        Array.isArray(catCtrl.value) ? catCtrl.value : []
+      );
+    };
+    update();
+    mainCtrl.valueChanges.subscribe(() => update());
+    catCtrl.valueChanges.subscribe(() => update());
+  }
+
+  /** Yeni kategorinin varyant attribute listesini yükle (alan sayısı bu listeye göre) */
+  loadAttributesForCategory(categoryId: number): void {
+    if (!categoryId) {
+      this.effectiveViewCategoryAttributeDto = [];
+      return;
+    }
+    this.categoryAttributeService
+      .getAllTrueSlicerAttribute(categoryId)
+      .subscribe((response) => {
+        this.effectiveViewCategoryAttributeDto = response.data || [];
+      });
   }
 
   get productStocksArray() {
@@ -92,16 +173,15 @@ export class AddProductVariantComponent {
   }
 
   getAllTrueAttrSlicer() {
-    this.product$.subscribe((response) => {
-      console.log('Response data kontrol', response.categoryId);
-      this.categoryAttributeService
-        .getAllTrueSlicerAttribute(response.categoryId)
-        .subscribe((response) => {
-          this.isVariantFalse()
-          console.log('Response data', response.data);
-          this.viewCategoryAttributeDto = response.data;
-        });
-    });
+    const mainCategoryId = this._productVariantForm?.value?.mainCategoryId ?? this.productCategoryService.state?.mainCategoryId ?? 0;
+    console.log("Main CategoryId", mainCategoryId)
+    if (!mainCategoryId) return;
+    this.categoryAttributeService
+      .getAllTrueSlicerAttribute(mainCategoryId)
+      .subscribe((response) => {
+        this.isVariantFalse();
+        this.effectiveViewCategoryAttributeDto = response.data || [];
+      });
   }
 
   isVariantFalse(){
@@ -121,6 +201,27 @@ export class AddProductVariantComponent {
       })
       this.productStocksArray.push(productStock)
     }
+  }
+
+  /** Kategori değiştiğinde varyant/stok alanlarını sıfırla; Fiyat/KDV alan sayısı yeni kategoriye göre 1 satıra iner */
+  resetVariantAndStockForNewCategory(): void {
+    this.selectedValues = {};
+    this.cartesianProduct.splice(0, this.cartesianProduct.length);
+    this.jsonData = {};
+    this._productVariantForm.get('jsonData')?.setValue(this.jsonData);
+    this._productVariantForm.patchValue({ isVariant: false });
+    this.productStocksArray.clear();
+    this.productStocksArray.push(
+      this.formBuilder.group({
+        price: new FormControl(0),
+        quantity: new FormControl(0),
+        kdv: [Number(1), Validators.required],
+        kdvAmount: [0, Validators.required],
+        netPrice: [0, Validators.required],
+        stockCode: [''],
+      })
+    );
+    this.effectiveViewCategoryAttributeDto = [];
   }
 
 
@@ -223,7 +324,11 @@ export class AddProductVariantComponent {
 
   addProductVariant() {
     if (this._productVariantForm.valid) {
-      let productModel = Object.assign({}, this._productVariantForm.value);
+      const raw = this._productVariantForm.value;
+      const productModel = {
+        ...raw,
+        categoryId: Array.isArray(raw.categoryId) ? raw.categoryId : [],
+      };
       this.productService
         .tsaAdd(productModel)
         .pipe(
@@ -235,6 +340,7 @@ export class AddProductVariantComponent {
         .subscribe((response) => {
           this.toastrService.success(response.message, 'Başarılı');
           this.refreshProductStock(this.productService.products$.value.id);
+          this.resetVariantFormAfterSubmit();
         });
     } else {
       this.toastrService.error('Formu eksiksiz doldurun.');
@@ -245,6 +351,24 @@ export class AddProductVariantComponent {
     this.productStockService.getByAllDto(productId).subscribe((response) => {
       this.productStockService.productStocks$.next(response.data);
     });
+  }
+
+  /** Ürünü Oluştur başarılı olduktan sonra varyant kartları ve buton kaybolur; kullanıcı tekrar "Varyant Oluştur" basmalı */
+  resetVariantFormAfterSubmit(): void {
+    this.cartesianProduct.splice(0, this.cartesianProduct.length);
+    this.jsonData = {};
+    this._productVariantForm.get('jsonData')?.setValue(this.jsonData);
+    this.productStocksArray.clear();
+    this.productStocksArray.push(
+      this.formBuilder.group({
+        price: new FormControl(0),
+        quantity: new FormControl(0),
+        kdv: [Number(1), Validators.required],
+        kdvAmount: [0, Validators.required],
+        netPrice: [0, Validators.required],
+        stockCode: [''],
+      })
+    );
   }
 
   removeJsonDataArray(index: number) {

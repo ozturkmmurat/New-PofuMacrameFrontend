@@ -18,8 +18,9 @@
           <div>
             <p class="text-muted text-uppercase fs-12 fw-medium mb-2">İlgili Kategoriler</p>
             <ul class="list-unstyled mb-0 filter-list">
-              <li class="filter-list-option"  *ngFor="let category of categories" routerLink="/productList/list/{{category.id}}">
-                <a  class="d-flex py-1 align-items-center">
+              <li class="filter-list-option" *ngFor="let category of categories"
+                routerLink="/productList/list/{{category.id}}">
+                <a class="d-flex py-1 align-items-center">
                   <div class="flex-grow-1">
                     <h5 class="fs-13 mb-0 listname">{{category.categoryName}}</h5>
                   </div>
@@ -95,44 +96,25 @@
           </div>
         </div>
 
-        <div _ngcontent-fbe-c135="" class="row">
-          <div _ngcontent-fbe-c135="" class="col-xl-3 col-sm-6"
-            *ngFor="let variant of productVariants | priceFilter:minPrice:maxPrice | productSearch: filterText let i = index">
-            <div _ngcontent-fbe-c135="" class="card">
-              <div _ngcontent-fbe-c135="" class="card-body">
-                <div _ngcontent-fbe-c135="" class="product-img position-relative thumbnail"
-                  *ngIf="variant.productPaths">
-                  <a _ngcontent-fbe-c135="" href="/product-detail/1">
-                    <img _ngcontent-fbe-c135="" alt="" class="img-fluid mx-auto d-block picture1"
-                      src="{{imageFolderUrl+variant.productPaths[0]}}"
-                      [routerLink]="'/productDetail/detail/'+variant.productId+'/'+ variant.productVariantId" /></a>
-                  <img _ngcontent-vbt-c135="" alt="" class="img-fluid mx-auto d-block picture2"
-                    src="{{imageFolderUrl+variant.productPaths[1]}}"
-                    [routerLink]="'/productDetail/detail/'+variant.productId+'/'+ variant.productVariantId" />
+        <div class="row products-grid">
+          <div class="col-6 col-md-3 mb-4"
+            *ngFor="let variant of productVariants | priceFilter:minPrice:maxPrice | productSearch: filterText; let i = index">
+            <div class="day-product-slide" [routerLink]="'/productDetail/detail/'+variant.productId+'/'+variant.productVariantId">
+                <div class="product-img position-relative thumbnail card-img-wrap" *ngIf="variant.productPaths?.length"
+                  [class.thumbnail-hover]="variant.productPaths?.length >= 2">
+                  <img loading="lazy" class="picture1 card-img card-img-product-category"
+                    [src]="imageFolderUrl+variant.productPaths[0]" [alt]="variant.productName" />
+                  <img *ngIf="variant.productPaths?.length >= 2" loading="lazy" class="picture2"
+                    [src]="imageFolderUrl+variant.productPaths[1]" [alt]="variant.productName" />
                 </div>
-                <div _ngcontent-fbe-c135="" class="mt-4 text-left">
-                  <h5 _ngcontent-fbe-c135="" class="mb-3 text-truncate">
-                    <a _ngcontent-fbe-c135=""
-                      [routerLink]="'/productDetail/detail/'+variant.productId+'/'+ variant.productVariantId"
-                      class="text-dark">
-                      {{variant.productName}}
-                    </a>
-                  </h5>
-                  <p _ngcontent-fbe-c135="" class="text-muted">
-                    <i _ngcontent-fbe-c135="" class="bx bx-star text-warning"></i><i _ngcontent-fbe-c135=""
-                      class="bx bx-star text-warning"></i><i _ngcontent-fbe-c135=""
-                      class="bx bx-star text-warning"></i><i _ngcontent-fbe-c135=""
-                      class="bx bx-star text-warning"></i><i _ngcontent-fbe-c135="" class="bx bx-star text-warning"></i>
-                  </p>
-                  <h5 _ngcontent-fbe-c135="" class="my-0">
-                    <span _ngcontent-fbe-c135="" class="text-muted me-2"><del _ngcontent-fbe-c135="">TRY
-                        {{variant.netPrice | number : '1.2'}}</del></span><b _ngcontent-fbe-c135="">$ {{variant.netPrice | number : '1.2'}}</b>
-                  </h5>
+                <div class="card-footer category-card-footer text-center">
+                  <h3 class="card-title fw-bold mb-2 text-truncate">{{ variant.productName }}</h3>
+                  <p class="card-text text-muted mb-3">{{ variant.netPrice | number:'1.2' }} ₺</p>
+                  <a class="btn btn-outline-dark btn-lg">HEMEN İNCELE</a>
                 </div>
-              </div>
             </div>
           </div>
-          <div class="col-8" *ngIf="productVariants && startLengthState">
+          <div class="col-12 text-center mt-3" *ngIf="productVariants && startLengthState">
             <button *ngIf="filterProduct.startLength < totalProduct" type="button"
               class="btn rounded-pill btn-warning waves-effect waves-light" (click)="getAllProductVariantDto()">DİĞER
               ÜRÜNLER</button>

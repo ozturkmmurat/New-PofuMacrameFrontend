@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { filter } from 'lodash';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { ProductDto } from 'src/app/models/dtos/product/ProductDto';
 import { SelectListProductVariantDto } from 'src/app/models/dtos/product/select/selectListProductVariantDto';
 import { SelectProductDto } from 'src/app/models/dtos/product/select/selectProductDto';
 import { AddProductVariant } from 'src/app/models/dtos/productVariant/addProductVariant';
@@ -18,12 +19,12 @@ import { environment } from 'src/environments/environment';
 })
 export class ProductService {
 
-  productModel : Product={
-    id:0,
-    categoryId:0,
-    description:"",
-    productName:"",
-    productCode:""
+  productModel: Product = {
+    id: 0,
+    description: '',
+    productName: '',
+    
+    productCode: ''
   }
 
 
@@ -49,6 +50,11 @@ export class ProductService {
   update(product : Product):Observable<ResponseModel>{
     let newPath = environment.apiUrl + "products/update"
     return this.httpClient.post<ResponseModel>(newPath, product)
+  }
+
+  tsaUpdate(dto: ProductDto): Observable<ResponseModel> {
+    const path = environment.apiUrl + 'products/TsaUpdate';
+    return this.httpClient.post<ResponseModel>(path, dto);
   }
 
   getBy(id : number):Observable<SingleResponseModel<Product>>{

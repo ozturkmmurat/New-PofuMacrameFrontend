@@ -1,0 +1,73 @@
+<ngx-datatable style="width: 100%" #table class="material whitespace-nowrap single-selection pt-2" [rows]="list"
+  [scrollbarH]="true" [columnMode]="'force'" [headerHeight]="50" [limit]="10" [footerHeight]="50" [rowHeight]="60">
+  <ngx-datatable-column name="Id" prop="id"></ngx-datatable-column>
+  <ngx-datatable-column name="Kod" prop="code"></ngx-datatable-column>
+  <ngx-datatable-column name="Ad" prop="name"></ngx-datatable-column>
+  <ngx-datatable-column name="İşlemler" [sortable]="false">
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      <div container="body" ngbDropdown placement="bottom-right">
+        <a href="javascript:void(0);" class="arrow-none" role="button" ngbDropdownToggle>
+          <i class="ri-more-2-fill"></i>
+        </a>
+        <div ngbDropdownMenu class="dropdown-menu-right dropdown-menu-arrow">
+          <a class="dropdown-item" href="javascript:void(0)" (click)="openUpdateModal(row)">Güncelle</a>
+          <a class="dropdown-item" href="javascript:void(0)" (click)="delete(row)">Sil</a>
+        </div>
+      </div>
+    </ng-template>
+  </ngx-datatable-column>
+</ngx-datatable>
+
+<button type="button" class="btn btn-primary mt-3" (click)="openAddModal()">
+  Yeni İlçe Ekle
+</button>
+
+<ng-template #addModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">Yeni İlçe</h5>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="form">
+        <div class="mb-3">
+          <label class="form-label">Kod</label>
+          <input type="text" class="form-control" formControlName="code" placeholder="İlçe kodu" />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Ad</label>
+          <input type="text" class="form-control" formControlName="name" placeholder="İlçe adı" />
+        </div>
+        <button type="button" class="btn btn-primary" (click)="add()">Kaydet</button>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light" (click)="modal.dismiss()">Kapat</button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #updateModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">İlçe Güncelle</h5>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="form">
+        <div class="mb-3">
+          <label class="form-label">Kod</label>
+          <input type="text" class="form-control" formControlName="code" />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Ad</label>
+          <input type="text" class="form-control" formControlName="name" />
+        </div>
+        <button type="button" class="btn btn-primary" (click)="update()">Güncelle</button>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light" (click)="modal.dismiss()">Kapat</button>
+    </div>
+  </div>
+</ng-template>

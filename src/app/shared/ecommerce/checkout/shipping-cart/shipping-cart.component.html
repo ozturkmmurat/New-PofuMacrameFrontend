@@ -11,7 +11,7 @@
                 </div>
             </div>
     
-            <div class="card product" *ngFor="let item of cartItems">
+            <div class="card product" *ngFor="let item of cartItems; let i = index">
                 <div class="card-body">
                     <div class="row gy-3">
                         <div class="col-sm-auto">
@@ -35,20 +35,14 @@
                         </div>
                         <div class="col-sm-auto">
                             <div class="text-lg-end">
-                                <p class="text-muted mb-1">Adet Fiyatı:</p>
-                                <h5 class="fs-14"><span id="ticket_price" class="product-price">{{item.product.price}} TL</span></h5>
-                            </div>
-                        </div>
-                        <div class="col-sm-auto">
-                            <div class="text-lg-end">
                                 <p class="text-muted mb-1">Kdv</p>
-                                <h5 class="fs-14"><span id="ticket_price" class="product-price">{{item.product.kdv}}%</span></h5>
+                                <h5 class="fs-14"><span class="product-price">{{item.product.kdv}}%</span></h5>
                             </div>
                         </div>
                         <div class="col-sm-auto">
                             <div class="text-lg-end">
                                 <p class="text-muted mb-1">Adet Fiyatı Kdv Dahil:</p>
-                                <h5 class="fs-14"><span id="ticket_price" class="product-price">{{item.product.netPrice}} TL</span></h5>
+                                <h5 class="fs-14"><span class="product-price">{{ getItemUnitPrice(i) | number:'1.2' }} TL</span></h5>
                             </div>
                         </div>
                     </div>
@@ -68,7 +62,7 @@
                         <div class="col-sm-auto">
                             <div class="d-flex align-items-center gap-2 text-muted">
                                 <div>Toplam :</div>
-                                <h5 class="fs-14 mb-0"><span class="product-line-price">{{item.product.netPrice * item.quantity}} TL</span></h5>
+                                <h5 class="fs-14 mb-0"><span class="product-line-price">{{ getItemLineTotal(i) | number:'1.2' }} TL</span></h5>
                             </div>
                         </div>
                     </div>
@@ -79,6 +73,15 @@
         </div>
         <div class="col-xl-4" *ngIf="cartItems && cartItems.length > 0">
             <div class="sticky-side-div">
+                <div class="card mb-3" *ngIf="paymentParameter">
+                    <div class="card-header border-bottom-dashed">
+                        <h5 class="card-title mb-0">Ürün Notu</h5>
+                    </div>
+                    <div class="card-body">
+                        <textarea class="form-control" rows="3" placeholder="Siparişinizle ilgili notunuzu yazabilirsiniz..."
+                            [(ngModel)]="paymentParameter.orderDescription"></textarea>
+                    </div>
+                </div>
                 <div class="card">
                     <div class="card-header border-bottom-dashed">
                         <h5 class="card-title mb-0">Sipar Özeti</h5>
@@ -99,17 +102,17 @@
                                 <tbody>
                                     <tr>
                                         <td>Ürün Tutarı :</td>
-                                        <td class="text-end"><span id="cart-subtotal">{{cartTotalPrice}}</span> TL</td>
+                                        <td class="text-end"><span id="cart-subtotal">{{ productTotalOnly | number:'1.2' }}</span> TL</td>
                                     </tr>
                                     <tr>
-                                        <td>Kargo Tutarı :</td>
-                                        <td class="text-end"><span id="cart-shipping">30.00</span>  TL</td>
+                                        <td>Teslimat Tutarı (Ürün detayda seçilen ilçe) :</td>
+                                        <td class="text-end"><span id="cart-delivery">{{ deliveryAmount | number:'1.2' }}</span> TL</td>
                                     </tr>
                                     <tr class="table-active">
                                         <th>Toplam (TL) :</th>
                                         <td class="text-end">
                                             <span class="fw-semibold">
-                                                <span id="cart-total">{{cartTotalPrice}}</span> TL
+                                                <span id="cart-total">{{ (productTotalOnly + deliveryAmount) | number:'1.2' }}</span> TL
                                             </span>
                                         </td>
                                     </tr>

@@ -10,4 +10,17 @@
 //     content: none; 
 // }
 
+/* Web modunda (lg+): Sepet ve Giriş Yap & Kayıt Ol, nav linkleri (Anasayfa, Gönderim Sebebi, Çiçekler, İletişim) ile aynı dikey hizada */
+@media (min-width: 992px) {
+  :host #navbar .navbar-collapse {
+    align-items: center !important;
+  }
+
+  :host ::ng-deep #navbar .navbar-collapse app-cart,
+  :host #navbar .navbar-collapse .search-div,
+  :host ::ng-deep #navbar .navbar-collapse .topbar-user {
+    display: flex !important;
+    align-items: center !important;
+  }
+}
 

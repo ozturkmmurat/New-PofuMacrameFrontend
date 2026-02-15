@@ -1,0 +1,24 @@
+<div class="card mb-3" [formGroup]="_categoryForm">
+  <div class="card-header">
+    <h5 class="card-title mb-0">Kategoriler</h5>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Ana Kategori</label>
+        <select class="form-select" formControlName="mainCategoryId" (change)="mainCategoryIdChange.emit()"
+          [attr.disabled]="mainCategoryLocked ? true : null">
+          <option [ngValue]="0">Seçiniz</option>
+          <option *ngFor="let cat of categories" [ngValue]="cat.id">{{ cat.categoryName }}</option>
+        </select>
+        <small class="text-muted" *ngIf="mainCategoryLocked">Ana kategori kayıt sonrası değiştirilemez.</small>
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Ek Kategoriler</label>
+        <ng-select formControlName="categoryId" [items]="categories" bindValue="id" bindLabel="categoryName"
+          [multiple]="true" placeholder="Ek kategorileri seçin..." [closeOnSelect]="false">
+        </ng-select>
+      </div>
+    </div>
+  </div>
+</div>

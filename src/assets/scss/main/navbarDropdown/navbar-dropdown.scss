@@ -2,6 +2,106 @@
 	position: static;
 }
 
+/* Sadece lg ve üzeri: navbar linkleri dikey tam kaplar; mobilde toggle davranışı bozulmasın */
+@media (min-width: 992px) {
+	#navbar.navbar-landing.navbar {
+		min-height: 70px;
+		display: flex;
+		align-items: stretch;
+		padding-top: 0;
+		padding-bottom: 0;
+	}
+	#navbar .container-fluid {
+		display: flex;
+		align-items: stretch;
+		min-height: 70px;
+	}
+	#navbar .navbar-collapse {
+		display: flex;
+		align-items: stretch;
+		flex: 1;
+		min-height: 70px;
+	}
+	#navbar #navbar-example.navbar-nav {
+		align-items: stretch;
+		margin-top: 0 !important;
+		margin-bottom: 0 !important;
+		min-height: 70px;
+		height: 100%;
+	}
+	#navbar .navbar-nav .nav-item {
+		display: flex;
+		align-items: stretch;
+	}
+	#navbar .navbar-nav .nav-link {
+		display: flex;
+		align-items: center;
+		height: 100%;
+		min-height: 70px;
+		padding-top: 0;
+		padding-bottom: 0;
+	}
+}
+
+/* Mobil: megamenu aşağı doğru açılsın (sağa değil), tam genişlik, tıklanınca altında görünsün */
+@media (max-width: 991.98px) {
+	.megamenu-li {
+		position: relative;
+	}
+	.megamenu-li .dropdown-menu.megamenu {
+		position: static !important;
+		width: 100% !important;
+		margin-top: 0 !important;
+		left: auto !important;
+		right: auto !important;
+		float: none;
+		box-shadow: none;
+		border: 1px solid rgba(0, 0, 0, 0.1);
+		margin-left: 0.5rem;
+		margin-right: 0.5rem;
+	}
+	.megamenu-li .dropdown-menu.megamenu:not(.show) {
+		display: none !important;
+	}
+	.megamenu-li .dropdown-menu.megamenu.show {
+		display: block !important;
+	}
+	.megamenu .row > [class*="col-"] {
+		min-width: 100%;
+		max-width: 100%;
+	}
+
+	/* Kullanıcı adı: mobilde tam sola yaslı */
+	#navbar .topbar-user {
+		margin-left: 0 !important;
+		width: 100%;
+	}
+	#navbar .topbar-user .btn {
+		justify-content: flex-start;
+		text-align: left;
+		padding-left: 0.5rem;
+	}
+	#navbar .topbar-user .d-flex {
+		justify-content: flex-start;
+		text-align: left;
+	}
+	#navbar .topbar-user .text-start {
+		margin-left: 0 !important;
+	}
+	#navbar .topbar-user .user-name-text {
+		margin-left: 0 !important;
+	}
+
+	/* Kullanıcı dropdown: mobilde tam altında, tam genişlik açılsın */
+	#navbar .topbar-user .dropdown-menu,
+	.navbar-user-dropdown.dropdown-menu {
+		left: 0 !important;
+		right: 0 !important;
+		width: 100% !important;
+		max-width: 100%;
+	}
+}
+
 .navbar-light .navbar-nav .nav-link {
     color: #1ebdc2;
 }
@@ -10,12 +110,10 @@
     color: #fff;
 }
 .navbar-light .navbar-nav .nav-link{
-    padding-top: 22px;
-    padding-bottom: 22px;
-    transition: 0.3s;
-    padding-left: 24px;
-    padding-right: 24px;
-        font-size: 14px;
+	transition: 0.3s;
+	padding-left: 24px;
+	padding-right: 24px;
+	font-size: 14px;
 }
 .navbar-light .navbar-nav .nav-link:focus, .navbar-light .navbar-nav .nav-link:hover{
     background: #D89122 !important;
@@ -27,12 +125,27 @@
 	position: static;
 }
 
+/* Megamenu navbarın altında; linkten menüye geçerken boşluk kalmasın diye hafif üst üste biniyor */
 .megamenu {
 	position: absolute;
 	width: 100%;
 	left: 0;
 	right: 0;
+	top: 100%;
+	margin-top: -4px !important;
 	padding: 15px;
+}
+/* Kategoriler soldan sağa, çoğaldıkça alt satıra sarılsın (flex-wrap) */
+.megamenu .row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0 1rem;
+}
+.megamenu .row > [class*="col-"] {
+	flex: 1 1 200px;
+	min-width: 200px;
+	padding-left: 0;
+	padding-right: 0;
 }
 .megamenu h6{
     margin-left: 21px;

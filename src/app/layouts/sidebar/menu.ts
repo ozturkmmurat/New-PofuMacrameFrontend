@@ -51,6 +51,18 @@ export const MENU: MenuItem[] = [
             label: 'MENUITEMS.APPS.LIST.ATTRIBUTES',
             link: 'attributes',
             parentId: 12
+          },
+          {
+            id: 19,
+            label: 'MENUITEMS.APPS.LIST.PRODUCTPRICEFACTOR',
+            link: 'product-pricefactor',
+            parentId: 12
+          },
+          {
+            id: 19,
+            label: 'MENUITEMS.APPS.LIST.DISTRICT',
+            link: 'district',
+            parentId: 12
           }
 
 

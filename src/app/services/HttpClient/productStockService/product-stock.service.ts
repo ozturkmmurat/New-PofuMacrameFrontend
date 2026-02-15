@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { SelectProductStockDto } from 'src/app/models/dtos/productStock/select/SelectProductStockDto';
+import { ProductStockPriceCheckDto } from 'src/app/models/dtos/productStock/ProductStockPriceCheckDto';
+import { ProductStockPriceDto } from 'src/app/models/dtos/productStock/ProductStockPriceDto';
 import { Product } from 'src/app/models/product/product';
 import { ProductStock } from 'src/app/models/productStock/prodcutStock';
 import { ListResponseModel } from 'src/app/models/responseModel/listResponseModel';
@@ -43,5 +45,10 @@ export class ProductStockService {
   update(productStock : ProductStock):Observable<ResponseModel>{
     let newPath = environment.apiUrl + "productStocks/update"
     return this.httpClient.post<ResponseModel>(newPath, productStock)
+  }
+
+  checkProductStockPrice(dto: ProductStockPriceCheckDto): Observable<ListResponseModel<ProductStockPriceDto>> {
+    const newPath = environment.apiUrl + 'productStocks/CheckProductStockPrice';
+    return this.httpClient.post<ListResponseModel<ProductStockPriceDto>>(newPath, dto);
   }
 }

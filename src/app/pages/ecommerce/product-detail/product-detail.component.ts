@@ -6,8 +6,10 @@ import * as Editor from 'ckeditor5/build/ckeditor';
 
 import { ProductService } from 'src/app/services/HttpClient/productService/product.service';
 import { Product } from 'src/app/models/product/product';
-import { CategoryService } from 'src/app/services/HttpClient/categoryService/category.service';
-import { Category } from 'src/app/models/category/category';
+import {
+  ProductCategoryService,
+  ProductCategoryHttpService,
+} from 'src/app/services/HttpClient/productCategoryService/product-category.service';
 import { ViewCategoryAttributeDto } from 'src/app/models/dtos/categoryAttribute/select/ViewCategoryAttributeDto';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ProductVariantService } from 'src/app/services/HttpClient/productVariantService/productVariant.service';
@@ -44,7 +46,8 @@ export class ProductDetailComponent implements OnInit {
 
   //Model Start
   product: Product;
-  categories: Category[] = [];
+  /** Kategori yüklenip products$ güncellendi; varyant formu bu durumda doğru açılsın diye kullanılır */
+  categoryAndProductReady = false;
   viewCategoryAttributeDto: ViewCategoryAttributeDto[] = [];
   productStocks$ : Observable<SelectProductStockDto[]>;
   productVariant : ProductVariant
@@ -60,8 +63,9 @@ export class ProductDetailComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private productService: ProductService,
+    private productCategoryService: ProductCategoryService,
+    private productCategoryHttp: ProductCategoryHttpService,
     private productVariantService : ProductVariantService,
-    private categoryService: CategoryService,
     private categoryAttributeService : CategoryAttributeService,
     private productStockService : ProductStockService,
     private errorService : ErrorService,
@@ -80,32 +84,47 @@ export class ProductDetailComponent implements OnInit {
       if (params['productId']) {
         this.getByProduct(params['productId']);
         this.getAllStock(params['productId']);
-        this.getAllCategory();
       }
     });
   }
 
-  productForm(){
+  productForm() {
+    const cat = this.productCategoryService.state;
     this._productForm = this.formBuilder.group({
       id: [this.product.id, Validators.required],
-      categoryId:[this.product.categoryId, Validators.required],
-      productName:[this.product.productName, Validators.required],
-      description:[this.product.description, Validators.required],
-      productCode:[this.product.productCode, Validators.required]
-    })
-    this.productService.products$.next(this._productForm.value)
+      productName: [this.product.productName, Validators.required],
+      description: [this.product.description, Validators.required],
+      productCode: [this.product.productCode, Validators.required]
+    });
+    this.productService.products$.next({ ...this.product, ...cat });
   }
 
   getByProduct(productId: number) {
     this.productService.getBy(productId).subscribe((response) => {
-      this.product = response.data;
-      this.productForm()
-    });
-  }
-
-  getAllCategory() {
-    this.categoryService.getAll().subscribe((response) => {
-      this.categories = response.data;
+      const data = response.data;
+      this.product = {
+        id: data.id,
+        productName: data.productName,
+        description: data.description,
+        productCode: data.productCode
+      };
+      // Önce ürünün kategorisini yükle; add-product-variant doğru mainCategoryId ile form açılsın
+      this.categoryAndProductReady = false;
+      this.productCategoryHttp.getByProductId(productId).subscribe({
+        next: (res) => {
+          const list = res.data ?? [];
+          const mainCategoryId = list[0]?.mainCategoryId ?? 0;
+          const categoryId = list.filter((p) => (p.categoryId ?? 0) > 0).map((p) => p.categoryId);
+          this.productCategoryService.setState(mainCategoryId, categoryId);
+          this.productForm();
+          this.categoryAndProductReady = true;
+        },
+        error: () => {
+          this.productCategoryService.setState(0, []);
+          this.productForm();
+          this.categoryAndProductReady = true;
+        }
+      });
     });
   }
 
@@ -118,8 +137,10 @@ export class ProductDetailComponent implements OnInit {
   }
 
   getAllTrueAttrSlicer() {
+    const mainCategoryId = this.productCategoryService.state?.mainCategoryId;
+    if (!mainCategoryId) return;
     this.categoryAttributeService
-      .getAllTrueSlicerAttribute(this._productForm.value.categoryId)
+      .getAllTrueSlicerAttribute(mainCategoryId)
       .subscribe((response) => {
         this.viewCategoryAttributeDto = response.data;
       });
@@ -127,8 +148,16 @@ export class ProductDetailComponent implements OnInit {
 
   updateProduct(){
     if(this._productForm.valid){
-      let productModel = Object.assign({}, this._productForm.value)
-      this.productService.update(productModel).pipe(
+      const cat = this.productCategoryService.state;
+      const productDtoModel = {
+        productId: this._productForm.value.id,
+        productName: this._productForm.value.productName,
+        description: this._productForm.value.description,
+        productCode: this._productForm.value.productCode,
+        mainCategoryId: cat.mainCategoryId,
+        categoryId: Array.isArray(cat.categoryId) ? cat.categoryId : []
+      };
+      this.productService.tsaUpdate(productDtoModel).pipe(
         catchError((err : HttpErrorResponse) => {
           this.errorService.checkError(err)
           return EMPTY;
@@ -137,18 +166,6 @@ export class ProductDetailComponent implements OnInit {
           this.toastrService.success(response.message, "Başarılı")
         })
     }
-  }
-
-  deleteProductVariant(productStockDto : SelectProductStockDto){
-    this.productVariantService.delete(this.mappingProductVariant(productStockDto)).pipe(
-      catchError((err : HttpErrorResponse) => {
-        this.errorService.checkError(err)
-        return EMPTY;
-      }))
-      .subscribe(response => {
-        this.toastrService.success(response.message, "Başarılı")
-        this.getAllStock(productStockDto.productId)
-      })
   }
 
   mappingProductVariant(productStockDto : SelectProductStockDto){

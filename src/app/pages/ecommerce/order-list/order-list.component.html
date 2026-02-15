@@ -41,7 +41,7 @@
                                     <i class="ri-more-2-fill"></i>
                                 </a>
                                 <div ngbDropdownMenu class="dropdown-menu-right dropdown-menu-arrow">
-                                    <a class="dropdown-item" [routerLink]="'/admin/ecommerce/orderDetail/' + row.id + '/' + row.userId">Sipariş Detayı</a>
+                                    <a class="dropdown-item" [routerLink]="['/admin', 'orderDetail', row.id, row.userId]">Sipariş Detayı</a>
 
                                 </div>
                             </div>

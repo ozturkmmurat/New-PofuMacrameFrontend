@@ -15,8 +15,8 @@
                                 <ng-template ngbNavContent>
                                     <app-address></app-address>
                                     <div class="d-flex align-items-start gap-3 mt-4" >
-                                        <button type="button" class="btn btn-primary btn-label right ms-auto nexttab"
-                                            data-nexttab="pills-payment-tab" [ngbNavItem]="2"><i
+                                        <button type="button" class="btn btn-primary btn-label right ms-auto"
+                                            (click)="customNav.select(2)"><i
                                                 class="ri-shopping-basket-line label-icon align-middle fs-16 ms-2"></i>Sepet Özeti</button>
                                     </div>
                                 </ng-template>
@@ -28,10 +28,10 @@
                                     Sepet Özeti
                                 </a>
                                 <ng-template ngbNavContent>
-                                    <app-shipping-cart></app-shipping-cart>
+                                    <app-shipping-cart [paymentParameter]="tsaPaymentParameter"></app-shipping-cart>
                                     <div class="d-flex align-items-start gap-3 mt-4">
-                                        <button type="button" class="btn btn-light btn-label previestab"
-                                            data-previous="pills-bill-info-tab" [ngbNavItem]="1"><i
+                                        <button type="button" class="btn btn-light btn-label"
+                                            (click)="customNav.select(1)"><i
                                                 class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>
                                             Adres Bilgilerine Dön</button>
                                             <button type="button" class="btn btn-primary btn-label right ms-auto nexttab"

@@ -4,23 +4,9 @@
 
 <form [formGroup]="_productForm">
 <div class="row">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title mb-0">Ürün Kategorisi</h5>
-            </div>
-            <div class="card-body">
-                <p class="text-muted mb-2"> <a href="javascript:void(0);"
-                        class="float-end text-decoration-underline">Add New</a>Ürün kategorisi seçiniz</p>
-                <select class="form-select" name="choices-category-input"  formControlName="categoryId"
-                    (ngModelChange)="getAllTrueAttrSlicer()" data-choices data-choices-search-false>
-                    <option value="0" selected>Seçiniz</option>
-                    <option  *ngFor="let category of categories" [ngValue]="category.id">{{category.categoryName}}
-                    </option>
-                </select>
-            </div>
-            <!-- end card body -->
+        <div class="col-12 mb-3">
+            <app-product-category></app-product-category>
         </div>
-        <!-- end card -->
         <div class="col-lg-8">
                 <div class="card">
                     <div class="card-body">
@@ -53,9 +39,6 @@
         
         <div class="col-lg-4">
             <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title mb-0">Publish</h5>
-                </div>
                 <div class="card-body">
                     <div class="mb-3">
                         <label for="choices-publish-status-input" class="form-label">Durum</label>
@@ -67,34 +50,20 @@
                         </select>
                     </div>
                 </div>
-                <!-- end card body -->
             </div>
-            <!-- end card -->
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title mb-0">Ürün Kısa Açıklmaası</h5>
-                </div>
-                <div class="card-body">
-                    <p class="text-muted mb-2">Ürün için kısa açıklama ekleyin</p>
-                    <textarea class="form-control" placeholder="Must enter minimum of a 100 characters"
-                        rows="3"></textarea>
-                </div>
-                <!-- end card body -->
-            </div>
-            <!-- end card -->
 
         </div>
     
         <div class="text-start mb-3">
-            <button type="submit" class="btn btn-success w-sm" (click)="productFill()">Oluştur</button>
+            <button type="button" class="btn btn-success w-sm" (click)="productFill()">Oluştur</button>
         </div>
 
         <!-- end col -->
 
 </div>
 
-<div class="col-lg-12" *ngIf="product">
-    <app-add-product-variant  [viewCategoryAttributeDto]="viewCategoryAttributeDto"></app-add-product-variant>
+<div class="col-lg-12" *ngIf="categoryAndProductReady">
+    <app-add-product-variant></app-add-product-variant>
 </div>
 </form>
 <!-- end row -->

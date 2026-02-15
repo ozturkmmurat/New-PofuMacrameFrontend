@@ -1,8 +1,8 @@
 <nav class="navbar navbar-expand-lg navbar-landing job-navbar is-sticky" id="navbar">
     <div class="container-fluid custom-container">
         <a class="navbar-brand" routerLink="">
-            <img loading="lazy" src="assets/images/logo2.jpg" class="card-logo card-logo-dark" alt="logo dark">
-            <img loading="lazy" src="assets/images/logo2.jpg" class="card-logo card-logo-light" alt="logo light">
+            <img loading="lazy" src="assets/images/logo.PNG" class="card-logo card-logo-dark" alt="logo dark">
+            <img loading="lazy" src="assets/images/logo.PNG" class="card-logo card-logo-light" alt="logo light">
         </a>
         <button class="navbar-toggler py-0 fs-20 text-body" type="button" data-bs-toggle="collapse"
             data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -59,18 +59,16 @@
             </div>
 
             <div class="dropdown ms-sm-3 header-item topbar-user" *ngIf="user" ngbDropdown>
-                <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown"
+                <button type="button" class="btn w-100 w-lg-auto text-start" id="page-header-user-dropdown" data-bs-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>
                     <span class="d-flex align-items-center">
-                        <img class="rounded-circle header-profile-user" src="assets/images/users/avatar-1.jpg"
-                            alt="Header Avatar">
                         <span class="text-start ms-xl-2">
                             <span
-                                class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{user.firstName}}</span>
+                                class="d-inline-block ms-1 ms-lg-0 fw-medium user-name-text">{{user.firstName}}</span>
                         </span>
                     </span>
                 </button>
-                <div class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+                <div class="dropdown-menu dropdown-menu-end navbar-user-dropdown" ngbDropdownMenu>
                     <a ngbDropdownItem routerLink="/userAccount/myaccount"><i
                             class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span
                             class="align-middle">Hesabım</span></a>

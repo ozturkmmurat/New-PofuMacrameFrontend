@@ -49,8 +49,7 @@
                                             </div>
                                             <div class="flex-grow-1">
                                                 <p class="text-muted mb-1">Fiyat :</p>
-                                                <h5 class="mb-0">{{productVariantAttributeValueDto.netPrice | number :
-                                                    '1.2'}} TL</h5>
+                                                <h5 class="mb-0">{{ displayNetPrice | number : '1.2' }} TL</h5>
                                             </div>
                                         </div>
                                     </div>
@@ -122,6 +121,16 @@
                             <hr>
                             <div
                                 *ngIf="productVariantAttributeValueDto && productVariantAttributeValueDto.endProductVariantId != 0">
+                                <div class="mb-3" *ngIf="isCartEmpty">
+                                    <label class="form-label">Teslimat İlçesi</label>
+                                    <select class="form-select" [(ngModel)]="selectedPriceFactor"
+                                        (ngModelChange)="onDistrictChange()">
+                                        <option [ngValue]="null">İlçe seçiniz</option>
+                                        <option *ngFor="let factor of productPriceFactors" [ngValue]="factor">
+                                            {{ getDistrictName(factor.districtId) }} (+{{ factor.extraPrice | number:'1.2' }} TL)
+                                        </option>
+                                    </select>
+                                </div>
                                 <a class="btn btn-success" (click)="addCart()"><i
                                         class="ri-add-line align-bottom me-1"></i>Sepete Ekle</a></div>
                             <div *ngIf="product" class="mt-4 text-muted">

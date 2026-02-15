@@ -18,12 +18,7 @@ export class ProductVariantService {
     private httpClient : HttpClient
   ) { }
 
-  delete(productVariant : ProductVariant):Observable<ResponseModel>{
-    console.log("Service gelen product variant delete", productVariant)
-    let newPath = environment.apiUrl + "productVariants/delete"
-    return this.httpClient.post<ResponseModel>(newPath, productVariant)
-  }
-
+  
   //Urun detay da ana default olarak varyantlari getirirken kullaniliyor
   getDefaultProductVariantDetail(productId:number, parentId:number):Observable<ListResponseModel<ProductVariantGroupDetailDto>>{
     let newPath = environment.apiUrl + "productVariants/GetDefaultProductVariantDetail?productId=" + productId + "&parentId="+parentId
