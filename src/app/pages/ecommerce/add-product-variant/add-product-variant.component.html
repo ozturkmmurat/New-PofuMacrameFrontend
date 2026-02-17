@@ -8,7 +8,19 @@
                     misiniz ?</label>
             </div>
 
-
+            <div class="card mb-3" *ngIf="categoryAttributeList.length > 0">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Kategori Attribute'ları</h5>
+                </div>
+                <div class="card-body">
+                    <ng-select formControlName="selectedCategoryAttributes"
+                        [items]="categoryAttributeList"
+                        bindLabel="attributeValue"
+                        [multiple]="true"
+                        [closeOnSelect]="false">
+                    </ng-select>
+                </div>
+            </div>
 
             <!-- end card -->
             <ng-container *ngIf="_productVariantForm.value.isVariant == true && effectiveViewCategoryAttributeDto.length > 0 ">

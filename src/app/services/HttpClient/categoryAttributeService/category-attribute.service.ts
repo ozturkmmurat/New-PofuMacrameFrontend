@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CategoryAttribute } from 'src/app/models/categoryAttribute/categoryAttribute';
+import { CategoryAttributeDto } from 'src/app/models/dtos/categoryAttribute/categoryAttributeDto';
 import { FilterCategoryAttributeDto } from 'src/app/models/dtos/categoryAttribute/filterCategoryAttributeDto';
 import { ViewCategoryAttributeDto } from 'src/app/models/dtos/categoryAttribute/select/ViewCategoryAttributeDto';
 import { SelectCategoryAttributeDto } from 'src/app/models/dtos/categoryAttribute/select/selectCategoryAttributeDto';
@@ -30,6 +31,11 @@ export class CategoryAttributeService {
   getAllCategoryAttributeFilter(categoryId:number):Observable<ListResponseModel<FilterCategoryAttributeDto>>{
     let newPath = environment.apiUrl + "categoryAttributes/getAllCategoryAttributeFilter?categoryId=" + categoryId
     return this.httpClient.get<ListResponseModel<FilterCategoryAttributeDto>>(newPath)
+  }
+
+  getAllCategoryAttribute(dto: CategoryAttributeDto): Observable<ListResponseModel<CategoryAttributeDto>> {
+    const newPath = environment.apiUrl + 'categoryAttributes/GetAllCategoryAttribute';
+    return this.httpClient.post<ListResponseModel<CategoryAttributeDto>>(newPath, dto);
   }
 
   add(categoryAttribute : CategoryAttribute):Observable<ResponseModel>{

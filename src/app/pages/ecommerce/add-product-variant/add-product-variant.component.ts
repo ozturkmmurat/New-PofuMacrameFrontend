@@ -11,8 +11,10 @@ import { ToastrService } from 'ngx-toastr';
 import { EMPTY, Observable, catchError, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AttributeValue } from 'src/app/models/attributeValue/attributeValue';
+import { CategoryAttributeDto } from 'src/app/models/dtos/categoryAttribute/categoryAttributeDto';
 import { ViewCategoryAttributeDto } from 'src/app/models/dtos/categoryAttribute/select/ViewCategoryAttributeDto';
 import { Category } from 'src/app/models/category/category';
+import { ProductAttribute } from 'src/app/models/productAttribute/productAttribute';
 import { Product } from 'src/app/models/product/product';
 import { ErrorService } from 'src/app/services/Helper/errorService/error.service';
 import { CategoryAttributeService } from 'src/app/services/HttpClient/categoryAttributeService/category-attribute.service';
@@ -52,6 +54,9 @@ export class AddProductVariantComponent {
   effectiveViewCategoryAttributeDto: ViewCategoryAttributeDto[] = [];
   /** Ana kategori + yan kategoriler için liste */
   categories: Category[] = [];
+
+  categoryAttributeList: CategoryAttributeDto[] = [];
+  private lastTokenboxCategoryKey = '';
 
   constructor(
     private productService: ProductService,
@@ -97,6 +102,10 @@ export class AddProductVariantComponent {
 
       if (this._productVariantForm) {
         const prevMain = this._productVariantForm.get('mainCategoryId')?.value;
+        const prevCat = this._productVariantForm.get('categoryId')?.value;
+        const kategoriDegisti =
+          prevMain !== mainCategoryId ||
+          JSON.stringify(prevCat || []) !== JSON.stringify(categoryId || []);
         this._productVariantForm.patchValue({
           productId: product.id,
           mainCategoryId,
@@ -110,6 +119,7 @@ export class AddProductVariantComponent {
           this.resetVariantAndStockForNewCategory();
           this.loadAttributesForCategory(mainCategoryId);
         }
+        if (kategoriDegisti) this.loadCategoryAttributesForTokenbox(mainCategoryId, categoryId);
         return;
       }
 
@@ -133,22 +143,23 @@ export class AddProductVariantComponent {
         ]),
         jsonData: [this.jsonData, Validators.required],
         isVariant: [false, Validators.required],
+        selectedCategoryAttributes: [[] as CategoryAttributeDto[]],
       });
       this.syncFormCategoryToService();
       this.loadAttributesForCategory(mainCategoryId);
+      this.loadCategoryAttributesForTokenbox(mainCategoryId, categoryId);
     });
   }
 
-  /** Formdaki kategori değişince ProductCategoryService güncellenir; product$ buna göre emit eder */
+  /** Formdaki kategori değişince ProductCategoryService güncellenir; product$ buna göre emit eder. */
   private syncFormCategoryToService(): void {
     const mainCtrl = this._productVariantForm.get('mainCategoryId');
     const catCtrl = this._productVariantForm.get('categoryId');
     if (!mainCtrl || !catCtrl) return;
     const update = () => {
-      this.productCategoryService.setState(
-        +(mainCtrl.value ?? 0),
-        Array.isArray(catCtrl.value) ? catCtrl.value : []
-      );
+      const mainId = +(mainCtrl.value ?? 0);
+      const catIds = Array.isArray(catCtrl.value) ? catCtrl.value : [];
+      this.productCategoryService.setState(mainId, catIds);
     };
     update();
     mainCtrl.valueChanges.subscribe(() => update());
@@ -165,6 +176,46 @@ export class AddProductVariantComponent {
       .getAllTrueSlicerAttribute(categoryId)
       .subscribe((response) => {
         this.effectiveViewCategoryAttributeDto = response.data || [];
+      });
+  }
+
+  loadCategoryAttributesForTokenbox(mainCategoryId: number, categoryId: number[]): void {
+    const ids = [
+      ...(mainCategoryId > 0 ? [mainCategoryId] : []),
+      ...(Array.isArray(categoryId) ? categoryId.filter((id) => (id ?? 0) > 0) : []),
+    ];
+    const uniqueIds = [...new Set(ids)];
+
+    if (uniqueIds.length === 0) {
+      this.categoryAttributeList = [];
+      this.lastTokenboxCategoryKey = '';
+      return;
+    }
+
+    const key = uniqueIds.slice().sort((a, b) => a - b).join(',');
+    if (key === this.lastTokenboxCategoryKey) return;
+
+    this.lastTokenboxCategoryKey = key;
+    this.categoryAttributeService
+      .getAllCategoryAttribute({
+        categoryId: uniqueIds,
+        attributeId: 0,
+        attributeValueId: 0,
+        attributeValue: '',
+      })
+      .subscribe({
+        next: (response) => {
+          const data = response.data ?? [];
+          this.categoryAttributeList = data.map((item: any) => ({
+            categoryId: item.categoryId ?? item.CategoryId ?? [],
+            attributeId: item.attributeId ?? item.AttributeId ?? 0,
+            attributeValueId: item.attributeValueId ?? item.AttributeValueId ?? 0,
+            attributeValue: item.attributeValue ?? item.AttributeValue ?? '',
+          }));
+        },
+        error: () => {
+          this.categoryAttributeList = [];
+        },
       });
   }
 
@@ -325,9 +376,11 @@ export class AddProductVariantComponent {
   addProductVariant() {
     if (this._productVariantForm.valid) {
       const raw = this._productVariantForm.value;
+      const productAttributes = this.buildProductAttributes(raw);
       const productModel = {
         ...raw,
         categoryId: Array.isArray(raw.categoryId) ? raw.categoryId : [],
+        productAttributes,
       };
       this.productService
         .tsaAdd(productModel)
@@ -358,6 +411,7 @@ export class AddProductVariantComponent {
     this.cartesianProduct.splice(0, this.cartesianProduct.length);
     this.jsonData = {};
     this._productVariantForm.get('jsonData')?.setValue(this.jsonData);
+    this._productVariantForm.get('selectedCategoryAttributes')?.setValue([]);
     this.productStocksArray.clear();
     this.productStocksArray.push(
       this.formBuilder.group({
@@ -369,6 +423,44 @@ export class AddProductVariantComponent {
         stockCode: [''],
       })
     );
+  }
+
+  private buildProductAttributes(raw: any): ProductAttribute[] {
+    const productId = raw.productId ?? 0;
+    const set = new Set<string>();
+    const result: ProductAttribute[] = [];
+
+    const push = (attributeId: number, attributeValueId: number) => {
+      const key = `${attributeId}-${attributeValueId}`;
+      if (set.has(key)) return;
+      set.add(key);
+      result.push({ id: 0, productId, attributeId, attributeValueId });
+    };
+
+    const jsonData = raw.jsonData;
+    if (jsonData && typeof jsonData === 'object') {
+      Object.keys(jsonData).forEach((key) => {
+        const arr = jsonData[key];
+        if (Array.isArray(arr)) {
+          arr.forEach((item: Record<number, number>) => {
+            Object.entries(item).forEach(([attrId, attrValId]) => {
+              push(Number(attrId), Number(attrValId));
+            });
+          });
+        }
+      });
+    }
+
+    const selectedCategoryAttributes = raw.selectedCategoryAttributes as any[];
+    if (Array.isArray(selectedCategoryAttributes)) {
+      selectedCategoryAttributes.forEach((item) => {
+        const attrId = item.attributeId ?? item.AttributeId ?? 0;
+        const attrValId = item.attributeValueId ?? item.AttributeValueId ?? 0;
+        push(attrId, attrValId);
+      });
+    }
+
+    return result;
   }
 
   removeJsonDataArray(index: number) {
