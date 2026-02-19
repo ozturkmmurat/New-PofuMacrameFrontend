@@ -13,6 +13,19 @@
                         [mainCategoryLocked]="product?.id > 0"
                         (mainCategoryIdChange)="getAllTrueAttrSlicer()">
                     </app-product-category>
+                    <div class="card mb-3" *ngIf="categoryAttributes.length > 0">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Kategori Attribute'ları</h5>
+                        </div>
+                        <div class="card-body">
+                            <ng-select formControlName="selectedCategoryAttributes"
+                                [items]="categoryAttributes"
+                                bindLabel="attributeValue"
+                                [multiple]="true"
+                                [closeOnSelect]="false">
+                            </ng-select>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-lg-8">
                     <div class="card">
@@ -77,7 +90,6 @@
             </div>
         </div>
     </ng-container>
-
 
     <div class="col-lg-12" *ngIf="product && categoryAndProductReady">
         <app-add-product-variant></app-add-product-variant>

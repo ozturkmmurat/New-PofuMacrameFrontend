@@ -10,4 +10,5 @@ export interface SelectListProductVariantDto{
     productPaths:string[],
     netPrice:number
     quantity:number
+    totalProduct:number
 }

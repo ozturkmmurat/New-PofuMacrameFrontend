@@ -1,5 +1,6 @@
-<div class="row">
-  <div class="col-xl-3 col-lg-4 mt-5">
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xl-3 col-lg-4 mt-5">
     <div class="card filter-div">
       <div class="card-header">
         <div class="d-flex mb-3">
@@ -30,13 +31,14 @@
           </div>
         </div>
         <div class="card-body border-bottom">
-          <p class="text-muted text-uppercase fs-12 fw-medium mb-4">Fiyat</p>
-          <ngx-slider [(value)]="sliderMinPrice" [(highValue)]="sliderMaxPrice" [options]="options"
-            id="product-price-range"></ngx-slider>
-          <div class="formCost d-flex gap-2 align-items-center mt-3">
-            <input class="form-control form-control-sm" type="text" [(ngModel)]="sliderMinPrice" id="minCost" />
-            <span class="fw-semibold text-muted">-</span>
-            <input class="form-control form-control-sm" type="text" [(ngModel)]="sliderMaxPrice" id="maxCost" />
+          <p class="text-muted text-uppercase fs-12 fw-medium mb-3">Fiyat</p>
+          <div class="mb-2">
+            <label class="form-label small text-muted">Minimum Tutar</label>
+            <input class="form-control form-control-sm" type="number" [(ngModel)]="minPrice" min="0" />
+          </div>
+          <div>
+            <label class="form-label small text-muted">Maksimum Tutar</label>
+            <input class="form-control form-control-sm" type="number" [(ngModel)]="maxPrice" min="0" />
           </div>
         </div>
 
@@ -55,6 +57,7 @@
                     *ngFor="let attributeValue of categoryAttribute.attributeValues let j = index">
                     <input class="form-check-input" name="checkAll" type="checkbox" value="Boat"
                       id="productBrandRadio-{{i+''+j}}"
+                      [checked]="isAttributeValueSelected(categoryAttribute.attributeId, attributeValue.id)"
                       (change)="selectAttribute(categoryAttribute.attributeId, attributeValue.id, $event)">
                     <label class="form-check-label" for="productBrandRadio-{{i+''+j}}">{{attributeValue.value}}</label>
                   </div>
@@ -114,8 +117,8 @@
                 </div>
             </div>
           </div>
-          <div class="col-12 text-center mt-3" *ngIf="productVariants && startLengthState">
-            <button *ngIf="filterProduct.startLength < totalProduct" type="button"
+          <div class="col-12 text-center mt-3 mb-3" *ngIf="productVariants && startLengthState">
+            <button *ngIf="productVariants.length < totalProduct" type="button"
               class="btn rounded-pill btn-warning waves-effect waves-light" (click)="getAllProductVariantDto()">DİĞER
               ÜRÜNLER</button>
           </div>
@@ -124,6 +127,6 @@
       <!-- end card -->
     </div>
   </div>
-
   <!-- end col -->
+  </div>
 </div>

@@ -6,9 +6,6 @@ import { GlobalComponent } from '../../../global-component';
 // Products Services
 import { restApiService } from "../../../core/services/rest-api.service";
 
-// Range Slider
-import { Options } from 'ngx-slider-v2';
-
 // Sweet Alert
 import Swal from 'sweetalert2';
 
@@ -17,8 +14,8 @@ import { AdvancedService } from '../../../pages/ecommerce/products/products.serv
 import { SelectListProductVariantDto } from 'src/app/models/dtos/product/select/selectListProductVariantDto';
 import { ProductService } from 'src/app/services/HttpClient/productService/product.service';
 import { environment } from 'src/environments/environment';
-import { FilterCategoryAttributeDto } from 'src/app/models/dtos/categoryAttribute/filterCategoryAttributeDto';
-import { CategoryAttributeService } from 'src/app/services/HttpClient/categoryAttributeService/category-attribute.service';
+import { ProductAttributeFilterDto } from 'src/app/models/dtos/productAttribute/productAttributeFilterDto';
+import { ProductAttributeService } from 'src/app/services/HttpClient/productAttributeService/product-attribute.service';
 import { FilterProduct } from 'src/app/models/entityParameter/product/filterProduct';
 import { CategoryService } from 'src/app/services/HttpClient/categoryService/category.service';
 import { Category } from 'src/app/models/category/category';
@@ -35,28 +32,28 @@ export class ProductListComponent {
   //Model Start
   productVariants: SelectListProductVariantDto[] = []
   keepProductVariants: SelectListProductVariantDto[] = []
-  categoryAttributes: FilterCategoryAttributeDto[] = []
+  categoryAttributes: ProductAttributeFilterDto[] = []
   categories : Category[] = []
 
   //My Variable Start
   imageFolderUrl: string
   totalProduct: number = 0
-  keepTotalProduct: number = 0
   checkboxState: boolean = false
 
   //My Entity Parameter Start
+  private readonly pageSize = 10;
   filterProduct: FilterProduct = {
-    categoryId: 0, attributes: [], startLength: 0, endLength: 20
+    categoryId: 0, attributes: [], startLength: 0, endLength: 10, minPrice: 0, maxPrice: 0
   }
 
-  //My Pipe Variable Start (filtre uygulandığında pipe bunları kullanır)
   minPrice: number = 0;
-  maxPrice: number = 1000;
-  // Slider/input'ta gösterilen değerler (sadece Filtreleri Uygula'da minPrice/maxPrice'a kopyalanır)
-  sliderMinPrice: number = 0;
-  sliderMaxPrice: number = 1000;
+  maxPrice: number = 0;
   filterText = "";
-  startLengthState = false
+  startLengthState = false;
+  private isInitialLoad = true;
+  /** Filtreleri Uygula sonrası sadece Maksimum Tutar güncellenir */
+  private onlyUpdateMaxAfterApply = false;
+
   // bread crumb items
   breadCrumbItems!: Array<{}>;
   url = GlobalComponent.API_URL;
@@ -66,8 +63,8 @@ export class ProductListComponent {
     private route: ActivatedRoute,
     public restApiService: restApiService,
     private productService: ProductService,
-    private categoryAttributeService: CategoryAttributeService,
-    private categoryService : CategoryService
+    private productAttributeService: ProductAttributeService,
+    private categoryService: CategoryService
   ) {
     this.imageFolderUrl = environment.imageFolderUrl
   }
@@ -75,20 +72,15 @@ export class ProductListComponent {
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       if (params['categoryId'])
-      this.filterProduct.categoryId = Number(params['categoryId'])
-      this.productVariants = []
-      this.getTotalProduct(Number(params['categoryId'])).then(() => {
-        this.getAllProductVariantDto();
-        this.getAllFilterCategoryAttribute(Number(params['categoryId']));
-        this.getAllSubCategory(Number(params['categoryId']))
-      })
-    })
+        this.filterProduct.categoryId = Number(params['categoryId']);
+      this.productVariants = [];
+      this.filterProduct.startLength = 0;
+      this.filterProduct.endLength = this.pageSize;
+      this.isInitialLoad = true;
+      this.getAllProductVariantDto();
+      this.getAllSubCategory(Number(params['categoryId']));
+    });
   }
-
-  options: Options = {
-    floor: 0,
-    ceil: 1000
-  };
 
   clearall(ev: any) {
     var checkboxes: any = document.getElementsByName('checkAll');
@@ -96,61 +88,51 @@ export class ProductListComponent {
       checkboxes[i].checked = false
     }
     this.filterProduct.attributes = []
-    this.productVariants = this.keepProductVariants
-    this.updateSliderRangeFromProducts()
+    this.productVariants = this.keepProductVariants;
+    this.updateSliderRangeFromProducts(false);
   }
 
   getAllProductVariantDto() {
-    this.checkStartEndLength()
+    this.checkStartEndLength();
     this.productService.getAllProductVariantDtoPv(this.filterProduct).subscribe(response => {
-      console.log("Gelen data ürün", response.data)
-      this.startLengthState = true
+      this.startLengthState = true;
       this.productVariants = [...this.productVariants, ...response.data];
-      if (this.filterProduct.startLength < this.totalProduct) {
-        this.filterProduct.startLength = this.filterProduct.endLength
+      const first = response.data?.[0];
+      if (first != null && first.totalProduct != null) {
+        this.totalProduct = first.totalProduct;
       }
-      this.updateSliderRangeFromProducts()
-    })
-  }
-
-  /** productVariants içindeki en düşük ve en yüksek netPrice'a göre slider aralığını günceller */
-  updateSliderRangeFromProducts() {
-    if (!this.productVariants?.length) {
-      this.options = { floor: 0, ceil: 1000 }
-      this.sliderMinPrice = 0
-      this.sliderMaxPrice = 1000
-      this.minPrice = 0
-      this.maxPrice = 1000
-      return
-    }
-    const prices = this.productVariants.map(p => Number(p.netPrice)).filter(n => !isNaN(n))
-    const minVal = prices.length ? Math.floor(Math.min(...prices)) : 0
-    const maxVal = prices.length ? Math.ceil(Math.max(...prices)) : 1000
-    const floor = minVal
-    const ceil = maxVal > minVal ? maxVal : minVal + 1
-    this.options = { floor, ceil }
-    this.sliderMinPrice = floor
-    this.sliderMaxPrice = ceil
-    this.minPrice = floor
-    this.maxPrice = ceil
-  }
-
-  getAllFilterCategoryAttribute(categoryId: number) {
-    console.log("CategoryId", categoryId)
-    this.categoryAttributeService.getAllCategoryAttributeFilter(categoryId).subscribe(response => {
-      this.categoryAttributes = response.data
-    })
-  }
-
-  getTotalProduct(categoryId: number): Promise<number> {
-    return new Promise((resolve, reject) => {
-      this.productService.getTotalProduct(categoryId).subscribe(response => {
-        this.totalProduct = Number(response.data);
-        resolve(this.totalProduct);
-      }, error => {
-        reject(error);
-      });
+      this.filterProduct.startLength = this.productVariants.length;
+      this.filterProduct.endLength = this.pageSize;
+      this.updateSliderRangeFromProducts(false, this.isInitialLoad || this.onlyUpdateMaxAfterApply);
+      this.isInitialLoad = false;
+      this.onlyUpdateMaxAfterApply = false;
+      this.loadFilterAttributes();
     });
+  }
+
+  /** updateOnlyMax true ise sadece Maksimum Tutar, listedeki en yüksek fiyata göre güncellenir (açılış + Filtreleri Uygula). */
+  updateSliderRangeFromProducts(_unused = false, updateOnlyMax = false) {
+    if (!this.productVariants?.length) {
+      this.minPrice = 0;
+      this.maxPrice = 1000;
+      return;
+    }
+    if (!updateOnlyMax) return;
+    const prices = this.productVariants.map(p => Number(p.netPrice)).filter(n => !isNaN(n));
+    this.maxPrice = prices.length ? Math.ceil(Math.max(...prices)) : 0;
+  }
+
+  loadFilterAttributes() {
+    if (!this.productVariants?.length) return;
+    const productIds = [...new Set(this.productVariants.map(v => v.productId))];
+    this.productAttributeService.getFilterByProductIds(productIds).subscribe(r => {
+      this.categoryAttributes = r.data ?? [];
+    });
+  }
+
+  isAttributeValueSelected(attributeId: number, valueId: number): boolean {
+    const attr = this.filterProduct.attributes?.find(a => a.id === attributeId);
+    return !!attr?.valueId?.includes(valueId);
   }
 
   getAllSubCategory(categoryId : number){
@@ -195,20 +177,19 @@ export class ProductListComponent {
 
 
   applyFilter() {
-    this.minPrice = this.sliderMinPrice
-    this.maxPrice = this.sliderMaxPrice
-    if (this.filterProduct.attributes.length > 0) {
-      console.log("Service gidecek olan filterProduct", this.filterProduct)
-      this.productVariants = []
-      this.getAllProductVariantDto()
-    }
+    this.filterProduct.minPrice = this.minPrice;
+    this.filterProduct.maxPrice = this.maxPrice;
+    this.productVariants = [];
+    this.filterProduct.startLength = 0;
+    this.filterProduct.endLength = this.pageSize;
+    this.onlyUpdateMaxAfterApply = true;
+    this.getAllProductVariantDto();
   }
 
   checkStartEndLength() {
-    if (this.filterProduct.startLength > this.totalProduct) {
-      this.filterProduct.endLength -= this.totalProduct
-    } else if (this.filterProduct.endLength > this.totalProduct) {
-      this.filterProduct.endLength = this.totalProduct
+    if (this.totalProduct <= 0) return;
+    if (this.filterProduct.startLength >= this.totalProduct) {
+      this.filterProduct.startLength = this.totalProduct;
     }
   }
 }

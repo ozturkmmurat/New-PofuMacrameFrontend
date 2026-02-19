@@ -8,13 +8,13 @@
                     misiniz ?</label>
             </div>
 
-            <div class="card mb-3" *ngIf="categoryAttributeList.length > 0">
+            <div class="card mb-3" *ngIf="categoryAttributes.length > 0">
                 <div class="card-header">
                     <h5 class="card-title mb-0">Kategori Attribute'ları</h5>
                 </div>
                 <div class="card-body">
                     <ng-select formControlName="selectedCategoryAttributes"
-                        [items]="categoryAttributeList"
+                        [items]="categoryAttributes"
                         bindLabel="attributeValue"
                         [multiple]="true"
                         [closeOnSelect]="false">

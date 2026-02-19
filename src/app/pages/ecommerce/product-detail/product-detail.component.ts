@@ -6,9 +6,10 @@ import * as Editor from 'ckeditor5/build/ckeditor';
 
 import { ProductService } from 'src/app/services/HttpClient/productService/product.service';
 import { Product } from 'src/app/models/product/product';
+import { ProductDto } from 'src/app/models/dtos/product/ProductDto';
+import { ProductAttribute } from 'src/app/models/productAttribute/productAttribute';
 import {
   ProductCategoryService,
-  ProductCategoryHttpService,
 } from 'src/app/services/HttpClient/productCategoryService/product-category.service';
 import { ViewCategoryAttributeDto } from 'src/app/models/dtos/categoryAttribute/select/ViewCategoryAttributeDto';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -22,6 +23,8 @@ import { SelectProductStockDto } from 'src/app/models/dtos/productStock/select/S
 import { ProductStockService } from 'src/app/services/HttpClient/productStockService/product-stock.service';
 import { ProductStock } from 'src/app/models/productStock/prodcutStock';
 import { CategoryAttributeService } from 'src/app/services/HttpClient/categoryAttributeService/category-attribute.service';
+import { ProductAttributeService } from 'src/app/services/HttpClient/productAttributeService/product-attribute.service';
+import { CategoryAttributeDto } from 'src/app/models/dtos/categoryAttribute/categoryAttributeDto';
 import { ProductImage } from 'src/app/models/productImage/productImage';
 import { CkEditorConfigService } from 'src/app/services/Html/CKEditor5/ck-editor-config.service';
 import { ErrorService } from 'src/app/services/Helper/errorService/error.service';
@@ -49,6 +52,7 @@ export class ProductDetailComponent implements OnInit {
   /** Kategori yüklenip products$ güncellendi; varyant formu bu durumda doğru açılsın diye kullanılır */
   categoryAndProductReady = false;
   viewCategoryAttributeDto: ViewCategoryAttributeDto[] = [];
+  categoryAttributes: CategoryAttributeDto[] = [];
   productStocks$ : Observable<SelectProductStockDto[]>;
   productVariant : ProductVariant
   //Form Start
@@ -64,9 +68,9 @@ export class ProductDetailComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private productService: ProductService,
     private productCategoryService: ProductCategoryService,
-    private productCategoryHttp: ProductCategoryHttpService,
     private productVariantService : ProductVariantService,
     private categoryAttributeService : CategoryAttributeService,
+    private productAttributeService: ProductAttributeService,
     private productStockService : ProductStockService,
     private errorService : ErrorService,
     private formBuilder : FormBuilder,
@@ -80,6 +84,9 @@ export class ProductDetailComponent implements OnInit {
       { label: 'Ecommerce' },
       { label: 'Product Details', active: true },
     ];
+    this.productCategoryService.getState$().subscribe(() => {
+      if (this.product) this.loadCategoryAttributesForTokenbox();
+    });
     this.activatedRoute.params.subscribe((params) => {
       if (params['productId']) {
         this.getByProduct(params['productId']);
@@ -94,7 +101,8 @@ export class ProductDetailComponent implements OnInit {
       id: [this.product.id, Validators.required],
       productName: [this.product.productName, Validators.required],
       description: [this.product.description, Validators.required],
-      productCode: [this.product.productCode, Validators.required]
+      productCode: [this.product.productCode, Validators.required],
+      selectedCategoryAttributes: [[] as CategoryAttributeDto[]]
     });
     this.productService.products$.next({ ...this.product, ...cat });
   }
@@ -110,7 +118,7 @@ export class ProductDetailComponent implements OnInit {
       };
       // Önce ürünün kategorisini yükle; add-product-variant doğru mainCategoryId ile form açılsın
       this.categoryAndProductReady = false;
-      this.productCategoryHttp.getByProductId(productId).subscribe({
+      this.productCategoryService.getByProductId(productId).subscribe({
         next: (res) => {
           const list = res.data ?? [];
           const mainCategoryId = list[0]?.mainCategoryId ?? 0;
@@ -146,16 +154,78 @@ export class ProductDetailComponent implements OnInit {
       });
   }
 
+  private getUniqueCategoryIds(mainCategoryId: number, categoryId: number[]): number[] {
+    const ids = [
+      ...(mainCategoryId > 0 ? [mainCategoryId] : []),
+      ...(Array.isArray(categoryId) ? categoryId.filter((id) => (id ?? 0) > 0) : []),
+    ];
+    return [...new Set(ids)];
+  }
+
+  loadCategoryAttributesForTokenbox(): void {
+    const state = this.productCategoryService.state;
+    const mainCategoryId = state?.mainCategoryId ?? 0;
+    const categoryId = state?.categoryId ?? [];
+    const ids = this.getUniqueCategoryIds(mainCategoryId, categoryId);
+    if (ids.length === 0) {
+      this.categoryAttributes = [];
+      return;
+    }
+    this.productAttributeService
+      .getAllProductAttribute({
+        categoryId: ids,
+        attributeId: 0,
+        attributeValueId: 0,
+        attributeValue: '',
+        productId: 0,
+        productName: '',
+        attributeName: '',
+      })
+      .subscribe({
+        next: (res) => {
+          this.categoryAttributes = (res.data ?? []).map((item: any) => ({
+            categoryId: item.categoryId ?? [],
+            attributeId: item.attributeId,
+            attributeValueId: item.attributeValueId,
+            attributeValue: item.attributeValue,
+          }));
+          if (this.product?.id) this.loadProductAttributesSelection(this.product.id);
+        },
+        error: () => (this.categoryAttributes = []),
+      });
+  }
+
+  loadProductAttributesSelection(productId: number): void {
+    this.productAttributeService.getAllByProductId(productId).subscribe({
+      next: (res) => {
+        const data = res.data ?? [];
+        const selected = this.categoryAttributes.filter((ca) =>
+          data.some((pa: any) => pa.attributeId === ca.attributeId && pa.attributeValueId === ca.attributeValueId)
+        );
+        this._productForm?.get('selectedCategoryAttributes')?.setValue(selected);
+      },
+    });
+  }
+
   updateProduct(){
     if(this._productForm.valid){
       const cat = this.productCategoryService.state;
-      const productDtoModel = {
+      const selected = this._productForm.get('selectedCategoryAttributes')?.value ?? [];
+      const productAttributes: ProductAttribute[] = (Array.isArray(selected) ? selected : []).map(
+        (item: CategoryAttributeDto) => ({
+          id: 0,
+          productId: this._productForm.value.id,
+          attributeId: item.attributeId,
+          attributeValueId: item.attributeValueId
+        })
+      );
+      const productDtoModel: ProductDto = {
         productId: this._productForm.value.id,
         productName: this._productForm.value.productName,
         description: this._productForm.value.description,
         productCode: this._productForm.value.productCode,
-        mainCategoryId: cat.mainCategoryId,
-        categoryId: Array.isArray(cat.categoryId) ? cat.categoryId : []
+        categoryId: Array.isArray(cat.categoryId) ? cat.categoryId : [],
+        productAttributes
       };
       this.productService.tsaUpdate(productDtoModel).pipe(
         catchError((err : HttpErrorResponse) => {

@@ -19,6 +19,7 @@ import { Product } from 'src/app/models/product/product';
 import { ErrorService } from 'src/app/services/Helper/errorService/error.service';
 import { CategoryAttributeService } from 'src/app/services/HttpClient/categoryAttributeService/category-attribute.service';
 import { CategoryService } from 'src/app/services/HttpClient/categoryService/category.service';
+import { ProductAttributeService } from 'src/app/services/HttpClient/productAttributeService/product-attribute.service';
 import { ProductService } from 'src/app/services/HttpClient/productService/product.service';
 import { ProductStockService } from 'src/app/services/HttpClient/productStockService/product-stock.service';
 import { ProductCategoryService, ProductCategoryState } from 'src/app/services/HttpClient/productCategoryService/product-category.service';
@@ -31,10 +32,10 @@ import { ProductCategoryService, ProductCategoryState } from 'src/app/services/H
 export class AddProductVariantComponent {
   _productVariantForm: FormGroup;
 
-  //Cartesian
+  // Kartezyen çarpım (varyant kombinasyonları)
   selectedValues: { [key: string]: AttributeValue[] } = {};
   cartesianProduct: any[] = [];
-  /** Ürün productService'ten, kategori ProductCategory üzerinden ProductCategoryService'ten gelir */
+  /** Ürün productService'ten, kategori ProductCategoryService state'inden gelir. */
   product$: Observable<Product & ProductCategoryState> = combineLatest([
     this.productService.products$,
     this.productCategoryService.getState$()
@@ -45,17 +46,17 @@ export class AddProductVariantComponent {
       categoryId: category.categoryId
     }))
   );
-  //Variables
+  // Değişkenler
   selectedAttributeValues: { [attributeValue: string]: AttributeValue[] } = {};
   jsonData: any = {};
   disableInput: boolean = true;
 
-  /** Kategori değişince güncellenir; Fiyat/KDV alan sayısı hep bu kategoriye göre */
+  /** Kategori değişince güncellenir; Fiyat/KDV alan sayısı bu listeye göre. */
   effectiveViewCategoryAttributeDto: ViewCategoryAttributeDto[] = [];
-  /** Ana kategori + yan kategoriler için liste */
+  /** Ana kategori + ek kategoriler listesi. */
   categories: Category[] = [];
 
-  categoryAttributeList: CategoryAttributeDto[] = [];
+  categoryAttributes: CategoryAttributeDto[] = [];
   private lastTokenboxCategoryKey = '';
 
   constructor(
@@ -66,11 +67,11 @@ export class AddProductVariantComponent {
     private formBuilder: FormBuilder,
     private categoryAttributeService: CategoryAttributeService,
     private categoryService: CategoryService,
+    private productAttributeService: ProductAttributeService,
     private toastrService: ToastrService
   ) {}
 
   ngOnInit(): void {
-    console.log("Product variant kontrol", this.product$)
     this.loadCategories();
     this.productVariantForm();
   }
@@ -92,8 +93,6 @@ export class AddProductVariantComponent {
   }
 
   productVariantForm() {
-        console.log("Product variant kontrol", this.product$)
-
     this.product$.subscribe((product) => {
       // ProductDetail: ürün + kategori API'den. Add-product: kategori sadece product-category state'inden.
       const mainCategoryId = product?.mainCategoryId ?? this.productCategoryService.state?.mainCategoryId ?? 0;
@@ -103,7 +102,7 @@ export class AddProductVariantComponent {
       if (this._productVariantForm) {
         const prevMain = this._productVariantForm.get('mainCategoryId')?.value;
         const prevCat = this._productVariantForm.get('categoryId')?.value;
-        const kategoriDegisti =
+        const categoryChanged =
           prevMain !== mainCategoryId ||
           JSON.stringify(prevCat || []) !== JSON.stringify(categoryId || []);
         this._productVariantForm.patchValue({
@@ -119,7 +118,9 @@ export class AddProductVariantComponent {
           this.resetVariantAndStockForNewCategory();
           this.loadAttributesForCategory(mainCategoryId);
         }
-        if (kategoriDegisti) this.loadCategoryAttributesForTokenbox(mainCategoryId, categoryId);
+        if (categoryChanged) {
+          this.loadCategoryAttributesForTokenbox(mainCategoryId, categoryId);
+        }
         return;
       }
 
@@ -147,7 +148,9 @@ export class AddProductVariantComponent {
       });
       this.syncFormCategoryToService();
       this.loadAttributesForCategory(mainCategoryId);
-      this.loadCategoryAttributesForTokenbox(mainCategoryId, categoryId);
+      if (product.id === 0) {
+        this.loadCategoryAttributesForTokenbox(mainCategoryId, categoryId);
+      }
     });
   }
 
@@ -166,7 +169,7 @@ export class AddProductVariantComponent {
     catCtrl.valueChanges.subscribe(() => update());
   }
 
-  /** Yeni kategorinin varyant attribute listesini yükle (alan sayısı bu listeye göre) */
+  /** Verilen kategoriye ait varyant attribute listesini yükler (alan sayısı bu listeye göre). */
   loadAttributesForCategory(categoryId: number): void {
     if (!categoryId) {
       this.effectiveViewCategoryAttributeDto = [];
@@ -179,15 +182,45 @@ export class AddProductVariantComponent {
       });
   }
 
-  loadCategoryAttributesForTokenbox(mainCategoryId: number, categoryId: number[]): void {
+  private getUniqueCategoryIds(mainCategoryId: number, categoryId: number[]): number[] {
     const ids = [
       ...(mainCategoryId > 0 ? [mainCategoryId] : []),
       ...(Array.isArray(categoryId) ? categoryId.filter((id) => (id ?? 0) > 0) : []),
     ];
-    const uniqueIds = [...new Set(ids)];
+    return [...new Set(ids)];
+  }
+
+  private setCategoryAttributesFromResponse(data: any[]): void {
+    this.categoryAttributes = (data ?? []).map((item: any) => ({
+      categoryId: item.categoryId ?? [],
+      attributeId: item.attributeId,
+      attributeValueId: item.attributeValueId,
+      attributeValue: item.attributeValue,
+    }));
+  }
+
+  getCategoryAttributes(categoryIds: number[]): void {
+    this.productAttributeService
+      .getAllProductAttribute({
+        categoryId: categoryIds,
+        attributeId: 0,
+        attributeValueId: 0,
+        attributeValue: '',
+        productId: 0,
+        productName: '',
+        attributeName: '',
+      })
+      .subscribe({
+        next: (response) => this.setCategoryAttributesFromResponse(response.data ?? []),
+        error: () => (this.categoryAttributes = []),
+      });
+  }
+
+  loadCategoryAttributesForTokenbox(mainCategoryId: number, categoryId: number[]): void {
+    const uniqueIds = this.getUniqueCategoryIds(mainCategoryId, categoryId);
 
     if (uniqueIds.length === 0) {
-      this.categoryAttributeList = [];
+      this.categoryAttributes = [];
       this.lastTokenboxCategoryKey = '';
       return;
     }
@@ -196,27 +229,7 @@ export class AddProductVariantComponent {
     if (key === this.lastTokenboxCategoryKey) return;
 
     this.lastTokenboxCategoryKey = key;
-    this.categoryAttributeService
-      .getAllCategoryAttribute({
-        categoryId: uniqueIds,
-        attributeId: 0,
-        attributeValueId: 0,
-        attributeValue: '',
-      })
-      .subscribe({
-        next: (response) => {
-          const data = response.data ?? [];
-          this.categoryAttributeList = data.map((item: any) => ({
-            categoryId: item.categoryId ?? item.CategoryId ?? [],
-            attributeId: item.attributeId ?? item.AttributeId ?? 0,
-            attributeValueId: item.attributeValueId ?? item.AttributeValueId ?? 0,
-            attributeValue: item.attributeValue ?? item.AttributeValue ?? '',
-          }));
-        },
-        error: () => {
-          this.categoryAttributeList = [];
-        },
-      });
+    this.getCategoryAttributes(uniqueIds);
   }
 
   get productStocksArray() {
@@ -225,7 +238,6 @@ export class AddProductVariantComponent {
 
   getAllTrueAttrSlicer() {
     const mainCategoryId = this._productVariantForm?.value?.mainCategoryId ?? this.productCategoryService.state?.mainCategoryId ?? 0;
-    console.log("Main CategoryId", mainCategoryId)
     if (!mainCategoryId) return;
     this.categoryAttributeService
       .getAllTrueSlicerAttribute(mainCategoryId)
@@ -237,7 +249,6 @@ export class AddProductVariantComponent {
 
   isVariantFalse(){
     if(!this._productVariantForm.value.isVariant){
-      console.log("Giriş yapıldı")
       this.productStocksArray.clear()
       this.cartesianProduct.splice(0, this.cartesianProduct.length)
       this.jsonData = {}
@@ -254,7 +265,7 @@ export class AddProductVariantComponent {
     }
   }
 
-  /** Kategori değiştiğinde varyant/stok alanlarını sıfırla; Fiyat/KDV alan sayısı yeni kategoriye göre 1 satıra iner */
+  /** Kategori değiştiğinde varyant/stok alanlarını sıfırlar; Fiyat/KDV alan sayısı yeni kategoriye göre 1 satıra iner. */
   resetVariantAndStockForNewCategory(): void {
     this.selectedValues = {};
     this.cartesianProduct.splice(0, this.cartesianProduct.length);
@@ -367,7 +378,7 @@ export class AddProductVariantComponent {
   }
 
   async removeVariantHtml(index: number) {
-    const key = index.toString(); // İndeks değerini bir dizeye çevirin.
+    const key = index.toString();
     this.removeJsonDataArray(index)
     this.productStocksArray.removeAt(index);
     this.cartesianProduct.splice(index, 1);
@@ -406,7 +417,7 @@ export class AddProductVariantComponent {
     });
   }
 
-  /** Ürünü Oluştur başarılı olduktan sonra varyant kartları ve buton kaybolur; kullanıcı tekrar "Varyant Oluştur" basmalı */
+  /** Ürünü Oluştur başarılı olduktan sonra varyant kartları ve buton temizlenir; kullanıcı tekrar "Varyant Oluştur" basmalı. */
   resetVariantFormAfterSubmit(): void {
     this.cartesianProduct.splice(0, this.cartesianProduct.length);
     this.jsonData = {};
@@ -451,12 +462,10 @@ export class AddProductVariantComponent {
       });
     }
 
-    const selectedCategoryAttributes = raw.selectedCategoryAttributes as any[];
+    const selectedCategoryAttributes = raw.selectedCategoryAttributes as CategoryAttributeDto[];
     if (Array.isArray(selectedCategoryAttributes)) {
       selectedCategoryAttributes.forEach((item) => {
-        const attrId = item.attributeId ?? item.AttributeId ?? 0;
-        const attrValId = item.attributeValueId ?? item.AttributeValueId ?? 0;
-        push(attrId, attrValId);
+        push(item.attributeId, item.attributeValueId);
       });
     }
 

@@ -92,6 +92,7 @@ export class AddProductComponent implements OnInit {
       description: this._productForm.value.description,
       productCode: this._productForm.value.productCode,
       categoryId: Array.isArray(cat?.categoryId) ? cat.categoryId : [],
+      productAttributes: []
     };
     this.emitProductForVariant();
   }

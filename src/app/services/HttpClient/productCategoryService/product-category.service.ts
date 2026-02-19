@@ -16,10 +16,13 @@ export interface ProductCategoryState {
   providedIn: 'root'
 })
 export class ProductCategoryService {
+  constructor(private httpClient: HttpClient) {
+  }
   private readonly defaultState: ProductCategoryState = {
     mainCategoryId: 0,
     categoryId: []
   };
+  
 
   private readonly state$ = new BehaviorSubject<ProductCategoryState>(this.defaultState);
 
@@ -41,17 +44,10 @@ export class ProductCategoryService {
   reset(): void {
     this.state$.next(this.defaultState);
   }
-}
-
-@Injectable({
-  providedIn: 'root'
-})
-export class ProductCategoryHttpService {
-  constructor(private httpClient: HttpClient) {}
 
   getByProductId(productId: number): Observable<ListResponseModel<ProductCategory>> {
     return this.httpClient.get<ListResponseModel<ProductCategory>>(
       environment.apiUrl + 'productCategories/GetByProductId?productId=' + productId
     );
-  }
+}
 }

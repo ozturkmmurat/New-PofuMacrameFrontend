@@ -80,8 +80,4 @@ export class ProductService {
       return this.httpClient.post<ListResponseModel<SelectListProductVariantDto>>(newPath, filterProduct);
     }
 
-    getTotalProduct(categoryId:number):Observable<SingleResponseModel<number>>{
-      let newPath = environment.apiUrl + "products/getTotalProduct?categoryId="+categoryId
-      return this.httpClient.get<SingleResponseModel<number>>(newPath);
-    }
 }

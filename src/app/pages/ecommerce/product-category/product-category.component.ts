@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Category } from 'src/app/models/category/category';
 import { CategoryService } from 'src/app/services/HttpClient/categoryService/category.service';
 import {
-  ProductCategoryHttpService,
   ProductCategoryService
 } from 'src/app/services/HttpClient/productCategoryService/product-category.service';
 
@@ -22,7 +21,6 @@ export class ProductCategoryComponent implements OnInit, OnChanges {
 
   constructor(
     private categoryService: CategoryService,
-    private productCategoryHttp: ProductCategoryHttpService,
     private productCategory: ProductCategoryService,
     private formBuilder: FormBuilder
   ) {}
@@ -58,7 +56,7 @@ export class ProductCategoryComponent implements OnInit, OnChanges {
 
   /** 2. İlgili ürünün MainCategory ve CategoryId'sini al; servise set et, iç formu güncelle */
   private loadProductSelections(): void {
-    this.productCategoryHttp.getByProductId(this.productId).subscribe({
+    this.productCategory.getByProductId(this.productId).subscribe({
       next: (res) => {
         const list = res.data ?? [];
         const mainCategoryId = list[0]?.mainCategoryId ?? 0;

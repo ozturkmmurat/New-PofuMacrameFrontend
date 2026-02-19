@@ -20,7 +20,7 @@ export class HomeComponent {
 
   //Model Parameter Start
   filterProduct : FilterProduct = {
-    categoryId:0, attributes:[], startLength:0, endLength:7
+    categoryId:0, attributes:[], startLength:0, endLength:7, minPrice: 0, maxPrice: 0
   }
   //Model Parameter End
 
