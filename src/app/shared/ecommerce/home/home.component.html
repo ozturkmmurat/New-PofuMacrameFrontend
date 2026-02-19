@@ -8,7 +8,7 @@
 
 <!-- Product Category Start  -->
 <div class="d-flex justify-content-center mt-2">
-    <div class="col-8">
+    <div class="col-12 col-lg-8">
         <div class="container-fluid">
             <div class="col-12">
                 <div class="title-div">
@@ -17,37 +17,21 @@
                             <h2 class="section-title">Ürün Kategorileri</h2>
                         </div>
                     </div>
-                    <!-- end col -->
                 </div>
             </div>
-            <div class="row">
-                <div class="col-12 col-md-4 mb-4">
-                        <img loading="lazy" src="assets/images/macrame/category1.webp"
-                            class="card-img card-img-product-category" alt="Fruits & Vegetables" />
-                        <div class="card-footer category-card-footer text-center">
-                            <h3 class="card-title fw-bold mb-2">Fruits &amp; Vegetables</h3>
-                            <p class="card-text text-muted mb-3">Get Upto <span class="fw-bold">30%</span> Off</p>
-                            <a href="#!" class="btn btn-outline-dark btn-lg">ALIŞVERİŞE BAŞLA</a>
+            <div class="day-products-slick">
+                <ngx-slick-carousel class="day-products-carousel" [config]="categorySlickConfig">
+                    <div *ngFor="let category of randomCategories" ngxSlickItem class="day-product-slide" [routerLink]="'productList/list/' + category.categoryId">
+                        <div class="product-img position-relative thumbnail card-img-wrap">
+                            <img loading="lazy" class="picture1 card-img card-img-product-category"
+                                [src]="imageFolderUrl + category.imagePath" [alt]="category.categoryName" />
                         </div>
-                </div>
-                <div class="col-12 col-md-4 mb-4">
-                        <img loading="lazy" src="assets/images/macrame/category2.webp"
-                            class="card-img card-img-product-category" alt="Freshly Baked Buns" />
                         <div class="card-footer category-card-footer text-center">
-                            <h3 class="card-title fw-bold mb-2">Freshly Baked Buns</h3>
-                            <p class="card-text text-muted mb-3">Get Upto <span class="fw-bold">25%</span> Off</p>
-                            <a href="#!" class="btn btn-outline-dark btn-lg">ALIŞVERİŞE BAŞLA</a>
+                            <h3 class="card-title fw-bold mb-2 text-truncate">{{ category.categoryName }}</h3>
+                            <a class="btn btn-outline-dark btn-lg">ALIŞVERİŞE BAŞLA</a>
                         </div>
-                </div>
-                <div class="col-12 col-md-4 mb-4">
-                        <img loading="lazy" src="assets/images/macrame/category2.webp"
-                            class="card-img card-img-product-category" alt="Freshly Baked Buns" />
-                        <div class="card-footer category-card-footer text-center">
-                            <h3 class="card-title fw-bold mb-2">Freshly Baked Buns</h3>
-                            <p class="card-text text-muted mb-3">Get Upto <span class="fw-bold">25%</span> Off</p>
-                            <a href="#!" class="btn btn-outline-dark btn-lg">ALIŞVERİŞE BAŞLA</a>
-                        </div>
-                </div>
+                    </div>
+                </ngx-slick-carousel>
             </div>
         </div>
     </div>
@@ -71,8 +55,7 @@
             </div>
             <div class="day-products-slick">
                 <ngx-slick-carousel class="day-products-carousel" [config]="dayProductsSlickConfig">
-                    <div *ngFor="let variant of productVariants | slice:0:12" ngxSlickItem class="day-product-slide">
-                            [routerLink]="'productDetail/detail/'+variant.productId+'/'+variant.productVariantId">
+                    <div *ngFor="let variant of theDayProducts | slice:0:12" ngxSlickItem class="day-product-slide" [routerLink]="'productDetail/detail/'+variant.productId+'/'+variant.productVariantId">
                             <div class="product-img position-relative thumbnail card-img-wrap"
                                 [class.thumbnail-hover]="variant.productPaths?.length >= 2">
                                 <img loading="lazy" class="picture1 card-img card-img-product-category"

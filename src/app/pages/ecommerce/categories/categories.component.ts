@@ -5,6 +5,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { EMPTY, catchError } from 'rxjs';
 import { Category } from 'src/app/models/category/category';
+import { CategoryImage } from 'src/app/models/categoryImage/categoryImage';
 import { ErrorService } from 'src/app/services/Helper/errorService/error.service';
 import { CategoryService } from 'src/app/services/HttpClient/categoryService/category.service';
 
@@ -15,9 +16,12 @@ import { CategoryService } from 'src/app/services/HttpClient/categoryService/cat
 })
 export class CategoriesComponent {
   categories: Category[] = [];
-  category : Category
+  category: Category;
   _categoryForm: FormGroup;
-  categoryId:number
+  categoryId: number;
+  selectedCategoryImage: CategoryImage;
+  categoryImageForm: FormData[] = [];
+  categoryImageFormData: FormData = new FormData();
 
   constructor(
     private categoryService: CategoryService,
@@ -38,6 +42,7 @@ export class CategoriesComponent {
       categoryName: ['', Validators.required],
       parentId: [0],
       isParent: false,
+      status: [true],
     });
     console.log(this._categoryForm);
   }
@@ -47,7 +52,8 @@ export class CategoriesComponent {
       id: category.id,
       parentId: category.parentId,
       categoryName: category.categoryName,
-      isParent: true,
+      isParent: !!(category.parentId),
+      status: category.status ?? true,
     });
   }
 
@@ -57,6 +63,7 @@ export class CategoriesComponent {
       parentId: 0,
       categoryName: '',
       isParent: false,
+      status: true,
     });
   }
 
@@ -102,18 +109,6 @@ export class CategoriesComponent {
     }
   }
 
-  delete(category : Category){
-    this.categoryService.delete(category).pipe(
-      catchError((err : HttpErrorResponse) => {
-        this.errorService.checkError(err)
-        return EMPTY;
-      }))
-      .subscribe(response => {
-        this.toastrService.success(response.message , "Başarılı");
-        this.getAll();
-      })
-  }
-
   checkMainCategoryInput() {
     console.log("IsParent", this._categoryForm.value.isParent)
     if (this._categoryForm.value.isParent == true) {
@@ -154,9 +149,23 @@ export class CategoriesComponent {
     this.modalService.open(this.exlargeModalAttribute, {size:'xl', centered:true}).dismissed
   }
 
-  attributeModal(row : any){
-    this.category = row
-    this.openAttributeModal()
+  attributeModal(row: Category) {
+    this.category = row;
+    this.openAttributeModal();
   }
 
+  @ViewChild('categoryImagesModal') categoryImagesModal: any;
+
+  openCategoryImagesModal(row: Category) {
+    this.selectedCategoryImage = {
+      id: 0,
+      categoryId: row.id,
+      path: '',
+      sequenceNumber: 0,
+      createDate: ''
+    };
+    this.categoryImageForm = [];
+    this.categoryImageFormData = new FormData();
+    this.modalService.open(this.categoryImagesModal, { size: 'xl', centered: true });
+  }
 }

@@ -3,6 +3,11 @@
     <ngx-datatable-column name="Id  " prop="id"> </ngx-datatable-column>
     <ngx-datatable-column name="Kategori Adı" prop="categoryName">
     </ngx-datatable-column>
+    <ngx-datatable-column name="Statü" [sortable]="false">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row.status ? 'Aktif' : 'Pasif' }}
+        </ng-template>
+    </ngx-datatable-column>
     <ngx-datatable-column name="İşlemler" [sortable]="false">
         <ng-template let-row="row" ngx-datatable-cell-template>
             <ng-container>
@@ -14,7 +19,7 @@
                     <div ngbDropdownMenu class="dropdown-menu-right dropdown-menu-arrow">
                         <a class="dropdown-item" href="javascript:void(0)" (click)="openUpdateCategoryModal(row)">Güncelle</a>
                         <a class="dropdown-item" href="javascript:void(0)" (click)="attributeModal(row)">Kategori Özellikleri</a>
-                        <a class="dropdown-item" href="javascript:void(0)" (click)="delete(row)">Sil</a>
+                        <a class="dropdown-item" href="javascript:void(0)" (click)="openCategoryImagesModal(row)">Kategori Fotoğrafları</a>
                     </div>
                 </div>
             </ng-container>
@@ -55,6 +60,11 @@
                             <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault"
                                     formControlName="isParent" (click)="checkMainCategoryInput()">
                             <label class="form-check-label" for="flexSwitchCheckDefault" >Bu Kategori bir alt kategori mi ?</label>
+                        </div>
+                        <div class="form-check form-switch mb-2">
+                            <input class="form-check-input" type="checkbox" role="switch" id="statusSwitch"
+                                formControlName="status">
+                            <label class="form-check-label" for="statusSwitch">Aktif/Pasif</label>
                         </div>
                             <div class="mb-3" *ngIf="_categoryForm.value.isParent">
                                 <label class="form-label" for="product-price-input">Alt Kategori</label>
@@ -110,9 +120,14 @@
                             </div>
                         </div>
                         <div class="form-check form-switch mb-2">
-                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault"
+                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefaultUpdate"
                                     formControlName="isParent" (click)="checkMainCategoryInput()">
-                            <label class="form-check-label" for="flexSwitchCheckDefault" >Bu Kategori bir alt kategori mi ?</label>
+                            <label class="form-check-label" for="flexSwitchCheckDefaultUpdate" >Bu Kategori bir alt kategori mi ?</label>
+                        </div>
+                        <div class="form-check form-switch mb-2">
+                            <input class="form-check-input" type="checkbox" role="switch" id="statusSwitchUpdate"
+                                formControlName="status">
+                            <label class="form-check-label" for="statusSwitchUpdate">Aktif</label>
                         </div>
                             <div class="mb-3" *ngIf="_categoryForm.value.isParent == true">
                                 <label class="form-label" for="product-price-input">Alt Kategori</label>
@@ -161,3 +176,24 @@
             </div>
         </div><!-- /.modal-content -->
     </ng-template><!-- /.modal -->
+
+    <ng-template #categoryImagesModal let-modal>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Kategori Fotoğrafları</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    (click)="modal.dismiss('Close click')"></button>
+            </div>
+            <div class="modal-body" *ngIf="selectedCategoryImage">
+                <app-category-images
+                    [categoryImage]="selectedCategoryImage"
+                    [form]="categoryImageForm"
+                    [formData]="categoryImageFormData">
+                </app-category-images>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0);" class="btn btn-link link-success fw-medium" data-bs-dismiss="modal"
+                    (click)="modal.dismiss('Close click')"><i class="ri-close-line me-1 align-middle"></i> Kapat</a>
+            </div>
+        </div>
+    </ng-template>
