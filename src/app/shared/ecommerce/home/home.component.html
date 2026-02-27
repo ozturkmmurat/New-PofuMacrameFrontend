@@ -1,7 +1,27 @@
-<!-- start hero section -->
+<!-- start hero section - slider: sağ/sol ok, kaydırılabilir, getByContentKey('Anasayfa Slider') -->
 <section class="section home-hero" id="hero">
-    <div class="home-hero__img-wrap">
-        <img class="home-hero__img" src="assets/images/rainbow-header-bg.webp" alt="" loading="eager" />
+    <div class="home-hero__slider-wrap">
+        <ngx-slick-carousel *ngIf="heroSlides.length > 0" class="home-hero-slider" [config]="heroSlickConfig">
+            <div *ngFor="let slide of heroSlides" ngxSlickItem class="home-hero__slide">
+                <a *ngIf="slide.linkUrl" [href]="slide.linkUrl" class="home-hero__slide-link" target="_blank" rel="noopener">
+                    <img class="home-hero__img" [src]="slide.imageUrl ? (imageFolderUrl + slide.imageUrl) : 'assets/images/rainbow-header-bg.webp'" [alt]="slide.title || ''" loading="eager" />
+                    <div *ngIf="slide.title || slide.description" class="home-hero__slide-caption">
+                        <h2 *ngIf="slide.title" class="home-hero__slide-title">{{ slide.title }}</h2>
+                        <p *ngIf="slide.description" class="home-hero__slide-desc">{{ slide.description }}</p>
+                    </div>
+                </a>
+                <div *ngIf="!slide.linkUrl" class="home-hero__slide-inner">
+                    <img class="home-hero__img" [src]="slide.imageUrl ? (imageFolderUrl + slide.imageUrl) : 'assets/images/rainbow-header-bg.webp'" [alt]="slide.title || ''" loading="eager" />
+                    <div *ngIf="slide.title || slide.description" class="home-hero__slide-caption">
+                        <h2 *ngIf="slide.title" class="home-hero__slide-title">{{ slide.title }}</h2>
+                        <p *ngIf="slide.description" class="home-hero__slide-desc">{{ slide.description }}</p>
+                    </div>
+                </div>
+            </div>
+        </ngx-slick-carousel>
+        <div *ngIf="heroSlides.length === 0" class="home-hero__img-wrap">
+            <img class="home-hero__img" src="assets/images/rainbow-header-bg.webp" alt="" loading="eager" />
+        </div>
     </div>
 </section>
 <!-- end hero section -->

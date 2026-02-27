@@ -1,0 +1,178 @@
+<ngx-datatable
+  style="width: 100%"
+  #table
+  class="material whitespace-nowrap single-selection pt-2"
+  [rows]="siteContents"
+  [scrollbarH]="true"
+  [columnMode]="'force'"
+  [headerHeight]="50"
+  [limit]="10"
+  [footerHeight]="50"
+  [rowHeight]="60">
+  <ngx-datatable-column name="Id" prop="id"></ngx-datatable-column>
+  <ngx-datatable-column name="İçerik Tipi" prop="contentKey"></ngx-datatable-column>
+  <ngx-datatable-column name="Başlık" prop="title"></ngx-datatable-column>
+  <ngx-datatable-column name="Açıklama" prop="description">
+    <ng-template let-value="value" ngx-datatable-cell-template>
+      {{ value ? (value | slice:0:50) + (value?.length > 50 ? '...' : '') : '-' }}
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column name="Görsel" [sortable]="false">
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      <img *ngIf="row.imageUrl" [src]="imageUrl + row.imageUrl" alt="" style="max-height: 40px; max-width: 60px; object-fit: contain;" />
+      <span *ngIf="!row.imageUrl">-</span>
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column name="Link" prop="linkUrl">
+    <ng-template let-value="value" ngx-datatable-cell-template>
+      {{ value ? (value | slice:0:30) + (value?.length > 30 ? '...' : '') : '-' }}
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column name="Sıra" prop="displayOrder"></ngx-datatable-column>
+  <ngx-datatable-column name="Durum" [sortable]="false">
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      {{ row.status ? 'Aktif' : 'Pasif' }}
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column name="İşlemler" [sortable]="false">
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      <div container="body" ngbDropdown placement="bottom-right">
+        <a href="javascript:void(0);" class="arrow-none" role="button" ngbDropdownToggle>
+          <i class="ri-more-2-fill"></i>
+        </a>
+        <div ngbDropdownMenu class="dropdown-menu-right dropdown-menu-arrow">
+          <a class="dropdown-item" href="javascript:void(0)" (click)="openUpdateModal(row)">Güncelle</a>
+          <a class="dropdown-item text-danger" href="javascript:void(0)" (click)="deleteRow(row)">Sil</a>
+        </div>
+      </div>
+    </ng-template>
+  </ngx-datatable-column>
+</ngx-datatable>
+
+<button type="button" class="btn btn-primary mt-3" (click)="openAddModal()">
+  Yeni İçerik Ekle
+</button>
+
+<!-- Ekleme modal -->
+<ng-template #addSiteContentModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">Yeni Site İçeriği</h5>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Close click')"></button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="_siteContentForm">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-lg-6 mb-3">
+                <label class="form-label">İçerik Tipi</label>
+                <select class="form-select" formControlName="contentKey" (change)="onContentTypeChange()">
+                  <option *ngFor="let c of contentTypes" [ngValue]="c.value">{{ c.label }}</option>
+                </select>
+              </div>
+              <div class="col-lg-6 mb-3">
+                <label class="form-label">Başlık</label>
+                <input type="text" class="form-control" formControlName="title" placeholder="Başlık" />
+              </div>
+              <div class="col-12 mb-3">
+                <label class="form-label">Açıklama</label>
+                <textarea class="form-control" formControlName="description" rows="2" placeholder="Açıklama"></textarea>
+              </div>
+              <div class="col-lg-6 mb-3">
+                <label class="form-label">Link URL</label>
+                <input type="text" class="form-control" formControlName="linkUrl" placeholder="https://..." />
+              </div>
+              <div class="col-lg-6 mb-3">
+                <label class="form-label">Sıra (Display Order)</label>
+                <input type="number" class="form-control" formControlName="displayOrder" min="0" />
+              </div>
+              <div class="col-12 mb-3">
+                <label class="form-label">Fotoğraf</label>
+                <input type="file" class="form-control" accept="image/*" (change)="onFileSelected($event)" />
+                <small class="text-muted" *ngIf="selectedFile">{{ selectedFile.name }}</small>
+                <button type="button" class="btn btn-sm btn-outline-secondary ms-2" *ngIf="selectedFile" (click)="clearSelectedFile()">Temizle</button>
+              </div>
+              <div class="col-12 mb-3">
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" formControlName="status" id="addStatusSwitch" />
+                  <label class="form-check-label" for="addStatusSwitch">Aktif</label>
+                </div>
+              </div>
+            </div>
+            <button type="button" class="btn btn-primary" (click)="add()">Kaydet</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <a href="javascript:void(0);" class="btn btn-link link-success fw-medium" (click)="modal.dismiss('Close click')">
+        <i class="ri-close-line me-1 align-middle"></i> Kapat
+      </a>
+    </div>
+  </div>
+</ng-template>
+
+<!-- Güncelleme modal -->
+<ng-template #updateSiteContentModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">Site İçeriği Güncelle</h5>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Close click')"></button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="_siteContentForm">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-lg-6 mb-3">
+                <label class="form-label">İçerik Tipi</label>
+                <select class="form-select" formControlName="contentKey" (change)="onContentTypeChange()">
+                  <option *ngFor="let c of contentTypes" [ngValue]="c.value">{{ c.label }}</option>
+                </select>
+              </div>
+              <div class="col-lg-6 mb-3">
+                <label class="form-label">Başlık</label>
+                <input type="text" class="form-control" formControlName="title" placeholder="Başlık" />
+              </div>
+              <div class="col-12 mb-3">
+                <label class="form-label">Açıklama</label>
+                <textarea class="form-control" formControlName="description" rows="2" placeholder="Açıklama"></textarea>
+              </div>
+              <div class="col-lg-6 mb-3">
+                <label class="form-label">Link URL</label>
+                <input type="text" class="form-control" formControlName="linkUrl" placeholder="https://..." />
+              </div>
+              <div class="col-lg-6 mb-3">
+                <label class="form-label">Sıra (Display Order)</label>
+                <input type="number" class="form-control" formControlName="displayOrder" min="0" />
+              </div>
+              <div class="col-12 mb-3">
+                <label class="form-label">Mevcut Görsel</label>
+                <div *ngIf="_siteContentForm.get('imageUrl')?.value">
+                  <img [src]="imageUrl + _siteContentForm.get('imageUrl')?.value" alt="" style="max-height: 80px; object-fit: contain;" />
+                </div>
+                <label class="form-label mt-2">Yeni Fotoğraf (isteğe bağlı)</label>
+                <input type="file" class="form-control" accept="image/*" (change)="onFileSelected($event)" />
+                <small class="text-muted" *ngIf="selectedFile">{{ selectedFile.name }}</small>
+                <button type="button" class="btn btn-sm btn-outline-secondary ms-2" *ngIf="selectedFile" (click)="clearSelectedFile()">Temizle</button>
+              </div>
+              <div class="col-12 mb-3">
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" formControlName="status" id="updateStatusSwitch" />
+                  <label class="form-check-label" for="updateStatusSwitch">Aktif</label>
+                </div>
+              </div>
+            </div>
+            <button type="button" class="btn btn-primary" (click)="update()">Güncelle</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <a href="javascript:void(0);" class="btn btn-link link-success fw-medium" (click)="modal.dismiss('Close click')">
+        <i class="ri-close-line me-1 align-middle"></i> Kapat
+      </a>
+    </div>
+  </div>
+</ng-template>

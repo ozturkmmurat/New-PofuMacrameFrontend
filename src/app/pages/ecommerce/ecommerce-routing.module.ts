@@ -19,6 +19,7 @@ import { OrderDetailComponent } from './order-detail/order-detail.component';
 import { OrderedProductsComponent } from './ordered-products/ordered-products.component';
 import { ProductPricefactorComponent } from './product-pricefactor/product-pricefactor.component';
 import { DistrictComponent } from './district/district.component';
+import { SiteContentsComponent } from './site-contents/site-contents.component';
 
 const routes: Routes = [
   {
@@ -52,6 +53,10 @@ const routes: Routes = [
   {
     path: "district",
     component: DistrictComponent
+  },
+  {
+    path: "site-contents",
+    component: SiteContentsComponent
   },
   {
     path: "orders",

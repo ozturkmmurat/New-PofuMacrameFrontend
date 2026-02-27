@@ -63,6 +63,12 @@ export const MENU: MenuItem[] = [
             label: 'MENUITEMS.APPS.LIST.DISTRICT',
             link: 'district',
             parentId: 12
+          },
+          {
+            id: 20,
+            label: 'MENUITEMS.APPS.LIST.SITECONTENTS',
+            link: 'site-contents',
+            parentId: 12
           }
 
 

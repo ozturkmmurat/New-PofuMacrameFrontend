@@ -65,6 +65,7 @@ import { ProductPricefactorComponent } from './product-pricefactor/product-price
 import { DistrictComponent } from './district/district.component';
 import { ProductCategoryComponent } from './product-category/product-category.component';
 import { CategoryImagesComponent } from './category-images/category-images.component';
+import { SiteContentsComponent } from './site-contents/site-contents.component';
 
 const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
   // Change this to your upload POST address:
@@ -104,7 +105,8 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
     ProductPricefactorComponent,
     DistrictComponent,
     ProductCategoryComponent,
-    CategoryImagesComponent
+    CategoryImagesComponent,
+    SiteContentsComponent
   ],
   imports: [
     CommonModule,
