@@ -19,7 +19,6 @@ export class CardPaymentComponent {
 
   ngOnInit() {
     if (window.history.replaceState) {
-      console.log("Çalıştı if girildi")
       window.history.replaceState(null, null, window.location.href);
     }
       this.addJsToElement()
@@ -27,7 +26,6 @@ export class CardPaymentComponent {
 
   ngOnDestroy(){
     if (window.history.replaceState) {
-      console.log("Çalıştı if girildi")
       window.history.replaceState(null, null, window.location.href);
       window.location.href ="payment/paymentStatus/0"
     }

@@ -121,15 +121,37 @@
                             <hr>
                             <div
                                 *ngIf="productVariantAttributeValueDto && productVariantAttributeValueDto.endProductVariantId != 0">
-                                <div class="mb-3" *ngIf="isCartEmpty">
-                                    <label class="form-label">Teslimat İlçesi</label>
-                                    <select class="form-select" [(ngModel)]="selectedPriceFactor"
-                                        (ngModelChange)="onDistrictChange()">
-                                        <option [ngValue]="null">İlçe seçiniz</option>
-                                        <option *ngFor="let factor of productPriceFactors" [ngValue]="factor">
-                                            {{ getDistrictName(factor.districtId) }} (+{{ factor.extraPrice | number:'1.2' }} TL)
-                                        </option>
-                                    </select>
+                                <!-- Sepet boşken teslimat tarih / saat / ilçe seçimi -->
+                                <div class="row g-3 mb-3" *ngIf="isCartEmpty">
+                                    <div class="col-md-4">
+                                        <label class="form-label">Teslimat Tarihi</label>
+                                        <input
+                                            type="date"
+                                            class="form-control"
+                                            [(ngModel)]="deliveryDateStr"
+                                            [min]="minDeliveryDateStr">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Teslimat Saati</label>
+                                        <select
+                                            class="form-select"
+                                            [(ngModel)]="selectedTimeSlotId">
+                                            <option *ngFor="let slot of timeSlots"
+                                                    [ngValue]="slot.id"
+                                                    [disabled]="slot.disabled">
+                                                {{ slot.label }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Teslimat İlçesi</label>
+                                        <select class="form-select" [(ngModel)]="selectedPriceFactor"
+                                            (ngModelChange)="onDistrictChange()">
+                                            <option *ngFor="let factor of productPriceFactors" [ngValue]="factor">
+                                                {{ getDistrictName(factor.districtId) }} (+{{ factor.extraPrice | number:'1.2' }} TL)
+                                            </option>
+                                        </select>
+                                    </div>
                                 </div>
                                 <a class="btn btn-success" (click)="addCart()"><i
                                         class="ri-add-line align-bottom me-1"></i>Sepete Ekle</a></div>

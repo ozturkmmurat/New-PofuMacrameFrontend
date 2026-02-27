@@ -69,6 +69,16 @@ export class ProductDetailComponent implements OnInit {
   districts: District[] = [];
   selectedPriceFactor: ProductPriceFactor | null = null;
 
+  // Teslimat tarihi ve saat aralığı (UI)
+  deliveryDateStr: string = '';            // 'YYYY-MM-DD' formatında
+  minDeliveryDateStr: string = '';         // tarih inputu için minimum
+  timeSlots: Array<{ id: '09-12' | '12-15' | '15-18'; label: string; disabled: boolean }> = [
+    { id: '09-12', label: '09:00-12:00', disabled: false },
+    { id: '12-15', label: '12:00-15:00', disabled: false },
+    { id: '15-18', label: '15:00-18:00', disabled: false }
+  ];
+  selectedTimeSlotId: '09-12' | '12-15' | '15-18' = '09-12';
+
   // bread crumb items
   breadCrumbItems!: Array<{}>;
   isImage: any;
@@ -113,6 +123,9 @@ export class ProductDetailComponent implements OnInit {
     });
     this.loadProductPriceFactors();
     this.loadDistricts();
+
+    // Sepet boşken teslimat tarih / saat varsayılanlarını ayarla
+    this.initDeliveryDefaults();
   }
 
   get isCartEmpty(): boolean {
@@ -125,6 +138,9 @@ export class ProductDetailComponent implements OnInit {
       if (!this.isCartEmpty) {
         const defaultId = this.cartService.defaultProductPriceFactorId;
         this.selectedPriceFactor = this.productPriceFactors.find((f) => f.id === defaultId) ?? null;
+      }
+      else{
+        this.selectedPriceFactor = this.productPriceFactors[0];
       }
       this.cdr.detectChanges();
     });
@@ -143,6 +159,98 @@ export class ProductDetailComponent implements OnInit {
 
   onDistrictChange(): void {
     this.cdr.detectChanges();
+  }
+
+  // --- Teslimat tarih & saat slotu yardımcı fonksiyonları ---
+  private toDateStr(d: Date): string {
+    const year = d.getFullYear();
+    const month = (d.getMonth() + 1).toString().padStart(2, '0');
+    const day = d.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  private setDisabled(ids: Array<'09-12' | '12-15' | '15-18'>): void {
+    this.timeSlots.forEach(slot => {
+      slot.disabled = ids.includes(slot.id);
+    });
+  }
+
+  private resetDisabled(): void {
+    this.timeSlots.forEach(slot => slot.disabled = false);
+  }
+
+  /** Sepet boşken ilk girişte teslimat tarih/saat varsayılanlarını ve kısıtlarını ayarlar */
+  private initDeliveryDefaults(): void {
+    if (!this.isCartEmpty) {
+      return;
+    }
+
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+    const hour = now.getHours() + now.getMinutes() / 60;
+
+    this.resetDisabled();
+
+    // Tarihte geri seçilebilecek en erken gün:
+    // - 18:00'den önce -> bugün
+    // - 18:00 ve sonrası -> yarın (bugün seçilemez)
+    if (hour < 18) {
+      this.minDeliveryDateStr = this.toDateStr(today);
+    } else {
+      this.minDeliveryDateStr = this.toDateStr(tomorrow);
+    }
+
+    if (hour < 9) {
+      // 09:00'dan önce -> bugün, tüm saat aralıkları seçilebilir, varsayılan 09-12
+      this.deliveryDateStr = this.toDateStr(today);
+      this.selectedTimeSlotId = '09-12';
+    } else if (hour < 12) {
+      // 09:00–12:00 arası -> bugün, varsayılan 12-15, 09-12 pasif
+      this.deliveryDateStr = this.toDateStr(today);
+      this.selectedTimeSlotId = '12-15';
+      this.setDisabled(['09-12']);
+    } else if (hour < 15) {
+      // 12:00–15:00 arası -> bugün, varsayılan 15-18, 09-12 ve 12-15 pasif
+      this.deliveryDateStr = this.toDateStr(today);
+      this.selectedTimeSlotId = '15-18';
+      this.setDisabled(['09-12', '12-15']);
+    } else if (hour < 18) {
+      // 15:00–18:00 arası -> bugün, varsayılan 15-18, 09-12 ve 12-15 pasif kalır
+      this.deliveryDateStr = this.toDateStr(today);
+      this.selectedTimeSlotId = '15-18';
+      this.setDisabled(['09-12', '12-15']);
+    } else {
+      // 18:00 sonrası -> ertesi gün, default 09-12
+      this.deliveryDateStr = this.toDateStr(tomorrow);
+      this.selectedTimeSlotId = '09-12';
+    }
+  }
+
+  /** UI'da seçilen tarihe ve zaman aralığına göre Date nesneleri üretir */
+  private getRequestedDeliveryRange(): { start: Date; end: Date } {
+    if (!this.deliveryDateStr || !this.selectedTimeSlotId) {
+      const today = new Date();
+      this.deliveryDateStr = this.toDateStr(today);
+      this.selectedTimeSlotId = '09-12';
+    }
+
+    let startHour = 9;
+    let endHour = 12;
+
+    if (this.selectedTimeSlotId === '12-15') {
+      startHour = 12;
+      endHour = 15;
+    } else if (this.selectedTimeSlotId === '15-18') {
+      startHour = 15;
+      endHour = 18;
+    }
+
+    const [year, month, day] = this.deliveryDateStr.split('-').map(v => Number(v));
+    const start = new Date(year, (month || 1) - 1, day || 1, startHour, 0, 0);
+    const end = new Date(year, (month || 1) - 1, day || 1, endHour, 0, 0);
+
+    return { start, end };
   }
 
   /** Ürün detayda her zaman sadece varyantın kendi fiyatı gösterilir; ilçe seçimi fiyatı değiştirmez */
@@ -377,22 +485,39 @@ export class ProductDetailComponent implements OnInit {
   }
 
   addCart() {
-    var checkStock = this.checkProductStockByPvId(this.productVariantAttributeValueDto.endProductVariantId)
-    if (checkStock) {
-      const productVariant: ProductVariantAttributeValueDto = Object.assign({}, this.productVariantAttributeValueDto);
-      productVariant.attributeValue = this.keepAttributeNameValue
-      productVariant.productName = this.product.productName
-      productVariant.categoryName = this.product.categoryName
-      productVariant.imagePath = this.keepImage
-      console.log("Sepete eklenen ürünün bilgisi", productVariant)
-      const productPriceFactorId = this.isCartEmpty
-        ? (this.selectedPriceFactor?.id ?? 0)
-        : this.cartService.defaultProductPriceFactorId;
-      this.cartService.addToCart(productVariant, productPriceFactorId);
-      this.toastrService.success("Ürün başarıyla sepete eklendi.")
-    } else {
-      this.toastrService.error("Ürün stokta bulunamadı.")
+    const endProductVariantId = this.productVariantAttributeValueDto.endProductVariantId;
+    if (!endProductVariantId) {
+      this.toastrService.error("Ürün stokta bulunamadı.");
+      return;
     }
+
+    const checkStock$ = this.checkProductStockByPvId(endProductVariantId);
+
+    checkStock$.subscribe(checkStock => {
+      if (checkStock) {
+        const productVariant: ProductVariantAttributeValueDto = Object.assign({}, this.productVariantAttributeValueDto);
+        productVariant.attributeValue = this.keepAttributeNameValue;
+        productVariant.productName = this.product.productName;
+        productVariant.categoryName = this.product.categoryName;
+        productVariant.imagePath = this.keepImage;
+        console.log("Sepete eklenen ürünün bilgisi", productVariant);
+
+        // İlk ürün eklenirken teslimat tarih/saat aralığını sepet servisine yaz
+        if (this.isCartEmpty) {
+          const range = this.getRequestedDeliveryRange();
+          this.cartService.setRequestedDeliveryRange(range.start, range.end);
+        }
+
+        const productPriceFactorId = this.isCartEmpty
+          ? (this.selectedPriceFactor?.id ?? 0)
+          : this.cartService.defaultProductPriceFactorId;
+
+        this.cartService.addToCart(productVariant, productPriceFactorId);
+        this.toastrService.success("Ürün başarıyla sepete eklendi.");
+      } else {
+        this.toastrService.error("Ürün stokta bulunamadı.");
+      }
+    });
   }
 
   checkProductStockByPvId(productVariantId: number) {

@@ -20,11 +20,43 @@ export class CartService {
   cartItemList = signal(CartItems)
 
   private readonly cartPriceFactorStorageKey = 'cartPriceFactorId';
+  private readonly deliveryStartStorageKey = 'cartRequestedDeliveryStart';
+  private readonly deliveryEndStorageKey = 'cartRequestedDeliveryEnd';
 
   /** Aynı sekmede applyPriceUpdatesAndPersist → storage event döngüsünü kırmak için; storage listener loadStockPrices atlar. */
   private _skipNextStoragePriceCheck = false;
   get skipNextStoragePriceCheck(): boolean {
     return this._skipNextStoragePriceCheck;
+  }
+
+  /** İlk ürün eklenirken seçilen teslimat tarih/saat aralığını yazar */
+  setRequestedDeliveryRange(start: Date, end: Date): void {
+    this.localStorageService.addJson(this.deliveryStartStorageKey, start);
+    this.localStorageService.addJson(this.deliveryEndStorageKey, end);
+  }
+
+  /** Sepete daha önce yazılmış teslimat başlangıç zamanı (Date) */
+  get requestedDeliveryStart(): Date | null {
+    try {
+      const raw = this.localStorageService.getItem(this.deliveryStartStorageKey);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      return parsed ? new Date(parsed) : null;
+    } catch {
+      return null;
+    }
+  }
+
+  /** Sepete daha önce yazılmış teslimat bitiş zamanı (Date) */
+  get requestedDeliveryEnd(): Date | null {
+    try {
+      const raw = this.localStorageService.getItem(this.deliveryEndStorageKey);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      return parsed ? new Date(parsed) : null;
+    } catch {
+      return null;
+    }
   }
 
   addToCart(productVariant: ProductVariantAttributeValueDto, productPriceFactorId?: number) {
@@ -45,6 +77,7 @@ export class CartService {
       currentItems.push(cartItem);
       this.cartItemList.set(currentItems);
       this.localStorageService.addJson("products", this.cartItemList());
+      // İlk ürün sepete eklenirken yazılmış teslimat tarih/saat bilgisi korunur; burada ek iş yok.
     }
   }
 

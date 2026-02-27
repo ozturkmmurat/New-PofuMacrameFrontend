@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { ListResponseModel } from 'src/app/models/responseModel/listResponseModel';
 import { SelectUserOrderDto } from 'src/app/models/dtos/order/select/selectOrderDto';
 import { SingleResponseModel } from 'src/app/models/responseModel/singleResponseModel';
+import { ResponseModel } from 'src/app/models/responseModel/responseModel';
 import { Order } from 'src/app/models/order/order';
 
 @Injectable({
@@ -32,5 +33,10 @@ export class OrderService {
   getUserOrderDtoDetail(orderId : number, userId : number):Observable<SingleResponseModel<SelectUserOrderDto>>{
     let newPath = environment.apiUrl + "orders/getUserOrderDtoDetail?orderId=" + orderId + "&userId=" + userId
     return this.httpClient.get<SingleResponseModel<SelectUserOrderDto>>(newPath);
+  }
+
+  markAsShipped(order: Order): Observable<ResponseModel> {
+    const newPath = environment.apiUrl + 'orders/MarkAsShipped';
+    return this.httpClient.post<ResponseModel>(newPath, order);
   }
 }

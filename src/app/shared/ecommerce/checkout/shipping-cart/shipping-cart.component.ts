@@ -31,7 +31,9 @@ export class ShippingCartComponent {
     productPriceFactorId: 0,
     cartItems: null,
     orderDescription: '',
-    tcNo: '11111111111'
+    tcNo: '11111111111',
+    requestedDeliveryStart: undefined,
+    requestedDeliveryEnd: undefined
   };
 
   constructor(
@@ -154,6 +156,8 @@ export class ShippingCartComponent {
     this.tsaPaymentParameter.productPriceFactorId = this.cartService.defaultProductPriceFactorId;
     this.tsaPaymentParameter.cartItems = this.cartItems;
     this.tsaPaymentParameter.tcNo = '11111111111';
+    this.tsaPaymentParameter.requestedDeliveryStart = this.cartService.requestedDeliveryStart || undefined;
+    this.tsaPaymentParameter.requestedDeliveryEnd = this.cartService.requestedDeliveryEnd || undefined;
     return Promise.resolve();
   }
 }

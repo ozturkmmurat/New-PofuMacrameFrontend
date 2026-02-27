@@ -10,6 +10,15 @@
                     <b>{{orderDetail.orderDate | date: "dd/MM/y"}}</b>
 
                 </div>
+                <div class="order-header-info"
+                     *ngIf="orderDetail?.requestedDeliveryStart && orderDetail?.requestedDeliveryEnd">
+                    Talep Edilen Teslim Tarihi
+                    <b>
+                        {{ orderDetail.requestedDeliveryStart | date:'dd.MM.yyyy' }}
+                        {{ orderDetail.requestedDeliveryStart | date:'HH:mm' }}-
+                        {{ orderDetail.requestedDeliveryEnd   | date:'HH:mm' }}
+                    </b>
+                </div>
                 <div class="order-header-info">
                     Sipariş Özeti
                     <b title="{{orderDetail.selectSubOrderDtos.length}}">{{orderDetail.selectSubOrderDtos.length

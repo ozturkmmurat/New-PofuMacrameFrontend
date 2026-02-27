@@ -21,7 +21,6 @@ export class PaymentService {
   formScript = signal("")
 
   tsaPayment(tsaPaymentParameter : TsaPaymentParameter):Observable<SingleResponseModel<string>>{
-    console.log("Service gelen veri", tsaPaymentParameter)
     let newPath = environment.apiUrl + "orderPayments/tsaPayment"
     return this.httpClient.post<SingleResponseModel<string>>(newPath, tsaPaymentParameter)
   }
@@ -32,19 +31,16 @@ export class PaymentService {
   }
 
   cancelOrder(cancelOrder : CancelOrder):Observable<SingleResponseModel<any>>{
-    console.log("Service gelen order cancelOrder", cancelOrder)
     let newPath = environment.apiUrl + "orderPayments/cancelOrder"
     return this.httpClient.post<SingleResponseModel<any>>(newPath, cancelOrder)
   }
 
   refundProduct(refundingProduct : RefundingProduct):Observable<SingleResponseModel<any>>{
-    console.log("Service gelen order refundingProduct", refundingProduct)
     let newPath = environment.apiUrl + "orderPayments/refundProduct"
     return this.httpClient.post<SingleResponseModel<any>>(newPath, refundingProduct)
   }
 
   setFormScript(script : string){
-    console.log("Signale gelen src", script)
     this.formScript.set(script)
   }
 

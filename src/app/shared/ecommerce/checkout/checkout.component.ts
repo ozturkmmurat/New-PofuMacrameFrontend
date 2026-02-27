@@ -25,7 +25,9 @@ export class CheckoutComponent {
     productPriceFactorId: 0,
     cartItems: null,
     orderDescription: '',
-    tcNo: '11111111111'
+    tcNo: '11111111111',
+    requestedDeliveryStart: undefined,
+    requestedDeliveryEnd: undefined
   };
 
   constructor(
@@ -52,12 +54,20 @@ export class CheckoutComponent {
       },
       quantity: Number(item.quantity) || 0
     }));
+    const requestedDeliveryStart = this.tsaPaymentParameter.requestedDeliveryStart
+      ? new Date(this.tsaPaymentParameter.requestedDeliveryStart)
+      : undefined;
+    const requestedDeliveryEnd = this.tsaPaymentParameter.requestedDeliveryEnd
+      ? new Date(this.tsaPaymentParameter.requestedDeliveryEnd)
+      : undefined;
     return {
       addressId,
       productPriceFactorId: Number(this.tsaPaymentParameter.productPriceFactorId) || 0,
       cartItems,
       orderDescription: this.tsaPaymentParameter.orderDescription || '',
-      tcNo: this.tsaPaymentParameter.tcNo || '11111111111'
+      tcNo: this.tsaPaymentParameter.tcNo || '11111111111',
+      requestedDeliveryStart,
+      requestedDeliveryEnd
     };
   }
 
@@ -67,6 +77,9 @@ export class CheckoutComponent {
       this.tsaPaymentParameter.productPriceFactorId = this.cartService.defaultProductPriceFactorId;
       this.tsaPaymentParameter.cartItems = this.cartService.cartItemList();
       this.tsaPaymentParameter.tcNo = '11111111111';
+      // Sepete ilk ürün eklenirken yazılan teslimat tarih/saat aralığını al
+      this.tsaPaymentParameter.requestedDeliveryStart = this.cartService.requestedDeliveryStart || undefined;
+      this.tsaPaymentParameter.requestedDeliveryEnd = this.cartService.requestedDeliveryEnd || undefined;
       resolve();
     });
   }

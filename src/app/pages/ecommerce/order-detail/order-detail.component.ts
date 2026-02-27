@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, effect } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
@@ -9,8 +9,10 @@ import { SelectUserOrderDto } from 'src/app/models/dtos/order/select/selectOrder
 import { SelectSubOrderDto } from 'src/app/models/dtos/subOrder/select/selectSubOrderDto';
 import { CancelOrder } from 'src/app/models/libraryModels/iyzico/cancelOrder';
 import { RefundingProduct } from 'src/app/models/libraryModels/iyzico/refundingProduct';
-import { User } from 'src/app/models/user/user';
+import { Order } from 'src/app/models/order/order';
 import { ErrorService } from 'src/app/services/Helper/errorService/error.service';
+import { LocalStorageService } from 'src/app/services/Helper/localStorageService/local-storage.service';
+import { AuthService } from 'src/app/services/HttpClient/authService/auth.service';
 import { OrderService } from 'src/app/services/HttpClient/orderService/order.service';
 import { PaymentService } from 'src/app/services/HttpClient/paymentService/payment.service';
 import { UserService } from 'src/app/services/HttpClient/userService/user.service';
@@ -45,13 +47,24 @@ export class OrderDetailComponent {
   userId:number
   
   constructor(
-    private orderService : OrderService,
-    private route : ActivatedRoute,
-    private userService : UserService,
-    private paymentService : PaymentService,
-    private errorService : ErrorService,
-    private toastrService : ToastrService,
-    private modalService : NgbModal) {
+    private orderService: OrderService,
+    private route: ActivatedRoute,
+    private userService: UserService,
+    private paymentService: PaymentService,
+    private errorService: ErrorService,
+    private toastrService: ToastrService,
+    private modalService: NgbModal,
+    private authService: AuthService,
+    private localStorageService: LocalStorageService) {
+  }
+
+  get isAdmin(): boolean {
+    const token = this.localStorageService.getToken();
+    if (!token) return false;
+    const decoded = this.authService.decodeToken(token);
+    const roles = decoded?.['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+    const roleArray = Array.isArray(roles) ? roles : (roles ? [roles] : []);
+    return roleArray.includes('admin');
   }
 
   ngOnInit(){
@@ -109,39 +122,63 @@ export class OrderDetailComponent {
   }
 
   cancelOrder(){
-    this.writeCancelOrder()
-    if(this.cancelOrderModel.orderId > 0){
-        this.paymentService.cancelOrder(this.cancelOrderModel).pipe(
-          catchError((err:HttpErrorResponse) => {
-            this.errorService.checkError(err);
-            this.cancelRefundStatus = true
-            this.closeModal()
-            return EMPTY;
-          }))
-          .subscribe((response) => {
-            this.toastrService.success("Siparişiniz başarıyla iptal edilmiştir.")
-            this.getOrderDetail(this.orderId, this.userId)
-            this.cancelRefundStatus = true
-            this.closeModal()
-          })
+    this.writeCancelOrder();
+    if (this.cancelOrderModel.orderId > 0) {
+      this.paymentService.cancelOrder(this.cancelOrderModel).pipe(
+        catchError((err: HttpErrorResponse) => {
+          this.errorService.checkError(err);
+          this.cancelRefundStatus = true;
+          this.closeModal();
+          return EMPTY;
+        })
+      ).subscribe((response) => {
+        this.toastrService.success("Siparişiniz başarıyla iptal edilmiştir.");
+        this.getOrderDetail(this.orderId, this.userId);
+        this.cancelRefundStatus = true;
+        this.closeModal();
+      });
     }
   }
 
   refundProduct(){
-    if(this.refundingProduct.orderId > 0 && this.refundingProduct.subOrderId > 0){
+    if (this.refundingProduct.orderId > 0 && this.refundingProduct.subOrderId > 0) {
       this.paymentService.refundProduct(this.refundingProduct).pipe(
-        catchError((err : HttpErrorResponse) => {
+        catchError((err: HttpErrorResponse) => {
           this.errorService.checkError(err);
-          this.cancelRefundStatus = true
-          this.closeModal()
+          this.cancelRefundStatus = true;
+          this.closeModal();
           return EMPTY;
-        }))
-        .subscribe((response) => {
-          this.cancelRefundStatus = true
-          this.getOrderDetail(this.orderId, this.userId)
-          this.closeModal()
-          this.toastrService.success("Sipariş iade süreciniz başlatılmıştır.")
         })
+      ).subscribe((response) => {
+        this.cancelRefundStatus = true;
+        this.getOrderDetail(this.orderId, this.userId);
+        this.closeModal();
+        this.toastrService.success("Sipariş iade süreciniz başlatılmıştır.");
+      });
     }
+  }
+
+  markAsShipped(): void {
+    if (!this.orderDetail) return;
+    const order: Order = {
+      id: this.orderDetail.orderId,
+      userId: Number(this.userId),
+      totalPrice: this.orderDetail.totalPrice,
+      orderCode: '',
+      orderDate: this.orderDetail.orderDate,
+      orderStatus: this.orderDetail.orderStatus,
+      address: this.orderDetail.address
+    };
+    this.orderService.markAsShipped(order).pipe(
+      catchError((err: HttpErrorResponse) => {
+        this.errorService.checkError(err);
+        return EMPTY;
+      })
+    ).subscribe((response) => {
+      if (response?.success) {
+        this.toastrService.success(response.message ?? 'Sipariş kargoya verildi olarak işaretlendi.');
+        this.getOrderDetail(this.orderId, this.userId);
+      }
+    });
   }
 }
