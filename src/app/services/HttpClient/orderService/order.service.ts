@@ -39,4 +39,9 @@ export class OrderService {
     const newPath = environment.apiUrl + 'orders/MarkAsShipped';
     return this.httpClient.post<ResponseModel>(newPath, order);
   }
+
+  getByGuid(guid: string): Observable<SingleResponseModel<Order>> {
+    const newPath = environment.apiUrl + 'orders/GetByGuid?guid=' + encodeURIComponent(guid);
+    return this.httpClient.get<SingleResponseModel<Order>>(newPath);
+  }
 }

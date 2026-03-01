@@ -1,9 +1,10 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { EMPTY, catchError } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { EMPTY, catchError, switchMap } from 'rxjs';
 import { PaymentResultPostParameter } from 'src/app/models/entityParameter/iyzico/paymentResultPostParameter';
 import { PaymentService } from 'src/app/services/HttpClient/paymentService/payment.service';
+import { OrderService } from 'src/app/services/HttpClient/orderService/order.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -13,46 +14,44 @@ import Swal from 'sweetalert2';
 })
 export class PaymentStatusComponent {
 
-  errorMessage : string
-  paymentStatus : boolean
-  paymentResultPostParameter:PaymentResultPostParameter = {
-    orderId : 0
-  }
-  constructor(
-    private route : ActivatedRoute,
-    private orderPaymentService : PaymentService
-  ) {
-  }
+  errorMessage: string;
+  paymentStatus: boolean;
+  paymentResultPostParameter: PaymentResultPostParameter = { guid: '' };
 
-  ngOnInit(){
-    this.cancel()
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private orderPaymentService: PaymentService,
+    private orderService: OrderService
+  ) {}
+
+  ngOnInit(): void {
+    this.cancel();
     this.route.params.subscribe((params) => {
-      if (params['orderId']) {
-        this.paymentResultPostParameter.orderId = Number(params['orderId'])
-        this.paymentResult()
+      const guid = params['guid'];
+      if (guid) {
+        this.paymentResultPostParameter.guid = guid;
+        this.orderService.getByGuid(guid).pipe(
+          catchError(() => {
+            this.router.navigate(['']);
+            return EMPTY;
+          }),
+          switchMap(() => this.orderPaymentService.paymentResult(this.paymentResultPostParameter))
+        ).subscribe({
+          next: () => { this.paymentStatus = true; },
+          error: (err: HttpErrorResponse) => {
+            this.errorMessage = err.error?.message;
+            this.paymentStatus = false;
+          }
+        });
       }
     });
   }
-  cancel() {
-    const swalWithBootstrapButtons = Swal.mixin({
-      customClass: {
-        cancelButton: 'btn btn-danger ms-2'
-      },
+
+  cancel(): void {
+    Swal.mixin({
+      customClass: { cancelButton: 'btn btn-danger ms-2' },
       buttonsStyling: true
     });
-  }
-
-  paymentResult(){
-    this.orderPaymentService.paymentResult(this.paymentResultPostParameter)
-    .pipe(
-      catchError((err:HttpErrorResponse) => {
-        this.errorMessage = err.error.message
-        this.paymentStatus = false
-
-        return EMPTY;
-      })
-    ).subscribe(response => {
-      this.paymentStatus = true;
-    })
   }
 }

@@ -33,7 +33,14 @@ export class ShippingCartComponent {
     orderDescription: '',
     tcNo: '11111111111',
     requestedDeliveryStart: undefined,
-    requestedDeliveryEnd: undefined
+    requestedDeliveryEnd: undefined,
+    fullName: '',
+    email: '',
+    phone: '',
+    recipientPhone: '',
+    address: '',
+    city: '',
+    postCode: ''
   };
 
   constructor(

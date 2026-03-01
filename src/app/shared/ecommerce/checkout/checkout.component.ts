@@ -1,7 +1,4 @@
 import { Component } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Cart } from 'src/app/pages/ecommerce/cart/cart.model';
-import { cartData } from '../../../pages/ecommerce/cart/data';
 import { TsaPaymentParameter } from 'src/app/models/entityParameter/iyzico/tsaPaymentParameter';
 import { PaymentService } from 'src/app/services/HttpClient/paymentService/payment.service';
 import { CheckoutService } from 'src/app/services/Component/checkout/checkout.service';
@@ -12,6 +9,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorService } from 'src/app/services/Helper/errorService/error.service';
 import { ToastrService } from 'ngx-toastr';
 import { CartItem } from 'src/app/models/html/cart/cartItem';
+import { AuthService } from 'src/app/services/HttpClient/authService/auth.service';
+import { LocalStorageService } from 'src/app/services/Helper/localStorageService/local-storage.service';
+import { CityService } from 'src/app/services/HttpClient/cityService/city.service';
+import { City } from 'src/app/models/city/city';
 
 @Component({
   selector: 'app-checkout',
@@ -27,8 +28,17 @@ export class CheckoutComponent {
     orderDescription: '',
     tcNo: '11111111111',
     requestedDeliveryStart: undefined,
-    requestedDeliveryEnd: undefined
+    requestedDeliveryEnd: undefined,
+    fullName: '',
+    email: '',
+    phone: '',
+    recipientPhone: '',
+    address: '',
+    city: '',
+    postCode: ''
   };
+
+  cities: City[] = [];
 
   constructor(
     private paymentService: PaymentService,
@@ -36,10 +46,21 @@ export class CheckoutComponent {
     private cartService: CartService,
     private errorService: ErrorService,
     private toastrService: ToastrService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService,
+    private localStorageService: LocalStorageService,
+    private cityService: CityService
   ) {}
 
-  ngOnInit(): void {}
+  get isLoggedIn(): boolean {
+    return !!this.localStorageService.getToken();
+  }
+
+  ngOnInit(): void {
+    this.cityService.getAll().subscribe(res => {
+      this.cities = res.data ?? [];
+    });
+  }
 
   /** API'ye int gidebilmesi için sayı alanlarını number yapıp döndürür. productPriceFactorId sadece TsaPaymentParameter'da. */
   private toTsaPaymentPayload(): TsaPaymentParameter {
@@ -67,42 +88,61 @@ export class CheckoutComponent {
       orderDescription: this.tsaPaymentParameter.orderDescription || '',
       tcNo: this.tsaPaymentParameter.tcNo || '11111111111',
       requestedDeliveryStart,
-      requestedDeliveryEnd
+      requestedDeliveryEnd,
+      fullName: this.tsaPaymentParameter.fullName ?? '',
+      email: this.tsaPaymentParameter.email ?? '',
+      phone: this.tsaPaymentParameter.phone ?? '',
+      recipientPhone: this.tsaPaymentParameter.recipientPhone ?? '',
+      address: this.tsaPaymentParameter.address ?? '',
+      city: this.tsaPaymentParameter.city ?? '',
+      postCode: this.tsaPaymentParameter.postCode ?? ''
     };
   }
 
-  writeTsaPaymentParameter() {
-    return new Promise<void>((resolve) => {
+  writeTsaPaymentParameter(): Promise<void> {
+    this.tsaPaymentParameter.productPriceFactorId = this.cartService.defaultProductPriceFactorId;
+    this.tsaPaymentParameter.cartItems = this.cartService.cartItemList();
+    this.tsaPaymentParameter.tcNo = '11111111111';
+    this.tsaPaymentParameter.requestedDeliveryStart = this.cartService.requestedDeliveryStart || undefined;
+    this.tsaPaymentParameter.requestedDeliveryEnd = this.cartService.requestedDeliveryEnd || undefined;
+    if (this.isLoggedIn) {
       this.tsaPaymentParameter.addressId = this.checkoutService.addressId();
-      this.tsaPaymentParameter.productPriceFactorId = this.cartService.defaultProductPriceFactorId;
-      this.tsaPaymentParameter.cartItems = this.cartService.cartItemList();
-      this.tsaPaymentParameter.tcNo = '11111111111';
-      // Sepete ilk ürün eklenirken yazılan teslimat tarih/saat aralığını al
-      this.tsaPaymentParameter.requestedDeliveryStart = this.cartService.requestedDeliveryStart || undefined;
-      this.tsaPaymentParameter.requestedDeliveryEnd = this.cartService.requestedDeliveryEnd || undefined;
-      resolve();
-    });
+    } else {
+      this.tsaPaymentParameter.addressId = 0;
+    }
+    return Promise.resolve();
   }
-  payment(){
+
+  payment(): void {
     this.writeTsaPaymentParameter().then(() => {
-      if(this.tsaPaymentParameter !== null){
-        if(this.tsaPaymentParameter.addressId == 0){
-          this.toastrService.error("Lütfen bir adres seçiniz.")
-        }
-        const payload = this.toTsaPaymentPayload();
-        this.paymentService.tsaPayment(payload).pipe(
-          catchError((err:HttpErrorResponse) => {
-            this.errorService.checkError(err);
-            return EMPTY;
-          }))
-          .subscribe((response) => {
-            this.paymentService.setFormScript(response.data)
-            window.location.href = response.data
-          })
-      }else{
-        this.toastrService.error("Ödemeye geçilemiyor.")
+      const p = this.tsaPaymentParameter;
+      if (!p.recipientPhone?.trim()) {
+        this.toastrService.error('Alıcı telefonu zorunludur.');
+        return;
       }
-    })
+      if (this.isLoggedIn) {
+        if (!p.addressId) {
+          this.toastrService.error('Lütfen bir adres seçiniz.');
+          return;
+        }
+      } else {
+        if (!p.fullName?.trim() || !p.email?.trim() || !p.phone?.trim() || !p.address?.trim() ||
+            !p.city?.trim() || !p.postCode?.trim()) {
+          this.toastrService.error('Lütfen tüm adres bilgilerini doldurun.');
+          return;
+        }
+      }
+      const payload = this.toTsaPaymentPayload();
+      this.paymentService.tsaPayment(payload).pipe(
+        catchError((err: HttpErrorResponse) => {
+          this.errorService.checkError(err);
+          return EMPTY;
+        })
+      ).subscribe((response) => {
+        this.paymentService.setFormScript(response.data);
+        window.location.href = response.data;
+      });
+    });
   }
 
 

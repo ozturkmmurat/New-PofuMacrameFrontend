@@ -12,4 +12,12 @@ export interface TsaPaymentParameter {
 
     /** Siparişin istenen teslimat bitiş zamanı */
     requestedDeliveryEnd?: Date
+
+    fullName: string
+    email: string
+    phone: string
+    recipientPhone: string
+    address: string
+    city: string
+    postCode: string
 }

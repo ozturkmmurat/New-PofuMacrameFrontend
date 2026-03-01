@@ -5,6 +5,7 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { HttpClientModule } from "@angular/common/http";
 import { CommonModule } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from "ngx-mask";
 import { ShippingCartComponent } from "./shipping-cart/shipping-cart.component";
 import { AddressComponent } from "./address/address.component";
 
@@ -20,8 +21,11 @@ import { AddressComponent } from "./address/address.component";
     HttpClientModule,
     CommonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxMaskDirective,
+    NgxMaskPipe
   ],
+  providers: [provideNgxMask()],
   exports:[AddressComponent]
   })
   export class CheckoutModule { 

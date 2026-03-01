@@ -1,3 +1,3 @@
 export interface PaymentResultPostParameter{
-    orderId:number
+    guid:string
 }
