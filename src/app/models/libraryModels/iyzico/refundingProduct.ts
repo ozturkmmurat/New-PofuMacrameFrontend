@@ -1,5 +1,6 @@
-export interface RefundingProduct{
-    orderId:number,
-    subOrderId:number,
-    description:string
+export interface RefundingProduct {
+  orderId: number;
+  subOrderId: number;
+  description: string;
+  orderGuid: string;
 }

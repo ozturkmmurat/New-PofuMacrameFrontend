@@ -29,7 +29,8 @@ export class CheckoutComponent {
     tcNo: '11111111111',
     requestedDeliveryStart: undefined,
     requestedDeliveryEnd: undefined,
-    fullName: '',
+    firstName: '',
+    lastName: '',
     email: '',
     phone: '',
     recipientPhone: '',
@@ -89,7 +90,8 @@ export class CheckoutComponent {
       tcNo: this.tsaPaymentParameter.tcNo || '11111111111',
       requestedDeliveryStart,
       requestedDeliveryEnd,
-      fullName: this.tsaPaymentParameter.fullName ?? '',
+      firstName: this.tsaPaymentParameter.firstName ?? '',
+      lastName: this.tsaPaymentParameter.lastName ?? '',
       email: this.tsaPaymentParameter.email ?? '',
       phone: this.tsaPaymentParameter.phone ?? '',
       recipientPhone: this.tsaPaymentParameter.recipientPhone ?? '',
@@ -126,7 +128,7 @@ export class CheckoutComponent {
           return;
         }
       } else {
-        if (!p.fullName?.trim() || !p.email?.trim() || !p.phone?.trim() || !p.address?.trim() ||
+        if (!p.firstName?.trim() || !p.lastName?.trim() || !p.email?.trim() || !p.phone?.trim() || !p.address?.trim() ||
             !p.city?.trim() || !p.postCode?.trim()) {
           this.toastrService.error('Lütfen tüm adres bilgilerini doldurun.');
           return;

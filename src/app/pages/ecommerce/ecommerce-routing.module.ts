@@ -67,7 +67,7 @@ const routes: Routes = [
     component:OrderListComponent
   },
   {
-    path:"orderDetail/:orderId/:userId",
+    path: "orderDetail/:guid",
     component: OrderDetailComponent
   },
   {

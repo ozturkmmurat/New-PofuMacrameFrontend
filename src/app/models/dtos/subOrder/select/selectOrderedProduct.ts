@@ -1,4 +1,5 @@
 export interface SelectOrderedProductDto{
+    OrderedGuid:string,
     orderId:number,
     variantId:number,
     parentId:number,

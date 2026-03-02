@@ -31,19 +31,20 @@ export class UserOrderDetailComponent {
   orderDetail :  SelectUserOrderDto
   cancelRefundStatus:boolean = false
 
-  cancelOrderModel:CancelOrder = {
-    orderId:0,
-    description:""
-  }
+  cancelOrderModel: CancelOrder = {
+    guid: '',
+    description: ''
+  };
 
-  refundingProduct:RefundingProduct = {
-    subOrderId:0,
-    orderId:0,
-    description:""
-  }
+  refundingProduct: RefundingProduct = {
+    subOrderId: 0,
+    orderId: 0,
+    description: '',
+    orderGuid: ''
+  };
 
-  orderId:number
-  
+  guid: string;
+
   constructor(
     private orderService : OrderService,
     private route : ActivatedRoute,
@@ -54,13 +55,13 @@ export class UserOrderDetailComponent {
     private modalService : NgbModal) {
   }
 
-  ngOnInit(){
+  ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      if(params['orderId']){
-        this.getOrderDetail(params['orderId'], this.userService._user().id)
-        this.orderId = params['orderId']
+      if (params['guid']) {
+        this.guid = params['guid'];
+        this.getOrderDetail(this.guid);
       }
-    })
+    });
   }
 
   
@@ -91,25 +92,35 @@ export class UserOrderDetailComponent {
     }
   }
 
-  writeCancelOrder(){
-      this.cancelOrderModel.orderId = Number(this.orderId)
+  writeCancelOrder(): void {
+    this.cancelOrderModel.guid = this.guid;
   }
 
-  writeRefundProduct(selectUserOrderDto : SelectSubOrderDto){
-    this.refundingProduct.orderId = Number(this.orderId)
-    this.refundingProduct.subOrderId = selectUserOrderDto.subOrderId
+  writeRefundProduct(selectUserOrderDto: SelectSubOrderDto): void {
+    this.refundingProduct.orderId = Number(this.orderDetail?.orderId) ?? 0;
+    this.refundingProduct.subOrderId = selectUserOrderDto.subOrderId;
+    this.refundingProduct.orderGuid = this.guid ?? '';
   }
 
-  getOrderDetail(orderId : number, userId : number){
-    this.orderService.getUserOrderDtoDetail(orderId, userId).subscribe(response => {
-      this.orderDetail = response.data
-      console.log("Order detail response data", response.data)
-    })
+  getOrderDetail(guid: string): void {
+    const request: Order = {
+      id: 0,
+      userId: 0,
+      totalPrice: 0,
+      orderCode: '',
+      orderDate: undefined,
+      orderStatus: 0,
+      address: '',
+      guid:this.guid
+    };
+    this.orderService.getUserOrderDtoDetail(request).subscribe(response => {
+      this.orderDetail = response.data;
+    });
   }
 
   cancelOrder(){
-    this.writeCancelOrder()
-    if(this.cancelOrderModel.orderId > 0){
+    this.writeCancelOrder();
+    if (this.cancelOrderModel.guid) {
         this.paymentService.cancelOrder(this.cancelOrderModel).pipe(
           catchError((err:HttpErrorResponse) => {
             this.errorService.checkError(err);
@@ -120,14 +131,14 @@ export class UserOrderDetailComponent {
           .subscribe((response) => {
             this.toastrService.success("Siparişiniz başarıyla iptal edilmiştir.")
             this.cancelRefundStatus = true
-            this.getOrderDetail(this.orderId, this.userService._user().id)
+            this.getOrderDetail(this.guid);
             this.closeModal()
           })
     }
   }
 
   refundProduct(){
-    if(this.refundingProduct.orderId > 0 && this.refundingProduct.subOrderId > 0){
+    if (this.refundingProduct.orderGuid && this.refundingProduct.subOrderId > 0) {
       this.paymentService.refundProduct(this.refundingProduct).pipe(
         catchError((err : HttpErrorResponse) => {
           this.errorService.checkError(err);
@@ -137,7 +148,7 @@ export class UserOrderDetailComponent {
         }))
         .subscribe((response) => {
           this.cancelRefundStatus = true
-          this.getOrderDetail(this.orderId, this.userService._user().id)
+          this.getOrderDetail(this.guid)
           this.closeModal()
           this.toastrService.success("Sipariş iade süreciniz başlatılmıştır.")
         })

@@ -8,6 +8,7 @@ const routes: Routes = [
     { path: 'productDetail', loadChildren: () => import('../shared/ecommerce/product-detail/product-detail.module').then(m => m.ProductDetailModule) },
     { path: 'payment', loadChildren: () => import('../shared/ecommerce/payment/payment.module').then(m => m.PaymentModule) },
     { path: 'checkout', loadChildren: () => import('../shared/ecommerce/checkout/checkout.module').then(m => m.CheckoutModule) },
+    { path: 'orderTracking', loadChildren: () => import('../shared/ecommerce/order-tracking/order-tracking.module').then(m => m.OrderTrackingModule) },
     { path: 'userAccount', loadChildren: () => import('../shared/user-account/user-account.module').then(m => m.UserAccountModule), canActivate:[LoginGuard], data: { roles: ['user','admin']} },
 
   ];

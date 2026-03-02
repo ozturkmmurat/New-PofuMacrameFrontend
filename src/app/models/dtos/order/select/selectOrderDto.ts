@@ -1,7 +1,8 @@
 import { SelectSubOrderDto } from "../../subOrder/select/selectSubOrderDto";
 
-export interface SelectUserOrderDto{
-    orderId: number;
+export interface SelectUserOrderDto {
+  orderId: number;
+  guid: string;
     firstName: string;
     lastName: string;
     phoneNumber: string;

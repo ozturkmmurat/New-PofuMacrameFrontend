@@ -1,4 +1,4 @@
-export interface CancelOrder{
-    orderId:number,
-    description:string
+export interface CancelOrder {
+  guid: string;
+  description: string;
 }

@@ -17,9 +17,14 @@
                                     <div *ngIf="!isLoggedIn" class="guest-address-form">
                                         <h5 class="fs-15 mb-3">Teslimat Bilgileri</h5>
                                         <div class="mb-3">
-                                            <label class="form-label">Ad Soyad</label>
-                                            <input type="text" class="form-control" placeholder="Ad Soyad"
-                                                [(ngModel)]="tsaPaymentParameter.fullName" name="guestFullName">
+                                            <label class="form-label">Ad</label>
+                                            <input type="text" class="form-control" placeholder="Ad"
+                                                [(ngModel)]="tsaPaymentParameter.firstName" name="guestFirstName">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Soyad</label>
+                                            <input type="text" class="form-control" placeholder="Soyad"
+                                                [(ngModel)]="tsaPaymentParameter.lastName" name="guestLastName">
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">E-posta</label>
