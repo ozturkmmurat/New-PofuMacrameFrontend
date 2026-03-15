@@ -10,6 +10,15 @@
 //     content: none; 
 // }
 
+/* Instagram & WhatsApp ikon linkleri (sepetin solunda) */
+:host #navbar .nav-icon-link {
+  color: var(--vz-body-color);
+  text-decoration: none;
+  &:hover {
+    color: var(--vz-success, #0ab39c);
+  }
+}
+
 /* Web modunda (lg+): Sepet ve Giriş Yap & Kayıt Ol, nav linkleri (Anasayfa, Gönderim Sebebi, Çiçekler, İletişim) ile aynı dikey hizada */
 @media (min-width: 992px) {
   :host #navbar .navbar-collapse {

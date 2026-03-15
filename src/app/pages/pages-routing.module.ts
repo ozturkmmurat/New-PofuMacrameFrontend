@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ProductsComponent } from './ecommerce/products/products.component';
+import { ProductListComponent } from './ecommerce/product-list/product-list.component';
 
 const routes: Routes = [
     {
         path: "",
-        component: ProductsComponent
+        component: ProductListComponent
     },
     {
       path: 'apps', loadChildren: () => import('./apps/apps.module').then(m => m.AppsModule)
@@ -18,9 +18,6 @@ const routes: Routes = [
     },
     {
       path: 'forms', loadChildren: () => import('./form/form.module').then(m => m.FormModule)
-    },
-    {
-      path: 'icons', loadChildren: () => import('./icons/icons.module').then(m => m.IconsModule)
     }
 ];
 

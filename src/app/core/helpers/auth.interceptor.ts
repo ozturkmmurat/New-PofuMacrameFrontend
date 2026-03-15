@@ -33,13 +33,10 @@ export class AuthInterceptor implements HttpInterceptor {
       newRequest = this.addTokenHeader(request, token);
       return next.handle(newRequest).pipe(
         catchError((error) => {
-          console.log("İnterceptor error")
           if (error.status === 403) {
-            console.log("Refresh token işlemi başladı")
             return this.refreshToken(newRequest, next)
           }
           if (error.status === 401) {
-            console.log("401 gerçekleşti.")
             this.toastrService.error(error.error.Message)
           }
   
@@ -53,7 +50,6 @@ export class AuthInterceptor implements HttpInterceptor {
       );
     }
     else{
-      console.log("Else düştü")
        return next.handle(request);
     }
    
@@ -67,7 +63,6 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   private refreshToken(request: HttpRequest<any>, next: HttpHandler) {
-    console.log("Refresh tokena girdi.")
     if (!this.isRefreshing) {
       this.isRefreshing = true;
       this.refreshTokenSubject.next(null);
@@ -75,8 +70,6 @@ export class AuthInterceptor implements HttpInterceptor {
       if (refreshToken) {
         return this.authService.refreshTokenLogin(refreshToken).pipe(
           switchMap((token: any) => {
-            console.log("Token yenilendi")
-            console.log("Refresh token dan gelen token", token)
             this.isRefreshing = false;
             this.localStorageService.update("token", token.data.token)
             this.localStorageService.update("refreshToken", token.data.refreshToken)

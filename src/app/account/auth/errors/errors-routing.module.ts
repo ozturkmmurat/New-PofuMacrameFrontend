@@ -10,7 +10,11 @@ import { OfflineComponent } from "./offline/offline.component";
 
 const routes: Routes = [
   {
-    path:"404-basic",
+    path: '',
+    component: BasicComponent
+  },
+  {
+    path: "404-basic",
     component: BasicComponent
   },
   {

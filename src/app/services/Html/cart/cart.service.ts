@@ -83,7 +83,6 @@ export class CartService {
 
   get localSotrageCart() {
     let getCartData = JSON.parse(this.localStorageService.getItem("products"))
-    console.log("Dönen veri", getCartData)
     return getCartData
   }
 

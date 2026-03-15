@@ -26,7 +26,7 @@ export class CheckoutComponent {
     productPriceFactorId: 0,
     cartItems: null,
     orderDescription: '',
-    tcNo: '11111111111',
+    tcNo: '',
     requestedDeliveryStart: undefined,
     requestedDeliveryEnd: undefined,
     firstName: '',
@@ -35,11 +35,19 @@ export class CheckoutComponent {
     phone: '',
     recipientPhone: '',
     address: '',
-    city: '',
+    city: 'istanbul',
     postCode: ''
   };
 
   cities: City[] = [];
+
+  acceptDistanceSales = false;
+  acceptPreInfo = false;
+  acceptKvkk = false;
+
+  get allAgreementsAccepted(): boolean {
+    return this.acceptDistanceSales && this.acceptPreInfo && this.acceptKvkk;
+  }
 
   constructor(
     private paymentService: PaymentService,
@@ -116,6 +124,10 @@ export class CheckoutComponent {
   }
 
   payment(): void {
+    if (!this.allAgreementsAccepted) {
+      this.toastrService.warning('Lütfen sözleşmeleri onaylayınız.');
+      return;
+    }
     this.writeTsaPaymentParameter().then(() => {
       const p = this.tsaPaymentParameter;
       if (!p.recipientPhone?.trim()) {

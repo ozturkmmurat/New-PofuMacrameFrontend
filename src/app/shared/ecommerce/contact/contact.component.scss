@@ -1,0 +1,20 @@
+.contact-page {
+  min-height: 50vh;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.contact-page__container {
+  padding-left: 0;
+  padding-right: 0;
+  max-width: 100%;
+}
+
+.card {
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.form-label {
+  font-weight: 500;
+}

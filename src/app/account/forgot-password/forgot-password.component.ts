@@ -32,12 +32,11 @@ export class ForgotPasswordComponent {
 
   forgotPasswordForm(){
     this._forgotPasswordForm = this.formBuilder.group({
-      email:["", Validators.required]
-    })
+      email: ['', [Validators.required, Validators.email]]
+    });
   }
 
   forgotPassword(){
-    console.log("Kontrol", this._forgotPasswordForm)
     if(this._forgotPasswordForm.valid){
       let forgotPasswordModel = Object.assign({}, this._forgotPasswordForm.value);
       this.passwordResetService.sendPasswordResetCode(forgotPasswordModel).pipe(

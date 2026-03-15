@@ -1,8 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-// Products Services
-import { restApiService } from "../../../core/services/rest-api.service";
 
 import { SlickCarouselComponent } from 'ngx-slick-carousel';
 import { ActiveAttribute } from 'src/app/models/html/ActiveAttribute/activeAttribute';
@@ -26,6 +24,7 @@ import { ProductPriceFactorService } from 'src/app/services/HttpClient/productPr
 import { ProductPriceFactor } from 'src/app/models/productPriceFactor/product-price-factor';
 import { DistrictService } from 'src/app/services/HttpClient/districtService/district.service';
 import { District } from 'src/app/models/district/district';
+import { SiteContentService } from 'src/app/services/HttpClient/siteContentService/site-content.service';
 
 //Global Variable
 const IMAGE_URL = GlobalComponent.IMAGE_URL;
@@ -79,6 +78,9 @@ export class ProductDetailComponent implements OnInit {
   ];
   selectedTimeSlotId: '09-12' | '12-15' | '15-18' = '09-12';
 
+  /** Site-content Whatsapp kaydındaki linkUrl (Whatsapp İletişim butonu) */
+  whatsappLinkUrl: string | null = null;
+
   // bread crumb items
   breadCrumbItems!: Array<{}>;
   isImage: any;
@@ -90,7 +92,6 @@ export class ProductDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    public restApiService: restApiService,
     private productService: ProductService,
     private productVariantService: ProductVariantService,
     private sanitizer: DomSanitizer,
@@ -101,6 +102,7 @@ export class ProductDetailComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private productPriceFactorService: ProductPriceFactorService,
     private districtService: DistrictService,
+    private siteContentService: SiteContentService
   ) {
   }
 
@@ -123,9 +125,18 @@ export class ProductDetailComponent implements OnInit {
     });
     this.loadProductPriceFactors();
     this.loadDistricts();
+    this.loadSiteContent();
 
     // Sepet boşken teslimat tarih / saat varsayılanlarını ayarla
     this.initDeliveryDefaults();
+  }
+
+  loadSiteContent(): void {
+    this.siteContentService.getAll().subscribe(response => {
+      const item = (response.data || []).find((c: { contentKey: string }) => c.contentKey === 'Whatsapp');
+      this.whatsappLinkUrl = item?.linkUrl ?? null;
+      this.cdr.detectChanges();
+    });
   }
 
   get isCartEmpty(): boolean {
@@ -378,7 +389,6 @@ export class ProductDetailComponent implements OnInit {
     this.productService.getByProductDto(productId).subscribe((response) => {
       this.safeHtml = this.sanitizer.bypassSecurityTrustHtml(response.data.description);
       this.product = response.data;
-      console.log("Product Detail", this.product)
       this.cdr.detectChanges()
     });
   }
@@ -471,7 +481,6 @@ export class ProductDetailComponent implements OnInit {
   getProductVariantImage(productVariantId: number) {
     this.productImageService.getAllImageByProductVariantId(productVariantId).subscribe(response => {
       this.productImage = response.data
-      console.log(response.data)
       this.keepImage = response.data.find(x => x.isMain == true).path
       this.loadImageState = true
       this.cdr.detectChanges()
@@ -500,7 +509,6 @@ export class ProductDetailComponent implements OnInit {
         productVariant.productName = this.product.productName;
         productVariant.categoryName = this.product.categoryName;
         productVariant.imagePath = this.keepImage;
-        console.log("Sepete eklenen ürünün bilgisi", productVariant);
 
         // İlk ürün eklenirken teslimat tarih/saat aralığını sepet servisine yaz
         if (this.isCartEmpty) {

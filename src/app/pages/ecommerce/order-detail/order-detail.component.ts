@@ -119,6 +119,7 @@ export class OrderDetailComponent {
       id: 0,
       userId: 0,
       totalPrice: 0,
+      extraPrice:0,
       orderCode: '',
       orderDate: undefined,
       orderStatus: 0,
@@ -127,7 +128,6 @@ export class OrderDetailComponent {
     };
     this.orderService.getUserOrderDtoDetail(request).subscribe(response => {
       this.orderDetail = response.data
-      console.log("Order detail response data", response.data)
     })
   }
 
@@ -174,6 +174,7 @@ export class OrderDetailComponent {
       id: this.orderDetail.orderId,
       userId: (this.orderDetail as any).userId ?? 0,
       totalPrice: this.orderDetail.totalPrice,
+      extraPrice: this.orderDetail.extraPrice,
       orderCode: '',
       orderDate: this.orderDetail.orderDate,
       orderStatus: this.orderDetail.orderStatus,

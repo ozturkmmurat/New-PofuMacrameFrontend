@@ -23,7 +23,6 @@ import lottie from 'lottie-web';
 // Pages Routing
 import { PagesRoutingModule } from "./pages-routing.module";
 import { SharedModule } from "../shared/shared.module";
-import { WidgetModule } from '../shared/widget/widget.module';
 
 
 @NgModule({
@@ -41,7 +40,6 @@ import { WidgetModule } from '../shared/widget/widget.module';
     SimplebarAngularModule,
     PagesRoutingModule,
     SharedModule,
-    WidgetModule,
     SlickCarouselModule,
     LightboxModule,
   ],

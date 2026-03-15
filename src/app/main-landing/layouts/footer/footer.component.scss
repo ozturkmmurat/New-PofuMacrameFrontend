@@ -1,0 +1,61 @@
+/* Footer: site ile uyumlu açık tema (body #F8F9FA) */
+.footer-landing {
+  background-color: #f0f2f5;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  color: #495057;
+}
+
+/* Logo: beyaz arka plan yok, yükseklik sınırı yok */
+.footer-logo-link {
+  background: transparent !important;
+}
+.footer-logo {
+  display: block;
+  max-height: none;
+  height: auto;
+  width: auto;
+  background: transparent !important;
+  vertical-align: middle;
+}
+
+.footer-heading {
+  color: #212529;
+  font-weight: 600;
+}
+
+.footer-text {
+  color: #6c757d;
+}
+
+.footer-list {
+  li a {
+    color: #6c757d;
+    padding: 6px 0;
+    display: block;
+    transition: color 0.2s ease;
+    text-decoration: none;
+
+    &:hover {
+      color: var(--vz-success, #0ab39c);
+    }
+  }
+}
+
+.footer-social-icon .avatar-title {
+  color: #6c757d;
+  background-color: rgba(0, 0, 0, 0.06);
+  transition: color 0.2s, background-color 0.2s;
+
+  &:hover {
+    color: #fff;
+    background-color: var(--vz-success, #0ab39c);
+  }
+}
+
+.footer-border-top {
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.footer-copy {
+  color: #6c757d;
+}

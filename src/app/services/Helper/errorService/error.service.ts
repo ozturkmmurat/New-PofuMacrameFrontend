@@ -12,7 +12,6 @@ export class ErrorService {
   ) { }
 
   checkError(err: HttpErrorResponse) {
-    console.log("Error kontorl", err)
     if (err.error.Errors != undefined) {
       if (err.error.Errors.length > 0) {
         for (let i = 0; i < err.error.Errors.length; i++) {

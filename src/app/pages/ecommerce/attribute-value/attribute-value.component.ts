@@ -39,7 +39,6 @@ export class AttributeValueComponent {
       value:['', Validators.required],
       attributeValues: this.formBuilder.array([]),
     })
-    console.log(this.attributeValueArray)
   }
 
   get attributeValueArray() {
@@ -50,7 +49,6 @@ export class AttributeValueComponent {
 
   getAllByAttributeId(attributeId : number){
     this.attributeValueService.getAllByAttributeId(attributeId).subscribe(({data}) => {
-      console.log("Data", data)
       data.map((item) => {
         const group = this.formBuilder.group({
           id : new FormControl(item.id),
@@ -64,7 +62,6 @@ export class AttributeValueComponent {
 
 
   add() {
-    console.log('Metod çalıştı');
     if (this._attributeValueForm.valid) {
       let attributeValueModel = Object.assign({},this._attributeValueForm.value);
       this.attributeValueService
@@ -88,7 +85,6 @@ export class AttributeValueComponent {
 
   update(row:any){
     if(this.attributeValueArray.valid){
-      console.log("Gelen row", row)
       this.attributeValueService.update(row.value).pipe(
         catchError((err : HttpErrorResponse) => {
         this.errorService.checkError(err)
@@ -116,11 +112,6 @@ export class AttributeValueComponent {
         this.toastrService.success(response.message, 'Başarılı');
         this.attributeValueArray.controls.splice(index, 1);
       });
-  }
-
-  test(){
-    console.log("Gelen attribute", this.attribute)
-    console.log("Form", this.attributeValueArray)
   }
 
 }

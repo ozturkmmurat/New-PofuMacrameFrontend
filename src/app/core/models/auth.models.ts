@@ -4,7 +4,7 @@ export class User {
   password?: string;
   firstName?: string;
   lastName?: string;
-  phoneNumber:string;
+  phoneNumber: string;
   token?: string;
   email?: string;
 }

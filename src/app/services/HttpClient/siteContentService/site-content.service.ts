@@ -20,7 +20,6 @@ export class SiteContentService {
   }
 
   getById(id: number): Observable<SingleResponseModel<SiteContent>> {
-    console.log("Service id", id)
     let newPath = environment.apiUrl + "SiteContents/GetById?id=" + id
     return this.httpClient.get<SingleResponseModel<SiteContent>>(newPath);
   }

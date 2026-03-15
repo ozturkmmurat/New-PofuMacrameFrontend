@@ -1,115 +1,76 @@
-<div class="auth-page-wrapper pt-5">
-    <!-- auth page bg -->
-    <div class="auth-one-bg-position auth-one-bg" id="auth-particles">
-        <div class="bg-overlay"></div>
+<div class="login-page mt-4 mb-4">
+  <div class="container-fluid login-page__container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-8 col-lg-5">
+        <div class="card shadow-sm">
+          <div class="card-body p-4 p-lg-5">
+            <h4 class="mb-1">Üye Ol</h4>
+            <p class="text-muted mb-4">Hesap oluşturarak alışverişe başlayabilirsiniz.</p>
 
-        <div class="shape">
-            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
-                viewBox="0 0 1440 120">
-                <path d="M 0,36 C 144,53.6 432,123.2 720,124 C 1008,124.8 1296,56.8 1440,40L1440 140L0 140z"></path>
-            </svg>
-        </div>
-    </div>
-
-    <!-- auth page content -->
-    <div class="auth-page-content">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="text-center mt-sm-5 mb-4 text-white-50">
-                        <div>
-                            <a href="javascript:void(0);" class="d-inline-block auth-logo">
-                                <img src="assets/images/logo-light.png" alt="" height="20">
-                            </a>
-                        </div>
-                        <p class="mt-3 fs-15 fw-medium">Premium Admin & Dashboard Template</p>
-                    </div>
+            <form [formGroup]="registerForm" (ngSubmit)="register()">
+              <div class="mb-3">
+                <label class="form-label" for="email">E-posta <span class="text-danger">*</span></label>
+                <input type="email" class="form-control" id="email" formControlName="email"
+                  placeholder="ornek@email.com" [class.is-invalid]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+                <div class="invalid-feedback" *ngIf="registerForm.get('email')?.errors?.['required'] && registerForm.get('email')?.touched">
+                  E-posta zorunludur.
                 </div>
-            </div>
-            <!-- end row -->
-
-            <div class="row justify-content-center">
-                <div class="col-md-8 col-lg-6 col-xl-5">
-                    <div class="card mt-4">
-
-                        <div class="card-body p-4">
-                            <div class="text-center mt-2">
-                                <h5 class="text-primary">Create New Account</h5>
-                                <p class="text-muted">Get your free velzon account now</p>
-                            </div>
-                            <div class="p-2 mt-4">
-                                <form [formGroup]="registerForm">
-
-                                    <div class="mb-3">
-                                        <label for="useremail" class="form-label">Email <span
-                                                class="text-danger">*</span></label>
-                                        <input type="email" class="form-control" id="useremail"
-                                            placeholder="Lütfen Email Adresinizi Giriniz." required
-                                            formControlName="email">
-                                        <div class="invalid-feedback">
-                                            Lütfen Email Adresinizi Giriniz.
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="username" class="form-label">Ad <span
-                                                class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="username"
-                                            placeholder="Lütfen Adınızı Giriniz." required formControlName="firstName">
-                                        <div class="invalid-feedback">
-                                            Lütfen Adınızı Giriniz.
-                                        </div>
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label for="username" class="form-label">Soyad <span
-                                                class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="username"
-                                            placeholder="Lütfen Soyadınızı Giriniz." required
-                                            formControlName="lastName">
-                                        <div class="invalid-feedback">
-                                            Lütfen Soyadınızı Giriniz.
-                                        </div>
-                                    </div>
-
-                                    <div class="mb-2">
-                                        <label for="userpassword" class="form-label">Şifre <span
-                                                class="text-danger">*</span></label>
-                                        <input type="password" class="form-control" id="userpassword"
-                                            placeholder="Lütfen Şifrenizi Giriniz." required formControlName="password">
-                                        <div class="invalid-feedback">
-                                            Lütfen Şifrenizi Giriniz.
-                                        </div>
-                                    </div>
-
-                                    <div class="mb-4">
-                                        <p class="mb-0 fs-12 text-muted fst-italic">By registering you agree to the
-                                            Velzon <a href="javascript:void(0);"
-                                                class="text-primary text-decoration-underline fst-normal fw-medium">Terms
-                                                of Use</a></p>
-                                    </div>
-
-                                    <div class="mt-4">
-                                        <button class="btn btn-success w-100" type="submit" (click)="register()">Kayıt Ol </button>
-                                    </div>
-                                </form>
-
-                            </div>
-                        </div>
-                        <!-- end card body -->
-                    </div>
-                    <!-- end card -->
-
-                    <div class="mt-4 text-center">
-                        <p class="mb-0">Already have an account ? <a routerLink="/auth/login"
-                                class="fw-semibold text-primary text-decoration-underline"> Giriş Yap </a> </p>
-                    </div>
-
+                <div class="invalid-feedback" *ngIf="registerForm.get('email')?.errors?.['email'] && registerForm.get('email')?.touched">
+                  Geçerli bir e-posta giriniz.
                 </div>
-            </div>
-            <!-- end row -->
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label" for="firstName">Ad <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="firstName" formControlName="firstName"
+                  placeholder="Adınız" [class.is-invalid]="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched">
+                <div class="invalid-feedback" *ngIf="registerForm.get('firstName')?.errors?.['required'] && registerForm.get('firstName')?.touched">
+                  Ad zorunludur.
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label" for="lastName">Soyad <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="lastName" formControlName="lastName"
+                  placeholder="Soyadınız" [class.is-invalid]="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched">
+                <div class="invalid-feedback" *ngIf="registerForm.get('lastName')?.errors?.['required'] && registerForm.get('lastName')?.touched">
+                  Soyad zorunludur.
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label" for="phoneNumber">Telefon Numarası <span class="text-danger">*</span></label>
+                <input type="tel" class="form-control" id="phoneNumber" formControlName="phoneNumber"
+                  placeholder="05XX XXX XX XX" maxlength="11"
+                  [class.is-invalid]="registerForm.get('phoneNumber')?.invalid && registerForm.get('phoneNumber')?.touched">
+                <div class="invalid-feedback" *ngIf="registerForm.get('phoneNumber')?.errors?.['required'] && registerForm.get('phoneNumber')?.touched">
+                  Telefon numarası zorunludur.
+                </div>
+                <div class="invalid-feedback" *ngIf="registerForm.get('phoneNumber')?.errors?.['maxlength'] && registerForm.get('phoneNumber')?.touched">
+                  Telefon numarası en fazla 11 karakter olabilir.
+                </div>
+                <div class="form-text small">En fazla 11 karakter (örn: 5XXXXXXXXX)</div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label" for="userpassword">Şifre <span class="text-danger">*</span></label>
+                <input type="password" class="form-control" id="userpassword" formControlName="password"
+                  placeholder="Şifrenizi giriniz" [class.is-invalid]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+                <div class="invalid-feedback" *ngIf="registerForm.get('password')?.errors?.['required'] && registerForm.get('password')?.touched">
+                  Şifre zorunludur.
+                </div>
+              </div>
+
+              <button class="btn btn-primary w-100 mt-3" type="submit">Kayıt Ol</button>
+            </form>
+
+            <p class="text-center text-muted mt-4 mb-0 small">
+              Zaten hesabınız var mı? <a routerLink="/auth/login" class="text-primary fw-medium">Giriş yapın</a>
+            </p>
+          </div>
         </div>
-        <!-- end container -->
+      </div>
     </div>
-    <!-- end auth page content -->
+  </div>
 </div>
-<!-- end auth-page-wrapper -->
+<app-toasts aria-live="polite" aria-atomic="true"></app-toasts>

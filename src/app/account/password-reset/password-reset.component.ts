@@ -52,7 +52,6 @@ export class PasswordResetComponent {
       const response = await firstValueFrom(this.passwordResetService.getByUrl(url));
       return response.success;
     } catch (error) {
-      console.error('Error occurred while fetching code URL: ', error);
       throw error;
     }
   }
@@ -66,7 +65,6 @@ export class PasswordResetComponent {
   }
 
   passwordReset() {
-    console.log("Kontrol", this._passwordResetForm)
     if (this._passwordResetForm.valid) {
       let passwordResetModel = Object.assign({}, this._passwordResetForm.value);
       this.passwordResetService.passwordReset(passwordResetModel).pipe(

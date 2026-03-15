@@ -45,11 +45,23 @@
                     
                 </div>
                 <li class="nav-item">
-                    <a class="nav-link" href="javascript:void(0);"
-                        [ngClass]="{'active':currentSection === 'blog'}">İletişim</a>
+                    <a class="nav-link" routerLink="/contact" routerLinkActive="active">İletişim</a>
                 </li>
             </ul>
 
+            <div class="d-flex align-items-center gap-1 gap-lg-2">
+                <ng-container *ngFor="let link of socialLinks">
+                    <a *ngIf="link.linkUrl"
+                       class="nav-link nav-icon-link p-1 p-lg-2"
+                       [href]="link.linkUrl"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       [attr.aria-label]="link.contentKey"
+                       [attr.title]="link.contentKey">
+                        <i [class]="getSocialIconClass(link.contentKey)"></i>
+                    </a>
+                </ng-container>
+            </div>
             <!-- Cart -->
             <app-cart></app-cart>
 

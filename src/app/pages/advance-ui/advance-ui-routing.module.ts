@@ -5,10 +5,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { SweetalertsComponent } from "./sweetalerts/sweetalerts.component";
 import { ScrollbarComponent } from "./scrollbar/scrollbar.component";
 import { TourComponent } from "./tour/tour.component";
-import { SwipersComponent } from "./swiper/swiper.component";
 import { RatingsComponent } from "./ratings/ratings.component";
 import { HighlightComponent } from "./highlight/highlight.component";
-import { ScrollspyComponent } from "./scrollspy/scrollspy.component";
 
 const routes: Routes = [
   {
@@ -24,20 +22,12 @@ const routes: Routes = [
     component: TourComponent
   },
   {
-    path: "swiper",
-    component: SwipersComponent
-  },
-  {
     path: "ratings",
     component: RatingsComponent
   },
   {
     path: "highlight",
     component: HighlightComponent
-  },
-  {
-    path: "scrollspy",
-    component: ScrollspyComponent
   }
 ];
 

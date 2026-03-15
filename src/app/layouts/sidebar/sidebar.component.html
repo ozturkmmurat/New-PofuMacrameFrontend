@@ -35,24 +35,22 @@
         <ul class="metismenu list-unstyled navbar-nav" id="navbar-nav">
 
           <ng-container *ngFor="let item of menuItems">
-            <li class="menu-title" *ngIf="item.isTitle"><span data-key="t-menu">{{ item.label | translate }}</span></li>
+            <li class="menu-title" *ngIf="item.isTitle"><span data-key="t-menu">{{ item.label }}</span></li>
 
             <li class="nav-item" *ngIf="!item.isTitle && !item.isLayout">
               <a *ngIf="hasItems(item)" href="javascript:void(0);" class="is-parent nav-link menu-link"
                 [ngClass]="{'has-arrow': !item.badge, 'has-dropdown': item.badge}" data-bs-toggle="collapse"
                 aria-expanded="false" (click)="toggleItem($event)">
                 <i class="{{ item.icon }} icon nav-icon" class=""></i>
-                <span class=""> {{ item.label | translate }}</span>
-                <span class="badge badge-pill {{item.badge.variant}}" *ngIf="item.badge">{{item.badge.text
-                  | translate}}</span>
+                <span class=""> {{ item.label }}</span>
+                <span class="badge badge-pill {{item.badge.variant}}" *ngIf="item.badge">{{item.badge.text}}</span>
               </a>
 
               <a [routerLink]="item.link" *ngIf="!hasItems(item)" class="side-nav-link-ref nav-link menu-link"
                 (click)="toggleParentItem($event)">
                 <i class="bx {{ item.icon }} icon nav-icon" *ngIf="item.icon" class=""></i>
-                <span class=""> {{ item.label | translate }}</span>
-                <span class="badge badge-pill {{item.badge.variant}}" *ngIf="item.badge">{{item.badge.text
-                  | translate}}</span>
+                <span class=""> {{ item.label }}</span>
+                <span class="badge badge-pill {{item.badge.variant}}" *ngIf="item.badge">{{item.badge.text}}</span>
               </a>
 
               <div class="collapse menu-dropdown" *ngIf="hasItems(item)">
@@ -60,18 +58,16 @@
                   <li *ngFor="let subitem of item.subItems" class="nav-item">
                     <a [routerLink]="subitem.link" *ngIf="!hasItems(subitem)" class="nav-link"
                       [attr.data-parent]="subitem.parentId" (click)="updateActive($event)">
-                      {{ subitem.label | translate}}
+                      {{ subitem.label }}
                       <span class="badge badge-pill {{subitem.badge.variant}}"
-                        *ngIf="subitem.badge">{{subitem.badge.text
-                        | translate}}</span>
+                        *ngIf="subitem.badge">{{subitem.badge.text}}</span>
                     </a>
                     <a *ngIf="hasItems(subitem)" class="nav-link" href="javascript:void(0);"
                       [attr.data-parent]="subitem.parentId" data-bs-toggle="collapse" aria-expanded="false"
                       (click)="toggleSubItem($event)">
-                      {{ subitem.label | translate}}
+                      {{ subitem.label }}
                       <span class="badge badge-pill {{subitem.badge.variant}}"
-                        *ngIf="subitem.badge">{{subitem.badge.text
-                        | translate}}</span>
+                        *ngIf="subitem.badge">{{subitem.badge.text}}</span>
                     </a>
 
                     <div class="collapse menu-dropdown sub-menu" *ngIf="hasItems(subitem)">
@@ -80,19 +76,17 @@
 
                           <a [routerLink]="subSubitem.link" *ngIf="!hasItems(subSubitem)" class="nav-link"
                             [attr.data-parent]="subSubitem.parentId" (click)="updateActive($event)">
-                            {{ subSubitem.label | translate}}
+                            {{ subSubitem.label }}
                             <span class="badge badge-pill {{subSubitem.badge.variant}}"
-                              *ngIf="subSubitem.badge">{{subSubitem.badge.text
-                              | translate}}</span>
+                              *ngIf="subSubitem.badge">{{subSubitem.badge.text}}</span>
                           </a>
 
                           <a *ngIf="hasItems(subSubitem)" class="nav-link" href="javascript:void(0);"
                             [attr.data-parent]="subSubitem.parentId" data-bs-toggle="collapse" aria-expanded="false"
                             (click)="toggleExtraSubItem($event)">
-                            {{ subSubitem.label | translate}}
+                            {{ subSubitem.label }}
                             <span class="badge badge-pill {{subSubitem.badge.variant}}"
-                              *ngIf="subSubitem.badge">{{subSubitem.badge.text
-                              | translate}}</span>
+                              *ngIf="subSubitem.badge">{{subSubitem.badge.text}}</span>
                           </a>
 
                           <div class="collapse menu-dropdown extra-sub-menu" *ngIf="hasItems(subSubitem)">
@@ -101,10 +95,9 @@
 
                                 <a [attr.data-parent]="subSubitem1.parentId" [routerLink]="subSubitem1.link"
                                   class="nav-link" (click)="updateActive($event)">
-                                  {{ subSubitem1.label | translate }}
+                                  {{ subSubitem1.label }}
                                   <span class="badge badge-pill {{item.badge.variant}}"
-                                    *ngIf="item.badge">{{item.badge.text
-                                    | translate}}</span>
+                                    *ngIf="item.badge">{{item.badge.text}}</span>
                                 </a>
 
                               </li>

@@ -42,7 +42,6 @@ export class ProductService {
   }
 
   tsaAdd(addProductVariant : AddProductVariant):Observable<ResponseModel>{
-    console.log("Service gelen veri", addProductVariant)
     let newPath = environment.apiUrl + "products/tsaAdd"
     return this.httpClient.post<ResponseModel>(newPath, addProductVariant)
   }
@@ -58,7 +57,6 @@ export class ProductService {
   }
 
   getBy(id : number):Observable<SingleResponseModel<Product>>{
-    console.log("Service id", id)
     let newPath = environment.apiUrl + "products/getById?id=" + id
     return this.httpClient.get<SingleResponseModel<Product>>(newPath);
   }
@@ -75,7 +73,6 @@ export class ProductService {
 
     //Urune bagli ana varyant urunleri cekiyoruz
     getAllProductVariantDtoPv(filterProduct:FilterProduct):Observable<ListResponseModel<SelectListProductVariantDto>>{
-      console.log("Service gelen filterProduct", filterProduct)
       let newPath = environment.apiUrl + "products/getAllProductVariantDtoGroupVariant"
       return this.httpClient.post<ListResponseModel<SelectListProductVariantDto>>(newPath, filterProduct);
     }

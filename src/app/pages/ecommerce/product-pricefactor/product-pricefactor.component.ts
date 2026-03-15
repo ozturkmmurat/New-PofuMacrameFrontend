@@ -17,6 +17,7 @@ import { ProductPriceFactorService } from 'src/app/services/HttpClient/productPr
 })
 export class ProductPricefactorComponent {
   list: ProductPriceFactor[] = [];
+  tableSearchTerm = '';
   districts: District[] = [];
   form: FormGroup;
 

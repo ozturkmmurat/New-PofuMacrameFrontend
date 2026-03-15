@@ -37,7 +37,6 @@ export class CategoryService {
   }
 
   add(category : Category):Observable<ResponseModel>{
-    console.log("Service gelen category", category)
     let newPath = environment.apiUrl + "categories/add"
     return this.httpClient.post<ResponseModel>(newPath, category)
   }

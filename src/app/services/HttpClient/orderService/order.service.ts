@@ -25,11 +25,6 @@ export class OrderService {
     return this.httpClient.get<ListResponseModel<SelectUserOrderDto>>(newPath);
   }
 
-  getAllUserOrderDtoAdmin():Observable<ListResponseModel<SelectUserOrderDto>>{
-    let newPath = environment.apiUrl + "orders/getAllUserOrderDtoAdmin"
-    return this.httpClient.get<ListResponseModel<SelectUserOrderDto>>(newPath);
-  }
-
   getUserOrderDtoDetail(request: any): Observable<SingleResponseModel<SelectUserOrderDto>> {
     const newPath = environment.apiUrl + 'orders/GetUserOrderDtoDetail';
     return this.httpClient.post<SingleResponseModel<SelectUserOrderDto>>(newPath, request);

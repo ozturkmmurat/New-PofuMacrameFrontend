@@ -5,8 +5,11 @@
             <h5 class="card-title mb-0">Ürün Stoğu</h5>
         </div>
         <div class="card-body">
+            <div class="mb-3">
+                <input type="text" class="form-control" placeholder="Tabloda ara..." [(ngModel)]="tableSearchTerm">
+            </div>
             <ngx-datatable style="width:100%;" #table class="material whitespace-nowrap single-selection pt-2"
-                [rows]="orders" [scrollbarH]="true" [columnMode]="'force'" [headerHeight]="50" [limit]="20"
+                [rows]="orders | tableFilter:tableSearchTerm" [scrollbarH]="true" [columnMode]="'force'" [headerHeight]="50" [limit]="20"
                 [footerHeight]="50" [rowHeight]="60">
                 <ngx-datatable-column name="Id  " prop="id">
                 </ngx-datatable-column>
@@ -16,6 +19,9 @@
                     </ng-template>
                 </ngx-datatable-column>
                 <ngx-datatable-column name="Sipariş Tarihi" prop="orderDate">
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                        {{ row.orderDate | date: "dd.MM.y" }}
+                    </ng-template>
                 </ngx-datatable-column>
                 <ngx-datatable-column name="Sipariş Kodu" prop="orderCode">
                 </ngx-datatable-column>

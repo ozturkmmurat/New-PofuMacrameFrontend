@@ -2,15 +2,11 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 // Component pages
-import { ProductsComponent } from "./products/products.component";
 import { ProductDetailComponent } from "./product-detail/product-detail.component";
 import { AddProductComponent } from "./add-product/add-product.component";
-import { OrdersComponent } from "./orders/orders.component";
 import { OrdersDetailsComponent } from "./orders-details/orders-details.component";
-import { CustomersComponent } from "./customers/customers.component";
 import { CartComponent } from "./cart/cart.component";
 import { CheckoutComponent } from "./checkout/checkout.component";
-import { SellerDetailsComponent } from "./seller-details/seller-details.component";
 import { ProductListComponent } from './product-list/product-list.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { AttributesComponent } from './attributes/attributes.component';
@@ -22,10 +18,6 @@ import { DistrictComponent } from './district/district.component';
 import { SiteContentsComponent } from './site-contents/site-contents.component';
 
 const routes: Routes = [
-  {
-    path: "products",
-    component: ProductsComponent
-  },
   {
     path:"productList",
     component: ProductListComponent
@@ -59,10 +51,6 @@ const routes: Routes = [
     component: SiteContentsComponent
   },
   {
-    path: "orders",
-    component: OrdersComponent
-  },
-  {
     path:"orderList",
     component:OrderListComponent
   },
@@ -79,20 +67,12 @@ const routes: Routes = [
     component: OrdersDetailsComponent
   },
   {
-    path: "customers",
-    component: CustomersComponent
-  },
-  {
     path: "cart",
     component: CartComponent
   },
   {
     path: "checkout",
     component: CheckoutComponent
-  },
-  {
-    path: "seller-details",
-    component: SellerDetailsComponent
   }
 
 ];

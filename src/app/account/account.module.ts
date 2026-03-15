@@ -1,6 +1,7 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -12,13 +13,8 @@ import { ToastsContainer } from './login/toasts-container.component';
 
 
 import { AccountRoutingModule } from './account-routing.module';
-import { SigninModule } from "./auth/signin/signin.module";
-import { SignupModule } from "./auth/signup/signup.module";
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
-import { PasswordCodeComponent } from './password-code/password-code.component';
-import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
-import { PasswordResetComponent } from './password-reset/password-reset.component';
 
 @NgModule({
   declarations: [
@@ -30,9 +26,9 @@ import { PasswordResetComponent } from './password-reset/password-reset.componen
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
+    RouterModule,
     NgbToastModule,
-    AccountRoutingModule,
-    SigninModule
+    AccountRoutingModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

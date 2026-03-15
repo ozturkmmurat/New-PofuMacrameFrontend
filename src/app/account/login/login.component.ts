@@ -49,7 +49,6 @@ export class LoginComponent implements OnInit {
           return of();
         })
       ).subscribe(response => {
-        console.log("Login den gelen veri", response.data);
         this.localStorageService.setToken(response.data.token);
         this.localStorageService.setTokenExpiration(response.data.expiration);
         this.localStorageService.setRefreshToken(response.data.refreshToken);

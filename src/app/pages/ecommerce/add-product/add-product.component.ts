@@ -38,11 +38,9 @@ export class AddProductComponent implements OnInit {
   /** Varyant alanı: taslak dolduruldu (Oluştur tıklandı) ve product-category'den kategori seçili. */
   get categoryAndProductReady(): boolean {
     const state = this.productCategoryService.state;
-    console.log("Kontrol", this.productDto, state.mainCategoryId)
     if(this.productDto && state.mainCategoryId > 0)
       return true;
 
-    console.log("False geldi")
     return false;
   }
 

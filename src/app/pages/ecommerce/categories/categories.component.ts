@@ -16,6 +16,7 @@ import { CategoryService } from 'src/app/services/HttpClient/categoryService/cat
 })
 export class CategoriesComponent {
   categories: Category[] = [];
+  tableSearchTerm = '';
   category: Category;
   _categoryForm: FormGroup;
   categoryId: number;
@@ -44,7 +45,6 @@ export class CategoriesComponent {
       isParent: false,
       status: [true],
     });
-    console.log(this._categoryForm);
   }
 
   loadCategoryForm(category: Category) {
@@ -69,7 +69,7 @@ export class CategoriesComponent {
 
   getAll() {
     this.categoryService.getAll().subscribe((response) => {
-      this.categories = response.data;
+      this.categories = response.data ?? [];
     });
   }
 
@@ -110,7 +110,6 @@ export class CategoriesComponent {
   }
 
   checkMainCategoryInput() {
-    console.log("IsParent", this._categoryForm.value.isParent)
     if (this._categoryForm.value.isParent == true) {
       this._categoryForm.get('parentId')?.setValue(0);
     }else if(this._categoryForm.value.isParent == false){

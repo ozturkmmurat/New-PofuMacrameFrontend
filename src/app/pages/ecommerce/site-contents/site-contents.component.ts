@@ -18,6 +18,8 @@ const IMAGE_URL = GlobalComponent.IMAGE_URL;
 })
 export class SiteContentsComponent {
   siteContents: SiteContent[] = [];
+  siteContentsFiltered: SiteContent[] = [];
+  tableSearchTerm = '';
   _siteContentForm: FormGroup;
   selectedFile: File | null = null;
   imageUrl = IMAGE_URL;
@@ -25,6 +27,10 @@ export class SiteContentsComponent {
   
   contentTypes = [
     { label: 'Anasayfa Slider', value: 'Anasayfa Slider' },
+    { label: 'Hakkımızda', value: 'Hakkımızda' },
+    { label:'Whatsapp', value: 'Whatsapp' },
+    { label: 'Instagram', value: 'Instagram' },
+    { label: 'S.S.S', value: 'S.S.S' },
   ];
 
   constructor(
@@ -43,7 +49,7 @@ export class SiteContentsComponent {
   siteContentForm() {
     this._siteContentForm = this.formBuilder.group({
       id: [0],
-      contentKey: ['HomeSlider', Validators.required],
+      contentKey: ['', Validators.required],
       title: ['', Validators.required],
       description: [''],
       imageUrl: [''],
@@ -56,7 +62,7 @@ export class SiteContentsComponent {
   loadSiteContentForm(item: SiteContent) {
     this._siteContentForm.patchValue({
       id: item.id,
-      contentKey: item.contentKey || 'HomeSlider',
+      contentKey: item.contentKey,
       title: item.title,
       description: item.description || '',
       imageUrl: item.imageUrl || '',
@@ -70,7 +76,7 @@ export class SiteContentsComponent {
     this.selectedFile = null;
     this._siteContentForm.patchValue({
       id: 0,
-      contentKey: 'HomeSlider',
+      contentKey: 'Anasayfa Slider',
       title: '',
       description: '',
       imageUrl: '',

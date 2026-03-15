@@ -87,7 +87,6 @@ export class CategoryAttributeComponent {
   }
 
   add() {
-    console.log('Metod çalıştı');
     if (this._categoryAttributeForm.valid) {
       let categoryAttributeModel = Object.assign(
         {},
@@ -107,7 +106,6 @@ export class CategoryAttributeComponent {
           this.getAll();
         });
     } else {
-      console.log(this._categoryAttributeForm);
       this.toastrService.error('Formu eksiksiz doldurun.');
     }
   }
@@ -158,7 +156,6 @@ export class CategoryAttributeComponent {
 
   checkboxChanged(formName : string) {
     if(formName == "slicer" && this._categoryAttributeForm.get("slicer")?.value){
-      console.log("Giriş yapıldı")
       this._categoryAttributeForm.get("attribute")?.setValue(false)
     }
     else if(formName == "attribute" && this._categoryAttributeForm.get("attribute")?.value){

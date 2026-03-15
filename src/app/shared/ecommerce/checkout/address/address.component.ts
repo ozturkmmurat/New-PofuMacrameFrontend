@@ -48,7 +48,7 @@ export class AddressComponent {
   userAddressForm(){
     this._userAddressForm = this.formBuilder.group({
       id:[0, Validators.required],
-      userId:[Number(this.userService.getUserId("nameidentifier")),Validators.required],
+      userId:[Number(this.userService.getUserId("nameidentifier")), Validators.required],
       cityId:[0,Validators.required],
       addressTitle:['', Validators.required],
       address:['', Validators.required],
@@ -59,7 +59,7 @@ export class AddressComponent {
   resetAddressForm(){
     this._userAddressForm.patchValue({
       id:0,
-      userId:Number(this.userService.getUserId("nameidentifier")),
+      userId: Number(this.userService.getUserId("nameidentifier")),
       cityId:0,
       addressTitle:'',
       address:'',
@@ -69,8 +69,12 @@ export class AddressComponent {
 
   writeForm(address: UserAddress){
     this._userAddressForm.patchValue({
-      id:address.id, userId:Number(this.userService.getUserId("nameidentifier")), cityId:address.cityId, addressTitle:address.addressTitle, address:address.address,
-      postCode:address.postCode
+      id: address.id,
+      userId: address.userId,
+      cityId: address.cityId,
+      addressTitle: address.addressTitle,
+      address: address.address,
+      postCode: address.postCode
     })
   }
 
@@ -92,7 +96,6 @@ export class AddressComponent {
   }
 
   setAddressId(addressId:number){
-    console.log("Adres id bilgisi",  addressId)
     this.checkOutService.setAddressId(addressId)
   }
 

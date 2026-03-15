@@ -7,6 +7,7 @@ export interface SelectUserOrderDto {
     lastName: string;
     phoneNumber: string;
     address: string;
+    extraPrice:number,
     totalPrice: number;
     orderDate: Date;
     requestedDeliveryStart: Date;

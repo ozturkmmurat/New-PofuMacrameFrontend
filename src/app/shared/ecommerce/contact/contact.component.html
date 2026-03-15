@@ -1,0 +1,114 @@
+<div class="contact-page mt-4">
+  <div class="container-fluid contact-page__container">
+    <div class="row">
+      <div class="col-12">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h4 class="mb-1">İletişim</h4>
+            <p class="text-muted mb-4">Sorularınız için formu doldurup gönderin, en kısa sürede size dönüş yapacağız.</p>
+
+            <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label" for="firstName">Ad <span class="text-danger">*</span></label>
+                  <input
+                    type="text"
+                    id="firstName"
+                    formControlName="firstName"
+                    class="form-control"
+                    [class.is-invalid]="submitted && f['firstName'].invalid"
+                    placeholder="Adınız"
+                  />
+                  <div class="invalid-feedback" *ngIf="submitted && f['firstName'].errors?.['required']">
+                    Ad zorunludur.
+                  </div>
+                  <div class="invalid-feedback" *ngIf="submitted && f['firstName'].errors?.['maxlength']">
+                    En fazla 100 karakter girebilirsiniz.
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label" for="lastName">Soyad <span class="text-danger">*</span></label>
+                  <input
+                    type="text"
+                    id="lastName"
+                    formControlName="lastName"
+                    class="form-control"
+                    [class.is-invalid]="submitted && f['lastName'].invalid"
+                    placeholder="Soyadınız"
+                  />
+                  <div class="invalid-feedback" *ngIf="submitted && f['lastName'].errors?.['required']">
+                    Soyad zorunludur.
+                  </div>
+                  <div class="invalid-feedback" *ngIf="submitted && f['lastName'].errors?.['maxlength']">
+                    En fazla 100 karakter girebilirsiniz.
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <label class="form-label" for="email">E-posta <span class="text-danger">*</span></label>
+                  <input
+                    type="email"
+                    id="email"
+                    formControlName="email"
+                    class="form-control"
+                    [class.is-invalid]="submitted && f['email'].invalid"
+                    placeholder="ornek@email.com"
+                  />
+                  <div class="invalid-feedback" *ngIf="submitted && f['email'].errors?.['required']">
+                    E-posta zorunludur.
+                  </div>
+                  <div class="invalid-feedback" *ngIf="submitted && f['email'].errors?.['email']">
+                    Geçerli bir e-posta adresi giriniz.
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <label class="form-label" for="phone">Telefon Numarası <span class="text-danger">*</span></label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    formControlName="phone"
+                    class="form-control"
+                    [class.is-invalid]="submitted && f['phone'].invalid"
+                    placeholder="05XX XXX XX XX"
+                  />
+                  <div class="invalid-feedback" *ngIf="submitted && f['phone'].errors?.['required']">
+                    Telefon numarası zorunludur.
+                  </div>
+                  <div class="invalid-feedback" *ngIf="submitted && f['phone'].errors?.['maxlength']">
+                    En fazla 20 karakter girebilirsiniz.
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <label class="form-label" for="description">Açıklama <span class="text-danger">*</span></label>
+                  <textarea
+                    id="description"
+                    formControlName="description"
+                    class="form-control"
+                    rows="5"
+                    [class.is-invalid]="submitted && f['description'].invalid"
+                    placeholder="Mesajınızı veya sorunuzu yazınız..."
+                  ></textarea>
+                  <div class="invalid-feedback" *ngIf="submitted && f['description'].errors?.['required']">
+                    Açıklama zorunludur.
+                  </div>
+                  <div class="invalid-feedback" *ngIf="submitted && f['description'].errors?.['maxlength']">
+                    En fazla 2000 karakter girebilirsiniz.
+                  </div>
+                </div>
+
+                <div class="col-12 mt-2">
+                  <button type="submit" class="btn btn-primary" [disabled]="loading">
+                    {{ loading ? 'Gönderiliyor...' : 'Gönder' }}
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

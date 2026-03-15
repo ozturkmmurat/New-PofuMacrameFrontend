@@ -9,8 +9,6 @@ import { CartComponent } from "./pages/cart/cart.component";
 import { NavbarComponent } from "./layouts/navbar/navbar.component";
 import { FooterComponent } from "./layouts/footer/footer.component";
 import { ReactiveFormsModule } from "@angular/forms";
-
-
 @NgModule({
   declarations: [
     MainLandingComponent,

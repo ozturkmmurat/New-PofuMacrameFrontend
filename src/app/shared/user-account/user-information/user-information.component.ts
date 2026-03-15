@@ -36,13 +36,12 @@ export class UserInformationComponent {
   }
 
   userForm(){
-    
     this._userForm = this.formBuilder.group({
-      userId:[Number(this.user.id), Validators.required],
-      firstName:[this.user.firstName, Validators.required],
-      lastName:[this.user.lastName, Validators.required],
-      email:[this.user.email, Validators.required],
-      phoneNumber:[this.user.phoneNumber, Validators.required],
+      id: [Number(this.user?.id ?? 0), Validators.required],
+      firstName:[this.user?.firstName ?? '', Validators.required],
+      lastName:[this.user?.lastName ?? '', Validators.required],
+      email:[this.user?.email ?? '', Validators.required],
+      phoneNumber:[this.user?.phoneNumber ?? '', Validators.required],
       oldPassword:[],
       newPassword:[],
       againNewPassword:[],

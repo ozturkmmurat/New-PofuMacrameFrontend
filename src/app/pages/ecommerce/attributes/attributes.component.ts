@@ -15,9 +15,10 @@ import { AttributeService } from 'src/app/services/HttpClient/attributeService/a
 })
 export class AttributesComponent {
 
-  attributeList: Attribute[] = []
-  _attributeForm : FormGroup
-  attribute : Attribute
+  attributeList: Attribute[] = [];
+  tableSearchTerm = '';
+  _attributeForm : FormGroup;
+  attribute : Attribute;
 
   constructor(
     private attributeService : AttributeService,
@@ -46,7 +47,6 @@ export class AttributesComponent {
       centered: true,
     }).dismissed;
     this.attribute.id
-    console.log(this._attributeForm)
   }
 
   loadAttributeForm(attribute: Attribute) {
@@ -65,8 +65,8 @@ export class AttributesComponent {
 
   getAll(){
     this.attributeService.getAll().subscribe(response => {
-      this.attributeList = response.data
-    })
+      this.attributeList = response.data ?? [];
+    });
   }
 
   add(){

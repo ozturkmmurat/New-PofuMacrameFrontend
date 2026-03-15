@@ -140,7 +140,6 @@ export class ProductDetailComponent implements OnInit {
     this.productStockService.getByAllDto(productId).subscribe(response => {
       this.productStockService.productStocks$.next(response.data)
       this.productStocks$ = this.productStockService.productStocks$
-      console.log("Stock", response.data)
     })
   }
 

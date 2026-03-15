@@ -16,6 +16,7 @@ export class OrderedProductsComponent {
 
   imageUrl = IMAGE_URL;
   orderedProducts: SelectOrderedProductDto[] = [];
+  tableSearchTerm = '';
 
   constructor(
     private subOrderService: SubOrderService,

@@ -15,6 +15,8 @@ import { DistrictService } from 'src/app/services/HttpClient/districtService/dis
 })
 export class DistrictComponent {
   list: District[] = [];
+  listFiltered: District[] = [];
+  tableSearchTerm = '';
   form: FormGroup;
 
   @ViewChild('addModal') addModal: any;

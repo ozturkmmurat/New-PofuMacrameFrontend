@@ -3,14 +3,11 @@ import { DecimalPipe } from '@angular/common';
 import { NgbModal, NgbNavChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { GlobalComponent } from '../../../global-component';
 
-// Products Services
-import { restApiService } from "../../../core/services/rest-api.service";
 
 // Sweet Alert
 import Swal from 'sweetalert2';
 
 import { ActivatedRoute, Router } from '@angular/router';
-import { AdvancedService } from '../../../pages/ecommerce/products/products.service';
 import { SelectListProductVariantDto } from 'src/app/models/dtos/product/select/selectListProductVariantDto';
 import { ProductService } from 'src/app/services/HttpClient/productService/product.service';
 import { environment } from 'src/environments/environment';
@@ -24,7 +21,7 @@ import { Category } from 'src/app/models/category/category';
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.scss'],
-  providers: [AdvancedService, DecimalPipe]
+  providers: [DecimalPipe]
 })
 export class ProductListComponent {
 
@@ -61,7 +58,6 @@ export class ProductListComponent {
   constructor(private modalService: NgbModal,
     private router: Router,
     private route: ActivatedRoute,
-    public restApiService: restApiService,
     private productService: ProductService,
     private productAttributeService: ProductAttributeService,
     private categoryService: CategoryService

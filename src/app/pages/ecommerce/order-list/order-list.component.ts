@@ -9,19 +9,19 @@ import { OrderService } from 'src/app/services/HttpClient/orderService/order.ser
 })
 export class OrderListComponent {
 
-  orders : Order[] = []
+  orders: Order[] = [];
+  tableSearchTerm = '';
 
-  constructor(private orderService : OrderService) {
+  constructor(private orderService: OrderService) {}
+
+  ngOnInit() {
+    this.getAll();
   }
 
-  ngOnInit(){
-    this.getAll()
-  }
-
-  getAll(){
+  getAll() {
     this.orderService.getAll().subscribe(response => {
-      this.orders = response.data
-    })
+      this.orders = response.data ?? [];
+    });
   }
 
 }

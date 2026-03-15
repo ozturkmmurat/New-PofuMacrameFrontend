@@ -46,7 +46,7 @@
 
 <ng-template #content role="document" let-modal>
     <div class="modal-header">
-        <h5 class="modal-title" id="addAddressModalLabel">Address</h5>
+        <h5 class="modal-title" id="addAddressModalLabel">Adres</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
             (click)="modal.dismiss('Cross click')"></button>
     </div>
@@ -54,25 +54,25 @@
     <div class="modal-body">
         <form [formGroup]="_userAddressForm">
             <div class="mb-3">
-                <label for="addaddress-Name" class="form-label">Name</label>
+                <label for="addaddress-Name" class="form-label">Adres Başlığı</label>
                 <input type="text" class="form-control" id="addaddress-Name" placeholder="Adres Başlığını giriniz."
                     formControlName="addressTitle">
             </div>
 
             <div class="mb-3">
-                <label for="addaddress-Name" class="form-label">Name</label>
+                <label for="addaddress-Name" class="form-label">Posta Kodu</label>
                 <input type="text" class="form-control" id="addaddress-Name" placeholder="Posta Kodunu giriniz."
                     formControlName="postCode">
             </div>
 
             <div class="mb-3">
-                <label for="addaddress-textarea" class="form-label">Address</label>
-                <textarea class="form-control" id="addaddress-textarea" placeholder="Enter Address" rows="2"
+                <label for="addaddress-textarea" class="form-label">Adres</label>
+                <textarea class="form-control" id="addaddress-textarea" placeholder="Adresi giriniz." rows="2"
                     formControlName="address" minlength="5" ></textarea>
             </div>
 
             <div class="mb-3">
-                <label for="state" class="form-label">Address Type</label>
+                <label for="state" class="form-label">Şehir</label>
                 <select class="form-select" id="state" data-plugin="choices" formControlName="cityId">
                     <option value="0">Lütfen Şehir Seçiniz.</option>
                     <option *ngFor="let city of cities" [ngValue]="city.id" selected>{{city.name}}</option>

@@ -17,4 +17,8 @@ export class OfflineComponent implements OnInit {
     document.documentElement.setAttribute('data-sidebar-size', 'lg');
   }
 
+  refresh(): void {
+    window.location.reload();
+  }
+
 }

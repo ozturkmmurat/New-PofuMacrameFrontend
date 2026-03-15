@@ -2,10 +2,14 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Host
 import { Router } from '@angular/router';
 import { User } from 'src/app/core/models/auth.models';
 import { SelectCategoryDto } from 'src/app/models/dtos/category/select/selectCategoryDto';
+import { SiteContent } from 'src/app/models/siteContent/siteContent';
 import { JwtService } from 'src/app/services/Helper/jwtService/jwt.service';
 import { LocalStorageService } from 'src/app/services/Helper/localStorageService/local-storage.service';
 import { CategoryService } from 'src/app/services/HttpClient/categoryService/category.service';
+import { SiteContentService } from 'src/app/services/HttpClient/siteContentService/site-content.service';
 import { UserService } from 'src/app/services/HttpClient/userService/user.service';
+
+const SOCIAL_CONTENT_KEYS = ['Whatsapp', 'Instagram'];
 
 @Component({
   selector: 'app-navbar',
@@ -17,27 +21,45 @@ export class NavbarComponent {
   public isCollapsed = true;
 
   currentSection = 'home';
-  user:User
-  categories : SelectCategoryDto[] = []
+  user: User;
+  categories: SelectCategoryDto[] = [];
+  socialLinks: SiteContent[] = [];
 
-  constructor(private localStorageService : LocalStorageService,
-    private userService : UserService,
-    private categoryService : CategoryService,
-    private router : Router,
-    private elementRef: ElementRef) {
-     this.loadingUser()
+  constructor(
+    private localStorageService: LocalStorageService,
+    private userService: UserService,
+    private categoryService: CategoryService,
+    private siteContentService: SiteContentService,
+    private router: Router,
+    private elementRef: ElementRef
+  ) {
+    this.loadingUser();
   }
 
+  ngOnInit() {
+    this.getAllCategoryHierarchy();
+    this.loadSocialLinks();
+  }
 
-  ngOnInit(){
-    this.getAllCategoryHierarchy()
+  loadSocialLinks() {
+    this.siteContentService.getAll().subscribe(response => {
+      const data = response.data || [];
+      this.socialLinks = data
+        .filter((c: SiteContent) => SOCIAL_CONTENT_KEYS.includes(c.contentKey))
+        .sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0));
+    });
+  }
+
+  getSocialIconClass(contentKey: string): string {
+    if (contentKey === 'Whatsapp') return 'ri-whatsapp-line fs-18';
+    if (contentKey === 'Instagram') return 'ri-instagram-line fs-18';
+    return 'ri-link fs-18';
   }
 
 
   getAllCategoryHierarchy(){
     this.categoryService.getAllCategoryHierarchy().subscribe(response => {
       this.categories = response.data
-      console.log("Category data", this.categories)
     })
   }
   
@@ -52,7 +74,6 @@ export class NavbarComponent {
     loadingUser(){
       effect(() => {
         this.user = this.userService._user();
-        console.log("NavbarComponent'teki user", this.user);
       });
     }
 

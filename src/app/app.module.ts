@@ -7,43 +7,26 @@ import { NgPipesModule } from 'ngx-pipes';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { LayoutsModule} from "./layouts/layouts.module";
+import { LayoutsModule } from "./layouts/layouts.module";
+import { MainLandingModule } from "./main-landing/main-landing.module";
 
 // Auth
-import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS  } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FakeBackendInterceptor } from './core/helpers/fake-backend';
-import { JwtInterceptor } from './core/helpers/jwt.interceptor';
-
-// Language
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { ToastrModule } from 'ngx-toastr';
 import { AuthInterceptor } from './core/helpers/auth.interceptor';
-export function createTranslateLoader(http: HttpClient): any {
-  return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
-}
-
-  FakeBackendInterceptor;
 
 @NgModule({
   declarations: [
     AppComponent,
   ],
   imports: [
-    TranslateModule.forRoot({
-      defaultLanguage: 'en',
-      loader: {
-        provide: TranslateLoader,
-        useFactory: (createTranslateLoader),
-        deps: [HttpClient]
-      }
-    }),
     BrowserAnimationsModule,
     HttpClientModule,
     BrowserModule,
     AppRoutingModule,
     LayoutsModule,
+    MainLandingModule,
     NgPipesModule,
     ToastrModule.forRoot({
       positionClass:"toast-bottom-right"

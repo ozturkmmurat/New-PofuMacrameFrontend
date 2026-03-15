@@ -21,21 +21,16 @@ import { SharedModule } from '../../shared/shared.module';
 import { SweetalertsComponent } from './sweetalerts/sweetalerts.component';
 import { ScrollbarComponent } from './scrollbar/scrollbar.component';
 import { TourComponent } from './tour/tour.component';
-import { SwipersComponent } from './swiper/swiper.component';
 import { RatingsComponent } from './ratings/ratings.component';
 import { HighlightComponent } from './highlight/highlight.component';
-import { ScrollspyComponent } from './scrollspy/scrollspy.component';
-
 
 @NgModule({
   declarations: [
     SweetalertsComponent,
     ScrollbarComponent,
     TourComponent,
-    SwipersComponent,
     RatingsComponent,
     HighlightComponent,
-    ScrollspyComponent,
   ],
   imports: [
     CommonModule,

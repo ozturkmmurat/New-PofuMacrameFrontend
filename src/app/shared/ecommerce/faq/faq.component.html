@@ -1,0 +1,33 @@
+<div class="site-content-page mt-4 mb-4">
+  <div class="container-fluid site-content-page__container">
+    <div class="row">
+      <div class="col-12">
+        <div class="card shadow-sm" *ngIf="!loading">
+          <div class="card-body p-4 p-lg-5">
+            <h1 class="mb-2">{{ pageTitle }}</h1>
+            <p *ngIf="pageDescription" class="text-muted mb-4" [innerHTML]="getSafeHtml(pageDescription)"></p>
+
+            <div *ngIf="faqItems.length > 0" class="custom-accordion-border">
+              <ngb-accordion #acc="ngbAccordion" [activeIds]="faqItems.length ? 'faq-' + faqItems[0].id : ''" [closeOthers]="true">
+                <ngb-panel *ngFor="let item of faqItems" [id]="'faq-' + item.id">
+                  <ng-template ngbPanelTitle class="accordion-header border-0 bg-transparent">
+                    {{ item.title }}
+                  </ng-template>
+                  <ng-template ngbPanelContent>
+                    <div class="accordion-body" [innerHTML]="getSafeHtml(item.description)"></div>
+                  </ng-template>
+                </ngb-panel>
+              </ngb-accordion>
+            </div>
+
+            <p *ngIf="faqItems.length === 0 && !loading" class="text-muted mb-0">Henüz soru eklenmemiştir.</p>
+          </div>
+        </div>
+        <div *ngIf="loading" class="text-center py-5">
+          <div class="spinner-border text-primary" role="status"></div>
+          <p class="mt-2 text-muted">Yükleniyor...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

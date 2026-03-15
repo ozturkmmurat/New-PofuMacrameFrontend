@@ -1,9 +1,9 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from "@angular/core";
 import { ForgotPasswordComponent } from "./forgot-password.component";
 import { CommonModule } from "@angular/common";
+import { RouterModule } from "@angular/router";
 import { NgbCarouselModule } from "@ng-bootstrap/ng-bootstrap";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { PassResetRoutingModule } from "../auth/pass-reset/pass-reset-routing.module";
 import { defineElement } from "lord-icon-element";
 import lottie from 'lottie-web';
 import { ForgotPasswordRoutingModule } from "./forgot-password-routing.module";
@@ -14,6 +14,7 @@ import { ForgotPasswordRoutingModule } from "./forgot-password-routing.module";
     ],
     imports: [
       CommonModule,
+      RouterModule,
       NgbCarouselModule,
       ReactiveFormsModule,
       FormsModule,

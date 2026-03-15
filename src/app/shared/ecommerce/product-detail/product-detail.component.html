@@ -42,11 +42,6 @@
                                 <div class="col-lg-3 col-sm-6">
                                     <div class="p-2 border border-dashed rounded">
                                         <div class="d-flex align-items-center">
-                                            <div class="avatar-sm me-2">
-                                                <div class="avatar-title rounded bg-transparent text-success fs-24">
-                                                    <i class="ri-money-dollar-circle-fill"></i>
-                                                </div>
-                                            </div>
                                             <div class="flex-grow-1">
                                                 <p class="text-muted mb-1">Fiyat :</p>
                                                 <h5 class="mb-0">{{ displayNetPrice | number : '1.2' }} TL</h5>
@@ -153,8 +148,18 @@
                                         </select>
                                     </div>
                                 </div>
-                                <a class="btn btn-success" (click)="addCart()"><i
-                                        class="ri-add-line align-bottom me-1"></i>Sepete Ekle</a></div>
+                                <div class="d-flex flex-wrap gap-2 align-items-center">
+                                    <a class="btn btn-success" (click)="addCart()"><i
+                                            class="ri-add-line align-bottom me-1"></i>Sepete Ekle</a>
+                                    <a *ngIf="whatsappLinkUrl"
+                                       [href]="whatsappLinkUrl"
+                                       target="_blank"
+                                       rel="noopener noreferrer"
+                                       class="btn btn-outline-success">
+                                        <i class="ri-whatsapp-line align-bottom me-1"></i>Whatsapp İletişim
+                                    </a>
+                                </div>
+                            </div>
                             <div *ngIf="product" class="mt-4 text-muted">
                                 <div [innerHTML]="safeHtml"></div>
                             </div>

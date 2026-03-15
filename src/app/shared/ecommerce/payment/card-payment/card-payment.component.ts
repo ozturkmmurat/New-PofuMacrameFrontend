@@ -31,7 +31,6 @@ export class CardPaymentComponent {
     }
   }
   addJsToElement() {
-    console.log("Src yazdırılıyor", this.src)
     this.src = this.paymentService.formScript()
     var str = this.src.split('<script type="text/javascript">').join("");
     var str2 = str.split("</script>").join("");

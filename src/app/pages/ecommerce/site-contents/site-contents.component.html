@@ -1,8 +1,11 @@
+<div class="mb-3">
+  <input type="text" class="form-control" placeholder="Tabloda ara..." [(ngModel)]="tableSearchTerm">
+</div>
 <ngx-datatable
   style="width: 100%"
   #table
   class="material whitespace-nowrap single-selection pt-2"
-  [rows]="siteContents"
+  [rows]="siteContents | tableFilter:tableSearchTerm"
   [scrollbarH]="true"
   [columnMode]="'force'"
   [headerHeight]="50"

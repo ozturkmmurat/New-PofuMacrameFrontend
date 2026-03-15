@@ -16,7 +16,6 @@ export class CategoryAttributeService {
   constructor(private httpClient : HttpClient) { }
 
   getAllTrueSlicerAttribute(categoryId : number):Observable<ListResponseModel<ViewCategoryAttributeDto>>{
-    console.log("Service gelen id", categoryId)
     let newPath = environment.apiUrl + "categoryAttributes/getAllViewDtoTrueSlicerAttribute?categoryId="+ categoryId;
     return this.httpClient.get<ListResponseModel<ViewCategoryAttributeDto>>(newPath);
   }
@@ -27,7 +26,6 @@ export class CategoryAttributeService {
   }
 
   add(categoryAttribute : CategoryAttribute):Observable<ResponseModel>{
-    console.log("Service gelen", categoryAttribute)
     let newPath = environment.apiUrl + "categoryAttributes/add"
     return this.httpClient.post<ResponseModel>(newPath, categoryAttribute)
   }

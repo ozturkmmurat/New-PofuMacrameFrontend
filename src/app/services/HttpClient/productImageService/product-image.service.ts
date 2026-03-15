@@ -38,7 +38,6 @@ export class ProductImageService {
   addList(addProductImageDtos : FormData):Observable<ResponseModel>{
     const headers = new HttpHeaders();
     headers.append('Content-Type', 'multipart/form-data');
-    console.log("Gelen veri", addProductImageDtos)
     let newPath = environment.apiUrl + "productImages/addList"
     return this.httpClient.post<ResponseModel>(newPath, addProductImageDtos, {headers});
   }

@@ -30,7 +30,6 @@ export class UpdateProductStockComponent {
   }
 
   productStockForm(){
-    console.log("Stok kontrol", this.productStock)
     this._productStockForm = this.formBuilder.group({
       id: [this.productStock.id, Validators.required],
       productId:[this.productStock.productId, Validators.required],

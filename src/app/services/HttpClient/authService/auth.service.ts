@@ -35,7 +35,6 @@ export class AuthService {
   }
 
   refreshTokenLogin(tokenModel: string) {
-    console.log("İstek yollandı", tokenModel)
     let newPath = environment.apiUrl + "auth/refreshTokenLogin?refreshToken=" + tokenModel
     return this.httpClient.post<SingleResponseModel<TokenModel>>(newPath, null)
   }

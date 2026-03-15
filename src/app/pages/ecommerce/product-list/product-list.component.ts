@@ -10,26 +10,20 @@ import { ProductService } from 'src/app/services/HttpClient/productService/produ
 })
 export class ProductListComponent {
 
-  //Global Variable
   imageUrl = GlobalComponent.IMAGE_URL;
-  //Model Start
-  selectProductDto : SelectProductDto[] = []
+  selectProductDto: SelectProductDto[] = [];
+  tableSearchTerm = '';
 
-  //Ctor Start
-  constructor(
-    private productService : ProductService
-  ) {
+  constructor(private productService: ProductService) {}
+
+  ngOnInit() {
+    this.getAll();
   }
 
-  ngOnInit(){
-    this.getAll()
-  }
-
-  getAll(){
+  getAll() {
     this.productService.getAllDto().subscribe(response => {
-      this.selectProductDto = response.data
-      console.log("Veriler",this.selectProductDto)
-    })
+      this.selectProductDto = response.data ?? [];
+    });
   }
 
 }

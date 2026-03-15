@@ -65,12 +65,10 @@ export class PasswordCodeComponent {
       const response = await firstValueFrom(this.passwordResetService.getByCodeUrl(codeUrl));
       return response.success;
     } catch (error) {
-      console.error('Error occurred while fetching code URL: ', error);
       throw error;
     }
   }
   passwordCodeForm(){
-    console.log("Form oluşturuldu", this.codeUrl)
     this._passwordCodeForm = this.formBuilder.group({
       code:this.codeControl,
       codeUrl:[this.codeUrl, Validators.required]
@@ -78,7 +76,6 @@ export class PasswordCodeComponent {
   }
 
   passwordCode(){
-    console.log("Kontrol code bölümü", this._passwordCodeForm)
     if(this._passwordCodeForm.valid){
       let passwordCodeModel = Object.assign({}, this._passwordCodeForm.value);
       this.passwordResetService.sendPasswordResetLink(passwordCodeModel).pipe(

@@ -34,19 +34,11 @@ import lottie from 'lottie-web';
 // Component Pages
 import { EcommerceRoutingModule } from './ecommerce-routing.module';
 import { SharedModule } from '../../shared/shared.module';
-import { ProductsComponent } from './products/products.component';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { AddProductComponent } from './add-product/add-product.component';
-import { OrdersComponent } from './orders/orders.component';
 import { OrdersDetailsComponent } from './orders-details/orders-details.component';
-import { CustomersComponent } from './customers/customers.component';
 import { CartComponent } from './cart/cart.component';
 import { CheckoutComponent } from './checkout/checkout.component';
-import { SellerDetailsComponent } from './seller-details/seller-details.component';
-import { NgbdProductsSortableHeader } from './products/products-sortable.directive';
-import { NgbdOrdersSortableHeader } from './orders/orders-sortable.directive';
-import {NgbdCustomerSortableHeader} from './customers/customers-sortable.directive';
-import {NgbdSellersSortableHeader} from './seller-details/seller-details-sortable.directive'
 
 import { DatePipe } from '@angular/common';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
@@ -66,6 +58,7 @@ import { DistrictComponent } from './district/district.component';
 import { ProductCategoryComponent } from './product-category/product-category.component';
 import { CategoryImagesComponent } from './category-images/category-images.component';
 import { SiteContentsComponent } from './site-contents/site-contents.component';
+import { TableFilterPipe } from '../../pipes/tableFilter/table-filter.pipe';
 
 const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
   // Change this to your upload POST address:
@@ -78,19 +71,11 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
 
 @NgModule({
   declarations: [
-    ProductsComponent,
     ProductDetailComponent,
     AddProductComponent,
-    OrdersComponent,
     OrdersDetailsComponent,
-    CustomersComponent,
     CartComponent,
     CheckoutComponent,
-    SellerDetailsComponent,
-    NgbdProductsSortableHeader,
-    NgbdOrdersSortableHeader,
-    NgbdCustomerSortableHeader,
-    NgbdSellersSortableHeader,
     AddProductVariantComponent,
     AttributeValueComponent,
     AttributesComponent,
@@ -106,7 +91,8 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
     DistrictComponent,
     ProductCategoryComponent,
     CategoryImagesComponent,
-    SiteContentsComponent
+    SiteContentsComponent,
+    TableFilterPipe
   ],
   imports: [
     CommonModule,

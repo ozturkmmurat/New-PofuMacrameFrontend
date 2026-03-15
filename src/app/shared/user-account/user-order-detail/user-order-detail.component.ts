@@ -107,6 +107,7 @@ export class UserOrderDetailComponent {
       id: 0,
       userId: 0,
       totalPrice: 0,
+      extraPrice:0,
       orderCode: '',
       orderDate: undefined,
       orderStatus: 0,

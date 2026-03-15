@@ -21,39 +21,31 @@ export class UserService {
     private localStorageService: LocalStorageService
   ) { }
 
-  user : User = null
-  
+  user: User = null
+
   _user = signal(this.user)
-   jwtUrl = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/"
+  jwtUrl = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/"
 
-  getAllUserDto(){
-    let newPath = environment.apiUrl + "users/getAllUserDto"
-    return this.httpclient.get<ListResponseModel<UserDto>>(newPath)
+
+
+  getByGuid(guid: string): Observable<SingleResponseModel<UserForUpdateDto>> {
+    let newPath = environment.apiUrl + "users/getByGuid?guid=" + encodeURIComponent(guid);
+    return this.httpclient.get<SingleResponseModel<UserForUpdateDto>>(newPath)
   }
 
-  getByUserId(id:number):Observable<SingleResponseModel<UserForUpdateDto>>{
-      let newPath = environment.apiUrl  + "users/getById?id=" + id;
-      return this.httpclient.get<SingleResponseModel<UserForUpdateDto>>(newPath)
-  }
 
-  
-  update(userForUpdateDto:UserForUpdateDto):Observable<ResponseModel>{
+  update(userForUpdateDto: UserForUpdateDto): Observable<ResponseModel> {
     return this.httpclient.post<ResponseModel>(environment.apiUrl + "users/update", userForUpdateDto)
-  }
-
-  updateUser(userDto : UserDto):Observable<ResponseModel>{
-    return this.httpclient.post<ResponseModel>(environment.apiUrl + "users/updateUser", userDto)
   }
 
    setCurrentUser(): void {
     var token = this.localStorageService.getToken()
     if(token != null){
-      this.getByUserId(this.getUserId("nameidentifier")).pipe(
+      this.getByGuid(this.getUserGuid()).pipe(
         catchError((err:HttpErrorResponse) => {
           return EMPTY
         }))
         .subscribe(response => {
-          console.log("Service gelen user datası", response.data)
            this.user = {
             id: response.data.id,
             email: response.data.email,
@@ -62,14 +54,22 @@ export class UserService {
             phoneNumber : response.data.phoneNumber
           }
           this._user.set(this.user)
-          console.log("Login den sonra check user", this._user())
         })
     } 
   }
 
-  getUserId(data : string) {
-    if(this.localStorageService.getToken() != null)
-    return this.jwtHelper.decodeToken(this.localStorageService.getToken())[this.jwtUrl+data];
+  /** JWT'den kullanıcı guid'ini okur (güvenlik için id yerine guid kullanılıyor). */
+  getUserGuid(): string | null {
+    const token = this.localStorageService.getToken();
+    if (!token) return null;
+    const decoded = this.jwtHelper.decodeToken(token);
+    return decoded?.['guid'] ?? null;
+  }
+
+  /** JWT'den claim okur. Not: Kullanıcı kimliği için getUserGuid() kullanın, id okumayın. */
+  getUserId(data: string) {
+    if (this.localStorageService.getToken() != null)
+      return this.jwtHelper.decodeToken(this.localStorageService.getToken())[this.jwtUrl + data];
   }
 
 }
